@@ -38,7 +38,7 @@ def next_batch(X, Y, batch_size=1, shuffle=True):
 
 def train_tf_model(model_name, X, Y, Xte, Yte, batch_size,
                    num_epochs, nn_input, keep_prob, logits, nn_output,
-                   w_l2, learning_rate, p_drop):
+                   w_l2, learning_rate, p_keep):
     
     """
     Train a neural network using crossentropy loss with L2 regularization,
@@ -59,7 +59,7 @@ def train_tf_model(model_name, X, Y, Xte, Yte, batch_size,
         nn_output: TF placeholder for target outputs
         w_l2: weight of the L2 regularization
         learning_rate: learning rate in the gradient descent optimization
-        p_drop: probability of keeping connections in dropout
+        p_keep: probability of keeping connections in dropout
     """
     
     with tf.Session() as sess:
@@ -100,7 +100,7 @@ def train_tf_model(model_name, X, Y, Xte, Yte, batch_size,
                                                    shuffle=True):
                     fdtr = {nn_input: X_batch,
                             nn_output: Y_batch,
-                            keep_prob: p_drop}
+                            keep_prob: p_keep}
 
                     _, train_class_loss = sess.run([train_op, class_loss], fdtr)
 

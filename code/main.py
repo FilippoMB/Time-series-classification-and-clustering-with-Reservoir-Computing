@@ -37,10 +37,10 @@ config['w_ridge'] = 1.0
 config['mlp_layout'] = [20,20]
 config['batch_size'] = 25 # samples in the mini-batches in gradient descent training
 config['num_epochs'] = 2000 # number of epochs 
-config['p_drop'] = 0.9
+config['p_keep'] = 1.0
 config['w_l2'] = 0.0001
 config['learning_rate'] = 0.001
-config['nonlinearity'] = 'relu'
+config['nonlinearity'] = 'maxout'
 
 # SVM readout
 config['svm_gamma'] = 1.0
@@ -88,7 +88,7 @@ accuracy, f1, tot_time =  train_RC_classifier(X=X,
                                               fc_layout=config['mlp_layout'],
                                               batch_size=config['batch_size'],
                                               num_epochs=config['num_epochs'],
-                                              p_drop=config['p_drop'],
+                                              p_keep=config['p_keep'],
                                               w_l2=config['w_l2'],
                                               learning_rate=config['learning_rate'],
                                               nonlinearity=config['nonlinearity'], 
