@@ -2,8 +2,7 @@
 
 <img src="./logs/RC_classifier.JPG" width="603.5" height="272.5">
 
-Implementation of the classifier based on the reservoir model space representation. Details of the methodology can be found in the [original paper](https://arxiv.org/abs/1711.06509).
-
+Implementation of different variants of RC-based classifiers, including the *reservoir model space* representation. Details of the methodology can be found in the [original paper](https://arxiv.org/abs/1711.06509).
 
 **Quick execution**
 
