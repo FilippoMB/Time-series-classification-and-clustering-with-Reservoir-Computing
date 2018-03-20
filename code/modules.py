@@ -124,7 +124,7 @@ def train_RC_classifier(
               fc_layout=None,
               batch_size=None,
               num_epochs=None,
-              p_drop=None,
+              p_keep=None,
               w_l2=None,
               learning_rate=None,
               nonlinearity=None, 
@@ -141,7 +141,7 @@ def train_RC_classifier(
     
     Dataset parameters:
         X, Y = training data and respective labels
-        Xte, Yye = test data and respective labels
+        Xte, Yte = test data and respective labels
         
     Reservoir parameters:
         reservoir = precomputed reservoir (oject of class 'Reservoir');
@@ -174,7 +174,7 @@ def train_RC_classifier(
             of 20, 20 and 10 units respectively (only for readout_type=='mlp')
         batch_size = size of the mini batches used during training (only for readout_type=='mlp')
         num_epochs = number of iterations during the optimization (only for readout_type=='mlp')
-        p_drop = probability of keeping connections in dropout (only for readout_type=='mlp')
+        p_keep = probability of keeping connections in dropout (only for readout_type=='mlp')
         w_l2 = weight of the L2 regularization (only for readout_type=='mlp')
         learning_rate = learning rate in the gradient descent optimization (only for readout_type=='mlp')
         nonlinearity = type of activation function {'relu', 'tanh', 'maxout', 'kaf'} (only for readout_type=='mlp')
@@ -318,7 +318,7 @@ def train_RC_classifier(
             # Train MLP and evaluate it on the test
             pred_class = train_tf_model('ESN', input_repr, Y, input_repr_te, Yte,
                                                                 batch_size, num_epochs, nn_input, keep_prob,
-                                                                logits, nn_output, w_l2, learning_rate, p_drop)    
+                                                                logits, nn_output, w_l2, learning_rate, p_keep)    
     
     # SVM readout
     elif readout_type == 'svm':
