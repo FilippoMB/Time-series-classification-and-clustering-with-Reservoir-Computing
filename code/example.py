@@ -12,8 +12,9 @@ config['dataset_name'] = 'JpVow'
 
 # Parameters for the reservoir
 config['n_internal_units'] = 800 # size of the reservoir
-config['connectivity'] = 0.25 # percentage of nonzero connections in the reservoir
 config['spectral_radius'] = 0.99 # largest eigenvalue of the reservoir
+config['leak'] = 0.9 # amount of leakage in the reservoir state update (None or 1.0 --> no leakage)
+config['connectivity'] = 0.25 # percentage of nonzero connections in the reservoir
 config['input_scaling'] = 0.15 # scaling of the input weights
 config['noise_level'] = 0.001 # noise in the reservoir state update
 config['n_drop'] = 5 # transient states to be dropped
@@ -74,6 +75,7 @@ accuracy, f1, tot_time =  train_RC_classifier(X=X,
                                               reservoir=None,     
                                               n_internal_units=config['n_internal_units'],
                                               spectral_radius=config['spectral_radius'],
+                                              leak=config['leak'],
                                               connectivity=config['connectivity'],
                                               input_scaling=config['input_scaling'],
                                               noise_level=config['noise_level'],

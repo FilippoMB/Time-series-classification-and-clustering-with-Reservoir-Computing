@@ -106,6 +106,7 @@ def train_RC_classifier(
               reservoir=None,     
               n_internal_units=None,
               spectral_radius=None,
+              leak=None,
               connectivity=None,
               input_scaling=None,
               noise_level=None,
@@ -147,6 +148,7 @@ def train_RC_classifier(
             if None, the following structural hyperparameters must be specified
         n_internal_units = processing units in the reservoir
         spectral_radius = largest eigenvalue of the reservoir matrix of connection weights
+        leak = amount of leakage in the reservoir state update (optional)
         connectivity = percentage of nonzero connection weights
         input_scaling = scaling of the input connection weights
         noise_level = deviation of the Gaussian noise injected in the state update
@@ -194,8 +196,12 @@ def train_RC_classifier(
             raise RuntimeError('Reservoir parameters missing')
             
         else:
-            reservoir = Reservoir(n_internal_units, spectral_radius, connectivity,
-                                  input_scaling, noise_level)
+            reservoir = Reservoir(n_internal_units=n_internal_units,
+                                  spectral_radius=spectral_radius,
+                                  leak=leak,
+                                  connectivity=connectivity,
+                                  input_scaling=input_scaling,
+                                  noise_level=noise_level)
 
     # Compute reservoir states
     res_states = reservoir.get_states(X, n_drop=n_drop, bidir=bidir) # train
