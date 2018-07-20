@@ -19,7 +19,7 @@ class tensorPCA:
         self.n_components=n_components
         self.first_eigs = None
         
-    def fit(self, X): # X has shape [N,V,T]
+    def fit(self, X): # X has shape [N,T,V]
         
         if len(X.shape) is not 3:
             raise RuntimeError('Input must be a 3d tensor')
@@ -28,7 +28,7 @@ class tensorPCA:
         Xm = np.expand_dims(np.mean(X, axis=0), axis=0) # mean sample
         Xmt = np.swapaxes(Xm,1,2)
         
-        C= np.tensordot(X-Xm,Xt-Xmt,axes=([1,0],[2,0])) / (X.shape[0]-1) # covariance of 0-mode slices
+        C = np.tensordot(X-Xm,Xt-Xmt,axes=([1,0],[2,0])) / (X.shape[0]-1) # covariance of 0-mode slices
         
         # sort eigenvalues of covariance matrix
         eigenValues, eigenVectors = linalg.eig(C)
