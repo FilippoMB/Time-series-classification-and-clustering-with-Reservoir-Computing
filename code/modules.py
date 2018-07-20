@@ -167,8 +167,6 @@ class RC_classifier(object):
         # ============ Compute reservoir states ============ 
         res_states = self._reservoir.get_states(X, n_drop=self.n_drop, bidir=self.bidir)
         
-        print(res_states.shape)
-        
         # ============ Dimensionality reduction of the reservoir states ============  
         if self.dimred_method.lower() == 'pca':
             # matricize

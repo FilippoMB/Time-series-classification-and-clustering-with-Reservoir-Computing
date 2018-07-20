@@ -14,14 +14,14 @@ config['seed'] = 0
 np.random.seed(config['seed'])
 
 # Parameters for the reservoir
-config['n_internal_units'] = 500 # size of the reservoir
+config['n_internal_units'] = 450 # size of the reservoir
 config['spectral_radius'] = 0.59 # largest eigenvalue of the reservoir
 config['leak'] = 0.6 # amount of leakage in the reservoir state update (None or 1.0 --> no leakage)
 config['connectivity'] = 0.25 # percentage of nonzero connections in the reservoir
 config['input_scaling'] = 0.1 # scaling of the input weights
 config['noise_level'] = 0.01 # noise in the reservoir state update
 config['n_drop'] = 5 # transient states to be dropped
-config['bidir'] = False # if True, use bidirectional reservoir
+config['bidir'] = True # if True, use bidirectional reservoir
 config['circ'] = False # use reservoir with circle topology
 
 # Dimensionality reduction parameters
@@ -69,7 +69,7 @@ onehot_encoder = OneHotEncoder(sparse=False)
 Y = onehot_encoder.fit_transform(Y)
 Yte = onehot_encoder.transform(Yte)
 
-# ============ Train and evaluate model ============
+# ============ Specify, train and evaluate model ============
 classifier =  RC_classifier(
                           reservoir=None,     
                           n_internal_units=config['n_internal_units'],
