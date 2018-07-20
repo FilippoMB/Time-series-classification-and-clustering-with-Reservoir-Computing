@@ -16,7 +16,6 @@ def fc_layer(input_, in_dim, size, init, w_l2):
         init: initialization scheme for the weights {"he", "xav"}
         w_l2: strength of the L2 regularization on the weights
     """
-    print(in_dim,size)
     
     if init == 'he':
         init_type = tf.keras.initializers.he_normal(seed=None)
