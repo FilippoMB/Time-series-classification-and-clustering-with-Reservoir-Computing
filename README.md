@@ -1,11 +1,16 @@
-# Reservoir-model-space-classifier
+# Framework overview
 
-<img src="./logs/RC_classifier.JPG" width="603.5" height="272.5">
+<img src="./logs/RC_classifier.JPG" width="603.5" height="320">
 
-With this library is possible to quickly implement a classifier for time series data based on Reservoir Computing, the family of approaches popularized in machine learning by Echo State Networks.
+With this library is possible to quickly implement different classifiers on Reservoir Computing (the family of approaches popularized in machine learning by Echo State Networks) for classifying multivariate time series.
 
-Several options are available to customize the RC classifier: (i) specify the reservoir configuration, (ii) perform a dimensionality reduction on the produced sequence of the reservoir's states, (iii) generate a representation of the time series from the sequence of reservoir's states, and (iv) perform the final classification -- see the figure above. 
-The library allows to define the *reservoir model space* as representation for the time series: details of the methodology can be found in the [original paper](https://arxiv.org/abs/1803.07870).
+Several options are available to customize the RC classifier, by selecting different configurations for each module.
+1. The reservoir module specifies the reservoir configuration (e.g., bidirectional, leaky neurons, circle topology);
+2. The dimensionality reduction module (optionally) applies a dimensionality reduction on the produced sequence of the reservoir's states;
+3. The representation module defines how to represent the input time series from the sequence of reservoir's states;
+4. The readout module specifies the model to use to perform the final classification. 
+
+This library also implements the *reservoir model space* as representation for the time series: details of the methodology can be found in the [original paper](https://arxiv.org/abs/1803.07870).
 
 **Quick execution**
 
@@ -24,7 +29,7 @@ Required libraries:
 The main class ```RC_classifier``` contained in [modules.py](https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/modules.py) permits to specify, train and test an RC-classifier.
 The RC-classifier is configured by passing to the constructor of the class ```RC_classifier``` a set of parameters. To get an idea, you can check in ```example.py``` where the parameters are specified through a dictionary (config). 
 
-The available configuration parameters are listed in the following and, for the sake of clarity, are grouped according to which part of the architecture they refer to.
+The available configuration parameters are listed in the following and, for the sake of clarity, are grouped according to which module of the architecture they refer to.
 
     
 **1. Reservoir parameters:**
@@ -47,7 +52,7 @@ The available configuration parameters are listed in the following and, for the 
     
 **3. Representation parameters:**
 
-- mts_rep - type of multivariate time series representation. It can be ````'last'```` (last state), ````'output'```` (output model space), or ````'reservoir'```` (reservoir model space)
+- mts_rep - type of multivariate time series representation. It can be ````'last'```` (last state), ````'mean'```` (mean of all states), ````'output'```` (output model space), or ````'reservoir'```` (reservoir model space)
 - w\_ridge\_embedding - regularization parameter of the ridge regression in the output model space and reservoir model space representation; ignored if mts_rep is ````None````
     
 **4. Readout parameters:**
@@ -97,3 +102,20 @@ Inputs:
 Outputs:
 
 - accuracy, F1 score: metrics achieved on the test data
+
+
+## Multivariate time series dataset
+
+A collection of multivariate time series dataset is available for download [here](https://mega.nz/#!KM9jRajJ!Jblz0PPBIm4_i_qAsQRjQs6HOKjnjr_N2tfgkSojSl0). The dataset are provided both in MATLAB and Python (Numpy) format. Original raw data come from [UCI](https://archive.ics.uci.edu/ml/index.php) and [UCR](https://www.cs.ucr.edu/~eamonn/time_series_data/) public repositories.
+
+
+## Citation
+
+Please, cite the original paper if you are using this library in your reasearch
+
+	@article{bianchi2018reservoir,
+        title={Reservoir computing approaches for representation and classification of multivariate time series},
+        author={Bianchi, Filippo Maria and Scardapane, Simone and L{\o}kse, Sigurd and Jenssen, Robert},
+        journal={arXiv preprint arXiv:1803.07870},
+        year={2018}
+    }
