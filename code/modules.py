@@ -210,6 +210,10 @@ class RC_classifier(object):
         elif self.mts_rep=='last':
             input_repr = red_states[:, -1, :]
             
+        # Mean state representation        
+        elif self.mts_rep=='mean':
+            input_repr = np.mean(red_states, axis=1)
+            
         else:
             raise RuntimeError('Invalid representation ID')            
             
@@ -294,6 +298,10 @@ class RC_classifier(object):
         # Last state representation        
         elif self.mts_rep=='last':
             input_repr_te = red_states_te[:, -1, :]
+            
+        # Mean state representation        
+        elif self.mts_rep=='mean':
+            input_repr_te = np.mean(red_states_te, axis=1)
             
         else:
             raise RuntimeError('Invalid representation ID')   

@@ -10,13 +10,13 @@ from modules import RC_classifier
 config = {}
 config['dataset_name'] = 'JpVow'
 
-config['seed'] = 0
+config['seed'] = 1
 np.random.seed(config['seed'])
 
 # Parameters for the reservoir
 config['n_internal_units'] = 500 # size of the reservoir
-config['spectral_radius'] = 0.59 # largest eigenvalue of the reservoir
-config['leak'] = 0.6 # amount of leakage in the reservoir state update (None or 1.0 --> no leakage)
+config['spectral_radius'] = 1.2 # largest eigenvalue of the reservoir
+config['leak'] = None # amount of leakage in the reservoir state update (None or 1.0 --> no leakage)
 config['connectivity'] = 0.25 # percentage of nonzero connections in the reservoir
 config['input_scaling'] = 0.1 # scaling of the input weights
 config['noise_level'] = 0.01 # noise in the reservoir state update
@@ -29,7 +29,7 @@ config['dimred_method'] ='tenpca' # options: {None (no dimensionality reduction)
 config['n_dim'] = 75 #  number of resulting dimensions after the dimensionality reduction procedure
 
 # Type of MTS representation
-config['mts_rep'] = 'reservoir' # MTS representation:  {'last', 'output', 'reservoir'}
+config['mts_rep'] = 'reservoir' # MTS representation:  {'last', 'mean', 'output', 'reservoir'}
 config['w_ridge_embedding'] = 10.0 # regularization parameter of the ridge regression
 
 # Type of readout
