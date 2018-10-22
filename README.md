@@ -2,7 +2,7 @@
 
 <img src="./logs/RC_classifier.JPG" width="603.5" height="320">
 
-With this library is possible to quickly implement different classifiers on Reservoir Computing (the family of approaches popularized in machine learning by Echo State Networks) for classifying multivariate time series.
+With this library is possible to quickly implement different classifiers based on Reservoir Computing (the family of approaches popularized in machine learning by Echo State Networks) for classifying multivariate time series.
 
 Several options are available to customize the RC classifier, by selecting different configurations for each module.
 1. The reservoir module specifies the reservoir configuration (e.g., bidirectional, leaky neurons, circle topology);
