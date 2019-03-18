@@ -119,3 +119,7 @@ Please, cite the original paper if you are using this library in your reasearch
         journal={arXiv preprint arXiv:1803.07870},
         year={2018}
     }
+    
+
+## License
+The code is released under the MIT License. See the attached LICENSE file.
