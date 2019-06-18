@@ -104,6 +104,11 @@ Outputs:
 - accuracy, F1 score: metrics achieved on the test data
 
 
+## Example
+
+A simple example of how to perform MTS classification based on this library can be found in this [notebook](https://github.com/ciortanmadalina/EchoStateNetwork), from Madalina Ciortan.
+
+
 ## Multivariate time series dataset
 
 A collection of multivariate time series dataset is available for download [here](https://mega.nz/#!KM9jRajJ!Jblz0PPBIm4_i_qAsQRjQs6HOKjnjr_N2tfgkSojSl0). The dataset are provided both in MATLAB and Python (Numpy) format. Original raw data come from [UCI](https://archive.ics.uci.edu/ml/index.php) and [UCR](https://www.cs.ucr.edu/~eamonn/time_series_data/) public repositories.
