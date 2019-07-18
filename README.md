@@ -111,7 +111,7 @@ A simple example of how to perform MTS classification based on this library can 
 
 ## Multivariate time series dataset
 
-A collection of multivariate time series dataset is available for download [here](https://mega.nz/#!KM9jRajJ!Jblz0PPBIm4_i_qAsQRjQs6HOKjnjr_N2tfgkSojSl0). The dataset are provided both in MATLAB and Python (Numpy) format. Original raw data come from [UCI](https://archive.ics.uci.edu/ml/index.php) and [UCR](https://www.cs.ucr.edu/~eamonn/time_series_data/) public repositories.
+A collection of multivariate time series dataset is available for download [here](https://mega.nz/#!aZkBwYDa!JZb99GQoUn4EoJYceCK3Ihe04hhYZYuIWn018gcQM8k). The dataset are provided both in MATLAB and Python (Numpy) format. Original raw data come from [UCI](https://archive.ics.uci.edu/ml/index.php), [UEA](https://www.groundai.com/project/the-uea-multivariate-time-series-classification-archive-2018/), and [UCR](https://www.cs.ucr.edu/~eamonn/time_series_data/) public repositories.
 
 
 ## Citation
