@@ -41,10 +41,16 @@ class Reservoir(object):
 
     def _initialize_internal_weights_Circ(self, n_internal_units, spectral_radius):
         
+        # Construct reservoir with circular topology
         internal_weights = np.zeros((n_internal_units, n_internal_units))
-        internal_weights[0,-1] = spectral_radius
+        internal_weights[0,-1] = 1.0
         for i in range(n_internal_units-1):
-            internal_weights[i+1,i] = spectral_radius
+            internal_weights[i+1,i] = 1.0
+            
+        # Adjust the spectral radius.
+        E, _ = np.linalg.eig(internal_weights)
+        e_max = np.max(np.abs(E))
+        internal_weights /= np.abs(e_max)/spectral_radius 
                 
         return internal_weights
     
