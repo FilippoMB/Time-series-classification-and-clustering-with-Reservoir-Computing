@@ -1,4 +1,4 @@
-# Update - Tensorflow dependency remove
+# Update - removed the Tensorflow dependency
 In this new version there is no longer a dependency from Tensorflow, which reduced the dependecy of this repository only to scipy and scikit-learn.
 The MLP readout is now based on the scikit-learn implementation that, however, does not support dropout and the two custom activation functions, Maxout and Kafnets. These functionalities are still available in the branch "Tensorflow": just checkout it to run the previous version of this repository.
 
