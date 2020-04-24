@@ -5,12 +5,12 @@ from sklearn.linear_model import Ridge
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.decomposition import PCA
 from sklearn.svm import SVC
-from tensorPCA import tensorPCA
+from sklearn.neural_network import MLPClassifier
 from scipy.spatial.distance import pdist, cdist, squareform
 
 # Custom imports
 from reservoir import Reservoir
-from MLP import make_MLPgraph, trainMLP, testMLP
+from tensorPCA import tensorPCA
 
 
 def compute_test_scores(pred_class, Yte):
@@ -54,7 +54,6 @@ class RC_classifier(object):
               w_ridge=None,              
               mlp_layout=None,
               num_epochs=None,
-              p_drop=None,
               w_l2=None,
               nonlinearity=None, 
               svm_gamma=1.0,
@@ -100,14 +99,11 @@ class RC_classifier(object):
             readout_type = type of readout used for classification. It can be 'lin' (ridge regression), 
                 'mlp' (multiplayer perceptron) or 'svm'          
             w_ridge = regularization parameter of the ridge regression readout (only for readout_type=='lin')              
-            mlp_layout = list with the sizes of MLP layers, e.g. [in_dim,20,10,n_classes] defines a MLP with 2 layers 
-                of 20 and 10 units respectively. First entry in the list is the input size, last is the number 
-                of classes (only for readout_type=='mlp')
+            mlp_layout = tuple with the sizes of MLP layers, e.g. (20, 10) defines a MLP with 2 layers 
+                of 20 and 10 units respectively. (only for readout_type=='mlp')
             num_epochs = number of iterations during the optimization (only for readout_type=='mlp')
-            p_drop = dropout probability (only for readout_type=='mlp')
             w_l2 = weight of the L2 regularization (only for readout_type=='mlp')
-            nonlinearity = type of activation function {'relu', 'tanh', 'sigmoid', 'lin' 'maxout', 'kaf'} (only for readout_type=='mlp')
-            seed = if not None, set the seed in TF for determinisitc behavior (only for readout_type=='mlp')
+            nonlinearity = type of activation function {'relu', 'tanh', 'logistic', 'identity'} (only for readout_type=='mlp')
             svm_gamma = bandwith of the RBF kernel (only for readout_type=='svm')
             svm_C = regularization for SVM hyperplane (only for readout_type=='svm')
         """
@@ -117,13 +113,7 @@ class RC_classifier(object):
         self.mts_rep=mts_rep
         self.readout_type=readout_type
         self.svm_gamma=svm_gamma
-        self.p_drop=p_drop
-        self.mlp_layout = mlp_layout
-        self.nonlinearity=nonlinearity
-        self.seed=seed
-        self.w_l2=w_l2
-        self.num_epochs=num_epochs
-                
+                        
         # Initialize reservoir
         if reservoir is None:
             self._reservoir = Reservoir(n_internal_units=n_internal_units,
@@ -155,7 +145,18 @@ class RC_classifier(object):
         elif self.readout_type == 'svm': # SVM readout
             self.readout = SVC(C=svm_C, kernel='precomputed')          
         elif readout_type == 'mlp': # MLP (deep readout)  
-            pass
+            # pass
+            self.readout = MLPClassifier(
+                hidden_layer_sizes=mlp_layout, 
+                activation=nonlinearity, 
+                alpha=w_l2,
+                batch_size=32, 
+                learning_rate='adaptive', # 'constant' or 'adaptive'
+                learning_rate_init=0.001, 
+                max_iter=num_epochs, 
+                early_stopping=False, # if True, set validation_fraction > 0
+                validation_fraction=0.0 # used for early stopping
+                )
         else:
             raise RuntimeError('Invalid reservoir type')  
         
@@ -226,27 +227,8 @@ class RC_classifier(object):
             self.input_repr_tr = input_repr # store them to build test kernel
             
         elif self.readout_type == 'mlp': # MLP (deep readout)
-            
-            g = make_MLPgraph(input_dim=input_repr.shape[1],
-                              output_dim=Y.shape[1],
-                              mlp_layout=self.mlp_layout,
-                              nonlinearity=self.nonlinearity,
-                              init='he',
-                              learning_rate=0.001,
-                              w_l2=self.w_l2,
-                              max_gradient_norm=1.0,
-                              seed=self.seed)
-            
-            trainMLP(input_repr, 
-                     Y, 
-                     input_repr,
-                     Y,
-                     batch_size=25, 
-                     num_epochs=self.num_epochs, 
-                     dropout_prob=self.p_drop,
-                     save_id='default',
-                     input_graph=g)
-            
+            self.readout.fit(input_repr, Y)
+                        
         tot_time = (time.time()-time_start)/60
         return tot_time
 
@@ -315,7 +297,8 @@ class RC_classifier(object):
             pred_class = self.readout.predict(Kte)
             
         elif self.readout_type == 'mlp': # MLP (deep readout)
-            _, pred_class = testMLP(input_repr_te, Yte, save_id='default')
+            pred_class = self.readout.predict(input_repr_te)
+            pred_class = np.argmax(pred_class, axis=1)
             
         accuracy, f1 = compute_test_scores(pred_class, Yte)
         return accuracy, f1
