@@ -16,16 +16,15 @@ Several options are available to customize the RC classifier, by selecting diffe
 
 This library also implements the *reservoir model space* as representation for the time series: details of the methodology can be found in the [original paper](https://arxiv.org/abs/1803.07870).
 
-**Quick execution**
-
-Run the script ```example.py``` to perform a quick execution of the RC classifier on a benchmark dataset for classification of multivariate time series.
-The code has been tested on Python 3.7, but lower versions should work as well.
-
-Required libraries:
+**Required libraries**
 
 - sklearn (tested on version 0.22.1)
 - scipy
 
+**Quick execution**
+
+Run the script ```example.py``` to perform a quick execution of the RC classifier on a benchmark dataset for classification of multivariate time series.
+The code has been tested on Python 3.7, but lower versions should work as well.
 
 ## Configure the RC-classifier
 
