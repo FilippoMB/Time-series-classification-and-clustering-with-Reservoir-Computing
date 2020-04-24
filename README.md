@@ -1,3 +1,7 @@
+# Update - Tensorflow dependency remove
+In this new version there is no longer a dependency from Tensorflow, which reduced the dependecy of this repository only to scipy and scikit-learn.
+The MLP readout is now based on the scikit-learn implementation that, however, does not support dropout and the two custom activation functions, Maxout and Kafnets. These functionalities are still available in the branch "Tensorflow": just checkout it to run the previous version of this repository.
+
 # Framework overview
 
 <img src="./logs/RC_classifier.JPG" width="603.5" height="320">
@@ -15,12 +19,11 @@ This library also implements the *reservoir model space* as representation for t
 **Quick execution**
 
 Run the script ```example.py``` to perform a quick execution of the RC classifier on a benchmark dataset for classification of multivariate time series.
-The code has been tested on Python 3.5.
+The code has been tested on Python 3.7, but lower versions should work as well.
 
 Required libraries:
 
-- Tensorflow (tested on version 1.8.0)
-- sklearn (tested on version 0.19.1)
+- sklearn (tested on version 0.22.1)
 - scipy
 
 
@@ -62,10 +65,9 @@ The available configuration parameters are listed in the following and, for the 
 - mlp\_layout - list with the sizes of MLP layers, e.g. ````[20,20,10]```` defines a MLP with 3 layers of 20, 20 and 10 units respectively (only when readout_type is ````'mlp'````)
 - batch\_size - size of the mini batches used during training (only when readout_type is ````'mlp'````)
 - num\_epochs - number of iterations during the optimization (only when readout_type is ````'mlp'````)
-- p\_drop - probability of dropping connections in dropout (only when readout_type is ````'mlp'````)
 - w\_l2 = weight of the L2 regularization (only when readout_type is ````'mlp'````)
 - learning\_rate = learning rate in the gradient descent optimization (only when readout_type is ````'mlp'````)
-- nonlinearity = type of activation function; it can be ````{'relu', 'tanh', 'sigmoid', 'lin', 'maxout', 'kaf'}```` (only when readout_type is ````'mlp'````)
+- nonlinearity = type of activation function; it can be ````{'relu', 'tanh', 'logistic', 'identity'}```` (only when readout_type is ````'mlp'````)
 - svm\_gamma = bandwith of the RBF kernel (only when readout_type is ````'svm'````)
 - svm\_C = regularization for the SVM hyperplane (only when readout_type is ````'svm'````)
 
