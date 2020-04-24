@@ -1,6 +1,6 @@
 # Update - removed the Tensorflow dependency
-In this new version there is no longer a dependency from Tensorflow, which reduced the dependecy of this repository only to scipy and scikit-learn.
-The MLP readout is now based on the scikit-learn implementation that, however, does not support dropout and the two custom activation functions, Maxout and Kafnets. These functionalities are still available in the branch "Tensorflow": just checkout it to run the previous version of this repository.
+In this new version there is no longer a dependency from Tensorflow, reducing the dependecy of this repository only to scipy and scikit-learn.
+The MLP readout is now based on the scikit-learn implementation that, however, does not support dropout and the two custom activation functions, Maxout and Kafnets. These functionalities are still available in the branch "Tensorflow": just checkout it to use the previous version of this repository.
 
 # Framework overview
 
@@ -39,7 +39,7 @@ The available configuration parameters are listed in the following and, for the 
 
 - n_drop - number of transient states to drop
 - bidir - use a bidirectional reservoir (True or False)
-- reservoir - precomputed reservoir (oject of class ````Reservoir```` in [reservoir.py](https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/reservoir.py); if ```None```, the following structural hyperparameters must be specified:
+- reservoir - precomputed reservoir (oject of class ````Reservoir```` in [reservoir.py](https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/reservoir.py); if ```None```, the following hyperparameters must be specified:
     - n\_internal\_units = number of processing units in the reservoir
     - spectral_radius = largest eigenvalue of the reservoir matrix of connection weights (to guarantee the Echo State Property, set spectral\_radius <= leak <= 1)
     - leak = amount of leakage in the reservoir state update (optional, None or 1.0 --> no leakage)
