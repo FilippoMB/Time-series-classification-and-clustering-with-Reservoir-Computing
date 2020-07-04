@@ -1,7 +1,3 @@
-# Update - removed the Tensorflow dependency
-In this new version there is no longer a dependency from Tensorflow, reducing the dependecy of this repository only to scipy and scikit-learn.
-The MLP readout is now based on the scikit-learn implementation that, however, does not support dropout and the two custom activation functions, Maxout and Kafnets. These functionalities are still available in the branch "Tensorflow": just checkout it to use the previous version of this repository.
-
 # Framework overview
 
 <img src="./logs/RC_classifier.JPG" width="603.5" height="320">
@@ -14,7 +10,7 @@ Several options are available to customize the RC classifier, by selecting diffe
 3. The representation module defines how to represent the input time series from the sequence of reservoir's states;
 4. The readout module specifies the model to use to perform the final classification. 
 
-This library also implements the *reservoir model space* as representation for the time series: details of the methodology can be found in the [original paper](https://arxiv.org/abs/1803.07870).
+This library also implements the *reservoir model space* as representation for the time series: details of the methodology can be found in the [original paper](https://ieeexplore.ieee.org/abstract/document/9127499) (Arix version [here](https://arxiv.org/abs/1803.07870)).
 
 **Required libraries**
 
@@ -119,13 +115,18 @@ A collection of univariate and multivariate time series dataset is available for
 
 Please, cite the original paper if you are using this library in your reasearch
 
-	@article{bianchi2018reservoir,
-        title={Reservoir computing approaches for representation and classification of multivariate time series},
-        author={Bianchi, Filippo Maria and Scardapane, Simone and L{\o}kse, Sigurd and Jenssen, Robert},
-        journal={arXiv preprint arXiv:1803.07870},
-        year={2018}
-    }
+	@article{bianchi2020reservoir,
+	  title={Reservoir computing approaches for representation and classification of multivariate time series},
+	  author={Bianchi, Filippo Maria and Scardapane, Simone and L{\o}kse, Sigurd and Jenssen, Robert},
+	  journal={IEEE Transactions on Neural Networks and Learning Systems},
+	  year={2020},
+	  publisher={IEEE}
+	}
     
+
+## Tensorflow version
+In the latest version of the repository there is no longer a dependency from Tensorflow, reducing the dependecies of this repository only to scipy and scikit-learn.
+The MLP readout is now based on the scikit-learn implementation that, however, does not support dropout and the two custom activation functions, Maxout and Kafnets. These functionalities are still available in the branch "Tensorflow". Checkout it to use the Tensorflow version of this repository.
 
 ## License
 The code is released under the MIT License. See the attached LICENSE file.
