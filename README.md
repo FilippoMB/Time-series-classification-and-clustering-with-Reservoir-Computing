@@ -2,7 +2,7 @@
 
 <img src="./logs/RC_classifier.JPG" width="603.5" height="320">
 
-This library allows to quickly implement different classifiers based on Reservoir Computing (the family of approaches popularized in machine learning by Echo State Networks) for  univariate or multivariate time series (MTS).
+This library allows to quickly implement different architectures based on Reservoir Computing (the family of approaches popularized in machine learning by Echo State Networks) for classification or clustering of univariate/multivariate time series.
 
 Several options are available to customize the RC model, by selecting different configurations for each module.
 1. The reservoir module specifies the reservoir configuration (*e.g.*, bidirectional, leaky neurons, circle topology);
@@ -41,9 +41,9 @@ The available configuration hyperparameters are listed in the following and, for
 - reservoir - precomputed reservoir (oject of class ````Reservoir```` in [reservoir.py](https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/reservoir.py); if ```None```, the following hyperparameters must be specified:
     - n\_internal\_units = number of processing units in the reservoir
     - spectral_radius = largest eigenvalue of the reservoir matrix of connection weights (to guarantee the Echo State Property, set spectral\_radius <= leak <= 1)
-    - leak = amount of leakage in the reservoir state update (optional, None or 1.0 --> no leakage)
+    - leak = amount of leakage in the reservoir state update (optional, ````None```` or ````1.0```` --> no leakage)
     - circ = if True, generate a determinisitc reservoir with circle topology where each connection has the same weight
-    - connectivity = percentage of nonzero connection weights (ignored if circ = True)
+    - connectivity = percentage of nonzero connection weights (ignored if circ = ````True````)
     - input_scaling = scaling of the input connection weights (note that weights are randomly drawn from {-1,1})
     - noise_level = deviation of the Gaussian noise injected in the state update
             
@@ -72,13 +72,13 @@ The available configuration hyperparameters are listed in the following and, for
 
 ## Train and test the RC-model for classification
 
-The training and test function requires in input training and test data, which must be provided as multidimensional NumPy arrays of shape $[N,T,V]$, with:
+The training and test function requires in input training and test data, which must be provided as multidimensional NumPy arrays of shape *[N,T,V]*, with:
 
-- $N$ = number of samples
-- $T$ = number of time steps in each sample
-- $V$ = number of variables in each sample
+- *N* = number of samples
+- *T* = number of time steps in each sample
+- *V* = number of variables in each sample
 
-Training and test labels (Y and Yte) must be provided in one-hot encoding format, i.e. a matrix $[N,C]$, where $C$ is the number of classes.
+Training and test labels (Y and Yte) must be provided in one-hot encoding format, i.e. a matrix *[N,C]*, where *C* is the number of classes.
 
 **Training**
 
