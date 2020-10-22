@@ -1,3 +1,4 @@
 *.pyc
+*.ipynb
 models/
 !models/.gitkeep

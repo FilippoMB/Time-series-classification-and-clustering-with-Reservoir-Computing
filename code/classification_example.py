@@ -4,16 +4,16 @@ import scipy.io
 from sklearn.preprocessing import OneHotEncoder
 
 # Custom imports
-from modules import RC_classifier
+from modules import RC_model
 
-# ============ Network configuration and hyperparameter values ============
+# ============ RC model configuration and hyperparameter values ============
 config = {}
 config['dataset_name'] = 'JpVow'
 
 config['seed'] = 1
 np.random.seed(config['seed'])
 
-# Parameters for the reservoir
+# Hyperarameters of the reservoir
 config['n_internal_units'] = 450        # size of the reservoir
 config['spectral_radius'] = 0.59        # largest eigenvalue of the reservoir
 config['leak'] = 0.6                    # amount of leakage in the reservoir state update (None or 1.0 --> no leakage)
@@ -24,7 +24,7 @@ config['n_drop'] = 5                    # transient states to be dropped
 config['bidir'] = True                  # if True, use bidirectional reservoir
 config['circ'] = False                  # use reservoir with circle topology
 
-# Dimensionality reduction parameters
+# Dimensionality reduction hyperparameters
 config['dimred_method'] ='tenpca'       # options: {None (no dimensionality reduction), 'pca', 'tenpca'}
 config['n_dim'] = 75                    # number of resulting dimensions after the dimensionality reduction procedure
 
@@ -35,14 +35,14 @@ config['w_ridge_embedding'] = 10.0      # regularization parameter of the ridge 
 # Type of readout
 config['readout_type'] = 'lin'          # readout used for classification: {'lin', 'mlp', 'svm'}
 
-# Linear readout parameters
+# Linear readout hyperparameters
 config['w_ridge'] = 5.0                 # regularization of the ridge regression readout
 
-# SVM readout
+# SVM readout hyperparameters
 config['svm_gamma'] = 0.005             # bandwith of the RBF kernel
 config['svm_C'] = 5.0                   # regularization for SVM hyperplane
 
-# MLP readout parameters
+# MLP readout hyperparameters
 config['mlp_layout'] = (10,10)          # neurons in each MLP layer
 config['num_epochs'] = 2000             # number of epochs 
 config['w_l2'] = 0.001                  # weight of the L2 regularization
@@ -61,41 +61,41 @@ if len(Xte.shape) < 3:
     Xte = np.atleast_3d(Xte)
 Yte = data['Yte']
 
-print('Loading '+config['dataset_name']+' - Tr: '+ str(X.shape)+', Te: '+str(Xte.shape))
+print('Loaded '+config['dataset_name']+' - Tr: '+ str(X.shape)+', Te: '+str(Xte.shape))
 
 # One-hot encoding for labels
 onehot_encoder = OneHotEncoder(sparse=False)
 Y = onehot_encoder.fit_transform(Y)
 Yte = onehot_encoder.transform(Yte)
 
-# ============ Specify, train and evaluate model ============
-classifier =  RC_classifier(
-                          reservoir=None,     
-                          n_internal_units=config['n_internal_units'],
-                          spectral_radius=config['spectral_radius'],
-                          leak=config['leak'],
-                          connectivity=config['connectivity'],
-                          input_scaling=config['input_scaling'],
-                          noise_level=config['noise_level'],
-                          circle=config['circ'],
-                          n_drop=config['n_drop'],
-                          bidir=config['bidir'],
-                          dimred_method=config['dimred_method'], 
-                          n_dim=config['n_dim'],
-                          mts_rep=config['mts_rep'],
-                          w_ridge_embedding=config['w_ridge_embedding'],
-                          readout_type=config['readout_type'],            
-                          w_ridge=config['w_ridge'],              
-                          mlp_layout=config['mlp_layout'],
-                          num_epochs=config['num_epochs'],
-                          w_l2=config['w_l2'],
-                          nonlinearity=config['nonlinearity'], 
-                          svm_gamma=config['svm_gamma'],
-                          svm_C=config['svm_C'],
-                          seed=config['seed'])
+# ============ Initialize, train and evaluate the RC model ============
+classifier =  RC_model(
+                        reservoir=None,     
+                        n_internal_units=config['n_internal_units'],
+                        spectral_radius=config['spectral_radius'],
+                        leak=config['leak'],
+                        connectivity=config['connectivity'],
+                        input_scaling=config['input_scaling'],
+                        noise_level=config['noise_level'],
+                        circle=config['circ'],
+                        n_drop=config['n_drop'],
+                        bidir=config['bidir'],
+                        dimred_method=config['dimred_method'], 
+                        n_dim=config['n_dim'],
+                        mts_rep=config['mts_rep'],
+                        w_ridge_embedding=config['w_ridge_embedding'],
+                        readout_type=config['readout_type'],            
+                        w_ridge=config['w_ridge'],              
+                        mlp_layout=config['mlp_layout'],
+                        num_epochs=config['num_epochs'],
+                        w_l2=config['w_l2'],
+                        nonlinearity=config['nonlinearity'], 
+                        svm_gamma=config['svm_gamma'],
+                        svm_C=config['svm_C']
+                        )
 
 tr_time = classifier.train(X,Y)
-print('Training time = %.2f'%tr_time)
+print('Training time = %.2f seconds'%tr_time)
 
 accuracy, f1 = classifier.test(Xte, Yte)
 print('Accuracy = %.3f, F1 = %.3f'%(accuracy, f1))

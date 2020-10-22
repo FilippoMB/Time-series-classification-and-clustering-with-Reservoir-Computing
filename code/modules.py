@@ -28,8 +28,8 @@ def compute_test_scores(pred_class, Yte):
 
     return accuracy, f1
 
-
-class RC_classifier(object):
+            
+class RC_model(object):
     
     def __init__(self,
               # reservoir
@@ -58,7 +58,6 @@ class RC_classifier(object):
               nonlinearity=None, 
               svm_gamma=1.0,
               svm_C=1.0,
-              seed=None
               ):
         """
         Build and evaluate a RC-based classifier.
@@ -66,9 +65,9 @@ class RC_classifier(object):
             - N = number of samples
             - T = number of time steps in each sample
             - V = number of variables in each sample
-        Training and test labels have shape [N,1]
+        Training and test labels have shape [N,C], with C the number of classes
         
-        Dataset parameters:
+        The dataset consists of:
             X, Y = training data and respective labels
             Xte, Yte = test data and respective labels
             
@@ -97,7 +96,8 @@ class RC_classifier(object):
             
         Readout parameters:
             readout_type = type of readout used for classification. It can be 'lin' (ridge regression), 
-                'mlp' (multiplayer perceptron) or 'svm'          
+                'mlp' (multiplayer perceptron), 'svm' (support vector machine), or None.
+                If None, the input representations will be saved instead: this is useful for clustering and visualization.
             w_ridge = regularization parameter of the ridge regression readout (only for readout_type=='lin')              
             mlp_layout = tuple with the sizes of MLP layers, e.g. (20, 10) defines a MLP with 2 layers 
                 of 20 and 10 units respectively. (only for readout_type=='mlp')
@@ -138,30 +138,32 @@ class RC_classifier(object):
         # Initialize ridge regression model
         if mts_rep=='output' or mts_rep=='reservoir':
             self._ridge_embedding = Ridge(alpha=w_ridge_embedding, fit_intercept=True)
+                        
+        # Initialize readout type            
+        if self.readout_type is not None:
             
-        # Initialize readout type                
-        if self.readout_type == 'lin': # Ridge regression
-            self.readout = Ridge(alpha=w_ridge)        
-        elif self.readout_type == 'svm': # SVM readout
-            self.readout = SVC(C=svm_C, kernel='precomputed')          
-        elif readout_type == 'mlp': # MLP (deep readout)  
-            # pass
-            self.readout = MLPClassifier(
-                hidden_layer_sizes=mlp_layout, 
-                activation=nonlinearity, 
-                alpha=w_l2,
-                batch_size=32, 
-                learning_rate='adaptive', # 'constant' or 'adaptive'
-                learning_rate_init=0.001, 
-                max_iter=num_epochs, 
-                early_stopping=False, # if True, set validation_fraction > 0
-                validation_fraction=0.0 # used for early stopping
-                )
-        else:
-            raise RuntimeError('Invalid reservoir type')  
+            if self.readout_type == 'lin': # Ridge regression
+                self.readout = Ridge(alpha=w_ridge)        
+            elif self.readout_type == 'svm': # SVM readout
+                self.readout = SVC(C=svm_C, kernel='precomputed')          
+            elif readout_type == 'mlp': # MLP (deep readout)  
+                # pass
+                self.readout = MLPClassifier(
+                    hidden_layer_sizes=mlp_layout, 
+                    activation=nonlinearity, 
+                    alpha=w_l2,
+                    batch_size=32, 
+                    learning_rate='adaptive', # 'constant' or 'adaptive'
+                    learning_rate_init=0.001, 
+                    max_iter=num_epochs, 
+                    early_stopping=False, # if True, set validation_fraction > 0
+                    validation_fraction=0.0 # used for early stopping
+                    )
+            else:
+                raise RuntimeError('Invalid readout type')  
         
         
-    def train(self, X, Y):
+    def train(self, X, Y=None):
         
         time_start = time.time()
         
@@ -217,7 +219,10 @@ class RC_classifier(object):
             raise RuntimeError('Invalid representation ID')            
             
         # ============ Apply readout ============
-        if self.readout_type == 'lin': # Ridge regression
+        if self.readout_type == None: # Just store the input representations
+            self.input_repr = input_repr
+            
+        elif self.readout_type == 'lin': # Ridge regression
             self.readout.fit(input_repr, Y)          
             
         elif self.readout_type == 'svm': # SVM readout
