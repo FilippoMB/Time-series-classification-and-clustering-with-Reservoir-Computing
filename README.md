@@ -20,10 +20,12 @@ Details on the methodology can be found in the [original paper](https://ieeexplo
 - sklearn (tested on version 0.22.1)
 - scipy
 
+The code has been tested on Python 3.7, but lower versions should work as well.
+
 **Quick execution**
 
 Run the script ```classification_example.py``` or ```clustering_example.py``` to perform a quick execution on a benchmark dataset of multivariate time series.
-The code has been tested on Python 3.7, but lower versions should work as well.
+
 For the clustering example, check also the notebook [here](https://github.com/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/code/clustering_example.ipynb).
 
 ## Configure the RC-model
@@ -130,7 +132,7 @@ A collection of univariate and multivariate time series dataset is available for
 
 ## Citation
 
-Please, cite the original paper if you are using this library in your reasearch
+Please, consider citing the original paper if you are using this library in your reasearch
 
 	@article{bianchi2020reservoir,
 	  title={Reservoir computing approaches for representation and classification of multivariate time series},
