@@ -84,7 +84,7 @@ Training and test labels (Y and Yte) must be provided in one-hot encoding format
 
 **Training**
 
-````RC_model.train````
+````RC_model.train(X, Y)````
 
 Inputs:
 
@@ -96,7 +96,7 @@ Outputs:
 
 **Test**
 
-````RC_module.test````
+````RC_module.test(Xte, Yte)````
 
 Inputs:
 
@@ -113,7 +113,7 @@ As in the case of classification, the data must be provided as multidimensional 
 
 **Training**
 
-````RC_model.train````
+````RC_model.train(X)````
 
 Inputs:
 
