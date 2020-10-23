@@ -109,7 +109,7 @@ Outputs:
 
 ## Train the RC-model for clustering
 
-As in the case of classification, the data must be provided as multidimensional NumPy arrays of shape $[N,T,V]$
+As in the case of classification, the data must be provided as multidimensional NumPy arrays of shape *[N,T,V]*
 
 **Training**
 
