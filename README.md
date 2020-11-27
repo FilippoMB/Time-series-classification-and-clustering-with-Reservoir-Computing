@@ -40,7 +40,7 @@ The available configuration hyperparameters are listed in the following and, for
 
 - n_drop - number of transient states to drop
 - bidir - use a bidirectional reservoir (True or False)
-- reservoir - precomputed reservoir (oject of class ````Reservoir```` in [reservoir.py](https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/reservoir.py); if ```None```, the following hyperparameters must be specified:
+- reservoir - precomputed reservoir (object of class ````Reservoir```` in [reservoir.py](https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/reservoir.py); if ```None```, the following hyperparameters must be specified:
     - n\_internal\_units = number of processing units in the reservoir
     - spectral_radius = largest eigenvalue of the reservoir matrix of connection weights (to guarantee the Echo State Property, set spectral\_radius <= leak <= 1)
     - leak = amount of leakage in the reservoir state update (optional, ````None```` or ````1.0```` --> no leakage)
