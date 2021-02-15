@@ -52,20 +52,20 @@ print(config)
 
 # ============ Load dataset ============
 data = scipy.io.loadmat('../dataset/'+config['dataset_name']+'.mat')
-X = data['X']  # shape is [N,T,V]
-if len(X.shape) < 3:
-    X = np.atleast_3d(X)
-Y = data['Y']  # shape is [N,1]
+Xtr = data['X']  # shape is [N,T,V]
+if len(Xtr.shape) < 3:
+    Xtr = np.atleast_3d(Xtr)
+Ytr = data['Y']  # shape is [N,1]
 Xte = data['Xte']
 if len(Xte.shape) < 3:
     Xte = np.atleast_3d(Xte)
 Yte = data['Yte']
 
-print('Loaded '+config['dataset_name']+' - Tr: '+ str(X.shape)+', Te: '+str(Xte.shape))
+print('Loaded '+config['dataset_name']+' - Tr: '+ str(Xtr.shape)+', Te: '+str(Xte.shape))
 
 # One-hot encoding for labels
 onehot_encoder = OneHotEncoder(sparse=False)
-Y = onehot_encoder.fit_transform(Y)
+Ytr = onehot_encoder.fit_transform(Ytr)
 Yte = onehot_encoder.transform(Yte)
 
 # ============ Initialize, train and evaluate the RC model ============
@@ -94,7 +94,7 @@ classifier =  RC_model(
                         svm_C=config['svm_C']
                         )
 
-tr_time = classifier.train(X,Y)
+tr_time = classifier.train(Xtr, Ytr)
 print('Training time = %.2f seconds'%tr_time)
 
 accuracy, f1 = classifier.test(Xte, Yte)
