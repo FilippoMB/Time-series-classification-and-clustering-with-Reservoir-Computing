@@ -1,3 +1,5 @@
+[![arXiv](https://img.shields.io/badge/arXiv-1803.07870-b31b1b.svg?style=flat-square)](https://arxiv.org/abs/1803.07870)
+
 # Framework overview
 
 <img src="./logs/RC_classifier.JPG" width="603.5" height="320">
@@ -5,15 +7,15 @@
 This library allows to quickly implement different architectures based on Reservoir Computing (the family of approaches popularized in machine learning by Echo State Networks) for classification or clustering of univariate/multivariate time series.
 
 Several options are available to customize the RC model, by selecting different configurations for each module.
-1. The reservoir module specifies the reservoir configuration (*e.g.*, bidirectional, leaky neurons, circle topology);
-2. The dimensionality reduction module (optionally) applies a dimensionality reduction on the produced sequence of the reservoir's states;
-3. The representation module defines how to represent the input time series from the sequence of reservoir's states;
-4. The readout module specifies the model to use to perform the final classification. 
+1. The **reservoir** module specifies the reservoir configuration (*e.g.*, bidirectional, leaky neurons, circle topology);
+2. The **dimensionality reduction** module (optionally) applies a dimensionality reduction on the produced sequence of the reservoir's states;
+3. The **representation** module defines how to represent the input time series from the sequence of reservoir's states;
+4. The **readout** module specifies the model to use to perform the final classification. 
 
 The representations obtained at step 3 can also be used to perform clustering.
 
 This library also implements the novel *reservoir model space* as representation for the time series.
-Details on the methodology can be found in the [original paper](https://ieeexplore.ieee.org/abstract/document/9127499) (Arix version [here](https://arxiv.org/abs/1803.07870)).
+Details on the methodology can be found in the [original paper](https://ieeexplore.ieee.org/abstract/document/9127499) (Arxiv version [here](https://arxiv.org/abs/1803.07870)).
 
 **Required libraries**
 
@@ -26,7 +28,7 @@ The code has been tested on Python 3.7, but lower versions should work as well.
 
 Run the script ```classification_example.py``` or ```clustering_example.py``` to perform a quick execution on a benchmark dataset of multivariate time series.
 
-For the clustering example, check also the notebook [here](https://github.com/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/code/clustering_example.ipynb).
+For a detailed example of time series clustering, check the notebook [here](https://github.com/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/code/clustering_example.ipynb).
 
 ## Configure the RC-model
 
@@ -134,13 +136,15 @@ A collection of univariate and multivariate time series dataset is available for
 
 Please, consider citing the original paper if you are using this library in your reasearch
 
-	@article{bianchi2020reservoir,
-	  title={Reservoir computing approaches for representation and classification of multivariate time series},
-	  author={Bianchi, Filippo Maria and Scardapane, Simone and L{\o}kse, Sigurd and Jenssen, Robert},
-	  journal={IEEE Transactions on Neural Networks and Learning Systems},
-	  year={2020},
-	  publisher={IEEE}
-	}
+````bibtex
+@article{bianchi2020reservoir,
+  title={Reservoir computing approaches for representation and classification of multivariate time series},
+  author={Bianchi, Filippo Maria and Scardapane, Simone and L{\o}kse, Sigurd and Jenssen, Robert},
+  journal={IEEE Transactions on Neural Networks and Learning Systems},
+  year={2020},
+  publisher={IEEE}
+}
+````
     
 
 ## Tensorflow version
