@@ -69,9 +69,9 @@ python examples/forecasting_example.py
 
 The following notebooks illustrate more advanced applications.
 
-- Perform time series cluster analysis and visualize the results: [notebook](https://nbviewer.org/github/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/clustering_visualization.ipynb).
-- Implement probabilistic time series forecasting with advanced regression models as readout: [notebook](https://nbviewer.org/github/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/prediction_with_GBRT.ipynb).
-- Use advanced classifiers as readout: [notebook](https://nbviewer.org/github/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/advanced_classifiers.ipynb).
+- Perform time series cluster analysis and visualize the results: [notebook](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/clustering_visualization.ipynb).
+- Implement probabilistic time series forecasting with advanced regression models as readout: [notebook](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/prediction_with_GBRT.ipynb).
+- Use advanced classifiers as readout: [notebook](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/advanced_classifiers.ipynb).
 
 ## Configure the RC-model
 
