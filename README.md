@@ -2,8 +2,7 @@
 
 # Framework overview
 
-<img src="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/raw/master/docs/source/_static/img/RC_classifier.JPG
-" width="603.5" height="320">
+<img src="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/raw/master/docs/source/_static/img/RC_classifier.JPG" width="603.5" height="320">
 
 This library allows to quickly implement different architectures for time series data based on *Reservoir Computing (RC)*, the family of approaches popularized in machine learning by Echo State Networks.
 This library is primarly design to perform **classification** and **clustering** of both univariate and multivariate time series. However, it can also be used to perform time series **forecasting**. 
