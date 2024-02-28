@@ -2,13 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name="reservoir_computing",
-    version="0.31",
+    version="0.32",
     packages=find_packages(),
     python_requires='>=3.9',
     install_requires=[
         'numpy>1.19.5',
         'scikit_learn>=1.4',
-        'scipy'
+        'scipy',
+        'requests'
     ],
     author="Filippo Maria Bianchi",
     author_email="filippombianchi@gmail.com",

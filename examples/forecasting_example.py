@@ -2,7 +2,6 @@ import requests
 from io import BytesIO
 import pprint
 import scipy
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import mean_squared_error
 
