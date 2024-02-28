@@ -104,6 +104,29 @@ class Reservoir(object):
 
 
     def get_states(self, X, n_drop=0, bidir=True):
+        """
+        Compute reservoir states and return them.
+
+        Parameters:
+        ----------
+        X = array
+            Time series, 3D array of shape (N,T,V), where N is the number of time series,
+            T is the length of each time series, and V is the number of variables in each
+            time point.
+        n_drop = int
+            Washout period, i.e., number of initial samples to drop
+            due to the transient phase.
+        bidir = bool
+            If True, use bidirectional reservoir
+
+        Returns:
+        -------
+        states = array
+            Reservoir states, 3D array of shape (N,T,n_internal_units), where N is the number
+            of time series, T is the length of each time series, and n_internal_units is the
+            number of processing units in the reservoir.
+        """
+
         N, T, V = X.shape
         if self._input_weights is None:
             self._input_weights = (2.0*np.random.binomial(1, 0.5 , [self._n_internal_units, V]) - 1.0)*self._input_scaling

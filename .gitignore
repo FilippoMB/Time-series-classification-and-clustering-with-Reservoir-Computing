@@ -1,2 +1,6 @@
 *.pyc
 *checkpoint.ipynb
+
+build/*
+dist/*
+reservoir_computing.egg-info/*

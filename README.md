@@ -2,33 +2,68 @@
 
 # Framework overview
 
-<img src="./logs/RC_classifier.JPG" width="603.5" height="320">
+<img src="docs/source/_static/img/RC_classifier.JPG" width="603.5" height="320">
 
-This library allows to quickly implement different architectures based on Reservoir Computing (the family of approaches popularized in machine learning by Echo State Networks) for classification or clustering of univariate/multivariate time series.
+This library allows to quickly implement different architectures for time series data based on *Reservoir Computing (RC)*, the family of approaches popularized in machine learning by Echo State Networks.
+This library is primarly design to perform **classification** and **clustering** of both univariate and multivariate time series. However, it can also be used to perform time series **forecasting**. 
 
+### Classification
 Several options are available to customize the RC model, by selecting different configurations for each module.
-1. The **reservoir** module specifies the reservoir configuration (*e.g.*, bidirectional, leaky neurons, circle topology);
-2. The **dimensionality reduction** module (optionally) applies a dimensionality reduction on the produced sequence of the reservoir's states;
-3. The **representation** module defines how to represent the input time series from the sequence of reservoir's states;
-4. The **readout** module specifies the model to use to perform the final classification. 
+1. The **reservoir** module specifies the reservoir configuration (*e.g.*, bidirectional, leaky neurons, circle topology). Given a multivariate time series $\mathbf{X}$ it generates a sequence of the same length of Reservoir states $\mathbf{H}$.
+2. The **dimensionality reduction** module (optionally) applies a dimensionality reduction on the  sequence of the reservoir's states $\mathbf{H}$ generating a new sequence $\mathbf{\bar H}$.
+3. The **representation** generates a vector $\mathbf{r}_\mathbf{X}$ from the sequence of reservoir's states, which represents in vector form the original time series $\mathbf{X}$.
+4. The **readout** module is a classifier that maps the representation $\mathbf{r}_\mathbf{X}$ into the class label $\mathbf{y}$, associated with the time series $\mathbf{X}$. 
 
-The representations obtained at step 3 can also be used to perform clustering.
+This library implements the *reservoir model space* a very powerful representation $\mathbf{r}_\mathbf{X}$ for the time series.
+Details about the methodology are found in the [original paper](https://arxiv.org/abs/1803.07870).
 
-This library also implements the novel *reservoir model space* as representation for the time series.
-Details on the methodology can be found in the [original paper](https://ieeexplore.ieee.org/abstract/document/9127499) (Arxiv version [here](https://arxiv.org/abs/1803.07870)).
+### Forecasting
+The sequences $\mathbf{H}$ and $\mathbf{\bar H}$ obtained at steps 1 and 2 can be directly used to forecast the future values of the time series.
 
-**Required libraries**
+### Clustering
+The representation $\mathbf{r}_\mathbf{X}$ obtained at step 3 can be used to perform time series clustering.
 
-- sklearn (tested on version 0.22.1)
-- scipy
+## Installation
 
-The code has been tested on Python 3.7, but lower versions should work as well.
+The recommended installation is with pip:
 
-**Quick execution**
+````bash
+pip install reservoir-computing
+````
 
-Run the script ```classification_example.py``` or ```clustering_example.py``` to perform a quick execution on a benchmark dataset of multivariate time series.
+Alternatively, you can install the library from source:
+````bash
+git clone https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing.git
+cd Time-series-classification-and-clustering-with-Reservoir-Computing
+pip install -e .
+````
 
-For a detailed example of time series clustering, check the notebook [here](https://github.com/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/code/clustering_example.ipynb).
+## Quick start
+
+The following scripts can be run from the root of this project. They provide minimalistic examples that illustrate how to use the library for different tasks.
+
+**Classification**
+
+````bash
+python examples/classification_example.py
+````
+
+**Clustering**
+
+````bash
+python examples/clustering_example.py
+````
+
+**Forecasting**
+
+````bash
+python examples/forecasting_example.py
+````
+
+The following notebooks illustrate more advanced applications.
+
+- Perform time series clusteri analysis and visualize the results: [notebook](https://github.com/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/clustering_visualization.ipynb).
+- Implement probabilistic time series forecasting with advanced regression models as readout: [notebook](https://github.com/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/prediction_with_GBRT.ipynb).
 
 ## Configure the RC-model
 
@@ -74,7 +109,7 @@ The available configuration hyperparameters are listed in the following and, for
 - svm\_gamma = bandwith of the RBF kernel (only when readout_type is ````'svm'````)
 - svm\_C = regularization for the SVM hyperplane (only when readout_type is ````'svm'````)
 
-## Train and test the RC-model for classification
+## RC-model for classification
 
 The training and test function requires in input training and test data, which must be provided as multidimensional NumPy arrays of shape *[N,T,V]*, with:
 
@@ -86,53 +121,99 @@ Training and test labels (Y and Yte) must be provided in one-hot encoding format
 
 **Training**
 
-````RC_model.train(X, Y)````
+````python
+from reservoir_computing.modules import RC_model
+clf = RC_model()
+clf.fit(Xtr, Ytr)
+````
 
 Inputs:
 
-- X, Y: training data and respective labels
+- `Xtr`, `Ytr`: training data and labels.
 
 Outputs:
 
-- tr\_time: time (in seconds) used to train the classifier
+- None
 
-**Test**
+**Prediction of new samples**
 
-````RC_module.test(Xte, Yte)````
+````python
+Yhat = clf.predict(Xte)
+````
 
 Inputs:
 
-- Xte, Yte: test data and respective labels
+- `Xte`: test data.
 
 Outputs:
 
-- accuracy, F1 score: metrics achieved on the test data
+- `Yhat`: prediction of the labels for the test data.
 
 
-## Train the RC-model for clustering
+## RC-model for clustering
 
 As in the case of classification, the data must be provided as multidimensional NumPy arrays of shape *[N,T,V]*
 
 **Training**
 
-````RC_model.train(X)````
+````python
+from reservoir_computing.modules import RC_model
+clst = RC_model(readout_type=None)
+clst.fit(X)
+rX = clst.input_repr # representations of the input data
+````
 
 Inputs:
 
-- X: time series data
+- `X`: time series data
 
 Outputs:
 
-- tr\_time: time (in seconds) used to generate the representations
+- None
 
-Additionally, the representations of the input data X are stored in the attribute ````RC_model.input_repr````
-
-## Time series datasets
-
-A collection of univariate and multivariate time series dataset is available for download [here](https://mega.nz/#!aZkBwYDa!JZb99GQoUn4EoJYceCK3Ihe04hhYZYuIWn018gcQM8k). The dataset are provided both in MATLAB and Python (Numpy) format. Original raw data come from [UCI](https://archive.ics.uci.edu/ml/index.php), [UEA](https://www.groundai.com/project/the-uea-multivariate-time-series-classification-archive-2018/), and [UCR](https://www.cs.ucr.edu/~eamonn/time_series_data/) public repositories.
+The representations `rX` can be used to perfrom clustering using traditional clustering algorithms for vectorial data, such as those [here](https://scikit-learn.org/stable/modules/clustering.html).
 
 
-## Citation
+## RC-model for forecasting
+
+**Training**
+
+````python
+from reservoir_computing.modules import RC_forecaster
+fcst = RC_forecaster()
+fcst.fit(Xtr, Ytr)
+````
+
+Inputs:
+
+- `Xtr`, `Ytr`: current and future values used for training.
+
+Outputs:
+
+- None
+
+**Predicting new data**
+
+````python
+Yhat = fcst.predict(Xte)
+````
+
+Inputs:
+
+- `Xte`: test data.
+
+Outputs:
+
+- `Yhat`: forecast of the test data.
+
+# Time series datasets for classification and clustering
+
+- A collection of univariate and multivariate time series dataset is available for download [here](https://mega.nz/#!aZkBwYDa!JZb99GQoUn4EoJYceCK3Ihe04hhYZYuIWn018gcQM8k). 
+- The dataset are provided both in MATLAB and Python (Numpy) format. 
+- The original raw data come from [UCI](https://archive.ics.uci.edu/ml/index.php), [UEA](https://www.groundai.com/project/the-uea-multivariate-time-series-classification-archive-2018/), and [UCR](https://www.cs.ucr.edu/~eamonn/time_series_data/) public repositories.
+
+
+# Citation
 
 Please, consider citing the original paper if you are using this library in your reasearch
 
@@ -146,10 +227,5 @@ Please, consider citing the original paper if you are using this library in your
 }
 ````
     
-
-## Tensorflow version
-In the latest version of the repository there is no longer a dependency from Tensorflow, reducing the dependecies of this repository only to scipy and scikit-learn.
-The MLP readout is now based on the scikit-learn implementation that, however, does not support dropout and the two custom activation functions, Maxout and Kafnets. These functionalities are still available in the branch "Tensorflow". Checkout it to use the Tensorflow version of this repository.
-
-## License
+# License
 The code is released under the MIT License. See the attached LICENSE file.

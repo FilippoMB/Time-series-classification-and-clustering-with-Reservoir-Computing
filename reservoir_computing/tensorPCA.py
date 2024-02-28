@@ -1,26 +1,31 @@
-"""
-Compute PCA on a dataset of multivariate time series represented as 3-dimensional tensor
-and reduces the size along the third dimension:
-    [N, T, V] --> [N, T, D]
-with D <= V.
-The input dataset must be a 3-dimensional tensor with shapes
-- N: number of observations
-- T: number of time steps in the time series
-- V: number of variables in the time series
-
-"""
-
 import numpy as np
 import numpy.linalg as linalg
 
 class tensorPCA:
-    
+    """
+    Compute PCA on a dataset of multivariate time series represented as 3-dimensional tensor
+    and reduces the size along the third dimension:
+        [N, T, V] --> [N, T, D]
+    with D <= V.
+    The input dataset must be a 3-dimensional tensor with shapes
+        - N: number of observations
+        - T: number of time steps in the time series
+        - V: number of variables in the time series
+    """
     def __init__(self, n_components):
         self.n_components=n_components
         self.first_eigs = None
         
-    def fit(self, X): # X has shape [N,T,V]
+    def fit(self, X):
+        """
+        Fit the tensorPCA model to the input dataset X.
         
+        Parameters:
+        ----------
+        X = array
+            Time series, 3D array of shape (N,T,V), where N is the number of time series,
+            T is the length of each time series, and V is the number of variables in each
+        """
         if len(X.shape) is not 3:
             raise RuntimeError('Input must be a 3d tensor')
         
@@ -36,7 +41,6 @@ class tensorPCA:
         eigenVectors = eigenVectors[:,idx]
         
         self.first_eigs = eigenVectors[:,:self.n_components]
-        
         
     def transform(self, X):
         return np.einsum('klj,ji->kli',X,self.first_eigs)

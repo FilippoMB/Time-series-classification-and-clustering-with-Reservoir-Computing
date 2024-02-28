@@ -1,17 +1,17 @@
-# General imports
+import requests
+from io import BytesIO
+import pprint
 import numpy as np
 import scipy.io
 from sklearn.preprocessing import OneHotEncoder
 
-# Custom imports
-from modules import RC_model
+from reservoir_computing.modules import RC_model
+from reservoir_computing.utils import compute_test_scores
+
+np.random.seed(0) # Fix the seed for reproducibility
 
 # ============ RC model configuration and hyperparameter values ============
 config = {}
-config['dataset_name'] = 'JpVow'
-
-config['seed'] = 1
-np.random.seed(config['seed'])
 
 # Hyperarameters of the reservoir
 config['n_internal_units'] = 450        # size of the reservoir
@@ -25,7 +25,7 @@ config['bidir'] = True                  # if True, use bidirectional reservoir
 config['circ'] = False                  # use reservoir with circle topology
 
 # Dimensionality reduction hyperparameters
-config['dimred_method'] ='tenpca'       # options: {None (no dimensionality reduction), 'pca', 'tenpca'}
+config['dimred_method'] = 'tenpca'      # options: {None (no dimensionality reduction), 'pca', 'tenpca'}
 config['n_dim'] = 75                    # number of resulting dimensions after the dimensionality reduction procedure
 
 # Type of MTS representation
@@ -48,10 +48,14 @@ config['num_epochs'] = 2000             # number of epochs
 config['w_l2'] = 0.001                  # weight of the L2 regularization
 config['nonlinearity'] = 'relu'         # type of activation function {'relu', 'tanh', 'logistic', 'identity'}
 
-print(config)
+pprint.pprint(config)
 
-# ============ Load dataset ============
-data = scipy.io.loadmat('../dataset/'+config['dataset_name']+'.mat')
+# ============ Load dataset =================
+data_url = 'https://raw.githubusercontent.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/master/dataset/JpVow.mat'
+response = requests.get(data_url)
+response.raise_for_status()
+data = scipy.io.loadmat(BytesIO(response.content))
+
 Xtr = data['X']  # shape is [N,T,V]
 if len(Xtr.shape) < 3:
     Xtr = np.atleast_3d(Xtr)
@@ -61,41 +65,41 @@ if len(Xte.shape) < 3:
     Xte = np.atleast_3d(Xte)
 Yte = data['Yte']
 
-print('Loaded '+config['dataset_name']+' - Tr: '+ str(Xtr.shape)+', Te: '+str(Xte.shape))
+print(f"Loaded data from {data_url}\nData shapes:\n Tr: {Xtr.shape}\n Te: {Xte.shape}")
 
 # One-hot encoding for labels
-onehot_encoder = OneHotEncoder(sparse=False)
+onehot_encoder = OneHotEncoder(sparse_output=False)
 Ytr = onehot_encoder.fit_transform(Ytr)
 Yte = onehot_encoder.transform(Yte)
 
 # ============ Initialize, train and evaluate the RC model ============
-classifier =  RC_model(
-                        reservoir=None,     
-                        n_internal_units=config['n_internal_units'],
-                        spectral_radius=config['spectral_radius'],
-                        leak=config['leak'],
-                        connectivity=config['connectivity'],
-                        input_scaling=config['input_scaling'],
-                        noise_level=config['noise_level'],
-                        circle=config['circ'],
-                        n_drop=config['n_drop'],
-                        bidir=config['bidir'],
-                        dimred_method=config['dimred_method'], 
-                        n_dim=config['n_dim'],
-                        mts_rep=config['mts_rep'],
-                        w_ridge_embedding=config['w_ridge_embedding'],
-                        readout_type=config['readout_type'],            
-                        w_ridge=config['w_ridge'],              
-                        mlp_layout=config['mlp_layout'],
-                        num_epochs=config['num_epochs'],
-                        w_l2=config['w_l2'],
-                        nonlinearity=config['nonlinearity'], 
-                        svm_gamma=config['svm_gamma'],
-                        svm_C=config['svm_C']
-                        )
+classifier =  RC_model(reservoir=None,     
+                       n_internal_units=config['n_internal_units'],
+                       spectral_radius=config['spectral_radius'],
+                       leak=config['leak'],
+                       connectivity=config['connectivity'],
+                       input_scaling=config['input_scaling'],
+                       noise_level=config['noise_level'],
+                       circle=config['circ'],
+                       n_drop=config['n_drop'],
+                       bidir=config['bidir'],
+                       dimred_method=config['dimred_method'], 
+                       n_dim=config['n_dim'],
+                       mts_rep=config['mts_rep'],
+                       w_ridge_embedding=config['w_ridge_embedding'],
+                       readout_type=config['readout_type'],            
+                       w_ridge=config['w_ridge'],              
+                       mlp_layout=config['mlp_layout'],
+                       num_epochs=config['num_epochs'],
+                       w_l2=config['w_l2'],
+                       nonlinearity=config['nonlinearity'], 
+                       svm_gamma=config['svm_gamma'],
+                       svm_C=config['svm_C'])
 
-tr_time = classifier.train(Xtr, Ytr)
-print('Training time = %.2f seconds'%tr_time)
+# Train the model
+tr_time = classifier.fit(Xtr, Ytr) 
 
-accuracy, f1 = classifier.test(Xte, Yte)
-print('Accuracy = %.3f, F1 = %.3f'%(accuracy, f1))
+# Compute predictions on test data
+pred_class = classifier.predict(Xte) 
+accuracy, f1 = compute_test_scores(pred_class, Yte)
+print(f"Accuracy = {accuracy:.3f}, F1 = {f1:.3f}")
