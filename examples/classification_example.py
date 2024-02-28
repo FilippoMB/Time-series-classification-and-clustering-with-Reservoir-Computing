@@ -34,19 +34,7 @@ config['w_ridge_embedding'] = 10.0      # regularization parameter of the ridge 
 
 # Type of readout
 config['readout_type'] = 'lin'          # readout used for classification: {'lin', 'mlp', 'svm'}
-
-# Linear readout hyperparameters
 config['w_ridge'] = 5.0                 # regularization of the ridge regression readout
-
-# SVM readout hyperparameters
-config['svm_gamma'] = 0.005             # bandwith of the RBF kernel
-config['svm_C'] = 5.0                   # regularization for SVM hyperplane
-
-# MLP readout hyperparameters
-config['mlp_layout'] = (10,10)          # neurons in each MLP layer
-config['num_epochs'] = 2000             # number of epochs 
-config['w_l2'] = 0.001                  # weight of the L2 regularization
-config['nonlinearity'] = 'relu'         # type of activation function {'relu', 'tanh', 'logistic', 'identity'}
 
 pprint.pprint(config)
 
@@ -88,13 +76,7 @@ classifier =  RC_model(reservoir=None,
                        mts_rep=config['mts_rep'],
                        w_ridge_embedding=config['w_ridge_embedding'],
                        readout_type=config['readout_type'],            
-                       w_ridge=config['w_ridge'],              
-                       mlp_layout=config['mlp_layout'],
-                       num_epochs=config['num_epochs'],
-                       w_l2=config['w_l2'],
-                       nonlinearity=config['nonlinearity'], 
-                       svm_gamma=config['svm_gamma'],
-                       svm_C=config['svm_C'])
+                       w_ridge=config['w_ridge'])
 
 # Train the model
 tr_time = classifier.fit(Xtr, Ytr) 

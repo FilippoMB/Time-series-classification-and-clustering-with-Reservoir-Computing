@@ -40,7 +40,14 @@ pip install -e .
 
 ## Quick start
 
-The following scripts can be run from the root of this project. They provide minimalistic examples that illustrate how to use the library for different tasks.
+The following scripts provide minimalistic examples that illustrate how to use the library for different tasks.
+
+To run them, download the project and cd to the root folder:
+
+````bash
+git clone https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing.git
+cd Time-series-classification-and-clustering-with-Reservoir-Computing
+````
 
 **Classification**
 
@@ -62,8 +69,9 @@ python examples/forecasting_example.py
 
 The following notebooks illustrate more advanced applications.
 
-- Perform time series clusteri analysis and visualize the results: [notebook](https://github.com/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/clustering_visualization.ipynb).
-- Implement probabilistic time series forecasting with advanced regression models as readout: [notebook](https://github.com/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/prediction_with_GBRT.ipynb).
+- Perform time series cluster analysis and visualize the results: [notebook](https://nbviewer.org/github/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/clustering_visualization.ipynb).
+- Implement probabilistic time series forecasting with advanced regression models as readout: [notebook](https://nbviewer.org/github/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/prediction_with_GBRT.ipynb).
+- Use advanced classifiers as readout: [notebook](https://nbviewer.org/github/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification/blob/master/notebooks/advanced_classifiers.ipynb).
 
 ## Configure the RC-model
 
