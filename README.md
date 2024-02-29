@@ -17,11 +17,11 @@ Several options are available to customize the RC model, by selecting different 
 This library implements the *reservoir model space* a very powerful representation $\mathbf{r}_\mathbf{X}$ for the time series.
 Details about the methodology are found in the [original paper](https://arxiv.org/abs/1803.07870).
 
-### Forecasting
-The sequences $\mathbf{H}$ and $\mathbf{\bar H}$ obtained at steps 1 and 2 can be directly used to forecast the future values of the time series.
-
 ### Clustering
 The representation $\mathbf{r}_\mathbf{X}$ obtained at step 3 can be used to perform time series clustering.
+
+### Forecasting
+The sequences $\mathbf{H}$ and $\mathbf{\bar H}$ obtained at steps 1 and 2 can be directly used to forecast the future values of the time series.
 
 ## Installation
 
@@ -67,11 +67,11 @@ python examples/clustering_example.py
 python examples/forecasting_example.py
 ````
 
-The following notebooks illustrate more advanced applications.
+The following notebooks illustrate more advanced use-cases.
 
-- Perform time series cluster analysis and visualize the results: [notebook](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/clustering_visualization.ipynb).
-- Implement probabilistic time series forecasting with advanced regression models as readout: [notebook](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/prediction_with_GBRT.ipynb).
-- Use advanced classifiers as readout: [notebook](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/advanced_classifiers.ipynb).
+- Perform time series cluster analysis and visualize the results: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/clustering_visualization.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1_BahDTpTB8dEHARJtCLNe0JxVT8WAXuD?usp=sharing)
+- Implement probabilistic time series forecasting with advanced regression models as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/prediction_with_GBRT.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1wxIRcX_y7572x6WeezfWfJiTurVsc2aW?usp=sharing)
+- Use advanced classifiers as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/advanced_classifiers.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1PnH_lffbE1nfghYwPa2j0H2_4mgtRwQo?usp=sharing)
 
 ## Configure the RC-model
 
