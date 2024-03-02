@@ -1,4 +1,5 @@
-[![arXiv](https://img.shields.io/badge/arXiv-1803.07870-b31b1b.svg?style=flat-square)](https://arxiv.org/abs/1803.07870)
+[![arXiv](https://img.shields.io/badge/arXiv-1803.07870-b31b1b.svg)](https://arxiv.org/abs/1803.07870)
+[![Downloads](https://static.pepy.tech/badge/reservoir-computing)](https://pepy.tech/project/reservoir-computing)
 
 # Framework overview
 

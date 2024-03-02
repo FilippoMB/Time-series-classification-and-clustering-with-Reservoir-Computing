@@ -1,24 +1,39 @@
 import numpy as np
 from scipy import sparse
 
-class Reservoir(object):
-    """
-    Build a reservoir and evaluate internal states
-    
-    Parameters:
-        n_internal_units = processing units in the reservoir
-        spectral_radius = largest eigenvalue of the reservoir matrix of connection weights
-        leak = amount of leakage in the reservoir state update (optional)
-        connectivity = percentage of nonzero connection weights (unused in circle reservoir)
-        input_scaling = scaling of the input connection weights
-        noise_level = deviation of the Gaussian noise injected in the state update
-        circle = generate determinisitc reservoir with circle topology
-    """
-    
-    def __init__(self, n_internal_units=100, spectral_radius=0.99, leak=None,
-                 connectivity=0.3, input_scaling=0.2, noise_level=0.01, circle=False):
+class Reservoir(object):    
+    def __init__(self, 
+                 n_internal_units=100, 
+                 spectral_radius=0.99, 
+                 leak=None,
+                 connectivity=0.3, 
+                 input_scaling=0.2, 
+                 noise_level=0.0, 
+                 circle=False):
+        """
+        Build a reservoir and compute the sequence of the internal states.
         
-        # Initialize attributes
+        Parameters:
+        ----------
+        n_internal_units = int (default 100)
+            Processing units in the reservoir.
+        spectral_radius = float (default 0.99)
+            Largest eigenvalue of the reservoir matrix of connection weights.
+        leak = float (default None)
+            Amount of leakage in the reservoir state update. 
+            If None or 1.0, no leakage is used.
+        connectivity = float (default 0.3)
+            Percentage of nonzero connection weights.
+            Unused in circle reservoir.
+        input_scaling = float (default 0.2)
+            Scaling of the input connection weights.
+        noise_level = float (default 0.0)
+            Standard deviation of the Gaussian noise injected in the state update.
+        circle = bool (default False)
+            Generate determinisitc reservoir with circle topology.
+        """
+        
+        # Initialize hyperparameters
         self._n_internal_units = n_internal_units
         self._input_scaling = input_scaling
         self._noise_level = noise_level
@@ -74,9 +89,10 @@ class Reservoir(object):
         return internal_weights
 
 
-    def _compute_state_matrix(self, X, n_drop=0):
+    def _compute_state_matrix(self, X, n_drop=0, previous_state=None):
         N, T, _ = X.shape
-        previous_state = np.zeros((N, self._n_internal_units), dtype=float)
+        if previous_state is None:
+            previous_state = np.zeros((N, self._n_internal_units), dtype=float)
 
         # Storage
         state_matrix = np.empty((N, T - n_drop, self._n_internal_units), dtype=float)
@@ -103,7 +119,7 @@ class Reservoir(object):
         return state_matrix
 
 
-    def get_states(self, X, n_drop=0, bidir=True):
+    def get_states(self, X, n_drop=0, bidir=True, initial_state=None):
         """
         Compute reservoir states and return them.
 
@@ -113,11 +129,14 @@ class Reservoir(object):
             Time series, 3D array of shape (N,T,V), where N is the number of time series,
             T is the length of each time series, and V is the number of variables in each
             time point.
-        n_drop = int
+        n_drop = int (default is 0)
             Washout period, i.e., number of initial samples to drop
             due to the transient phase.
-        bidir = bool
+        bidir = bool (default is True)
             If True, use bidirectional reservoir
+        initial_state = array (default is None)
+            Initialize the first state of the reservoir to the given value.
+            If None, the initial states is a zero-vector. 
 
         Returns:
         -------
@@ -131,10 +150,10 @@ class Reservoir(object):
         if self._input_weights is None:
             self._input_weights = (2.0*np.random.binomial(1, 0.5 , [self._n_internal_units, V]) - 1.0)*self._input_scaling
 
-        # compute sequence of reservoir states
-        states = self._compute_state_matrix(X, n_drop)
+        # Compute sequence of reservoir states
+        states = self._compute_state_matrix(X, n_drop, previous_state=initial_state)
     
-        # reservoir states on time reversed input
+        # Reservoir states on time reversed input
         if bidir is True:
             X_r = X[:, ::-1, :]
             states_r = self._compute_state_matrix(X_r, n_drop)
