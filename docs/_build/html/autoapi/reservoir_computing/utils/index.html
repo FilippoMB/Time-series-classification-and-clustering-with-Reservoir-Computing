@@ -117,8 +117,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pred_class</strong> (<em>array</em>) – Predicted class labels</p></li>
-<li><p><strong>Yte</strong> (<em>array</em>) – True class labels</p></li>
+<li><p><strong>pred_class</strong> (<em>np.ndarray</em>) – Predicted class labels</p></li>
+<li><p><strong>Yte</strong> (<em>np.ndarray</em>) – True class labels</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -134,14 +134,16 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="reservoir_computing.utils.forecasting_datasets">
 <span class="sig-prename descclassname"><span class="pre">reservoir_computing.utils.</span></span><span class="sig-name descname"><span class="pre">forecasting_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/utils.html#forecasting_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.utils.forecasting_datasets" title="Link to this definition"></a></dt>
-<dd><p>This function does the following:
-1. Splits the dataset in training, validation and test sets
-2. Shift the target data by ‘horizon’ to create the forecasting problem
-3. Normalizes the data</p>
+<dd><p>This function does the following:</p>
+<ol class="arabic simple">
+<li><p>Splits the dataset in training, validation and test sets</p></li>
+<li><p>Shift the target data by ‘horizon’ to create the forecasting problem</p></li>
+<li><p>Normalizes the data</p></li>
+</ol>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>array</em>) – Input data</p></li>
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data</p></li>
 <li><p><strong>horizon</strong> (<em>int</em>) – Forecasting horizon</p></li>
 <li><p><strong>test_percent</strong> (<em>float</em>) – Percentage of the data to be used for testing</p></li>
 <li><p><strong>val_percent</strong> (<em>float</em>) – Percentage of the data to be used for validation
@@ -152,13 +154,13 @@ If None, a StandardScaler is created</p></li>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>Xtr</strong> (<em>array</em>) – Training input data</p></li>
-<li><p><strong>Ytr</strong> (<em>array</em>) – Training target data</p></li>
-<li><p><strong>Xte</strong> (<em>array</em>) – Test input data</p></li>
-<li><p><strong>Yte</strong> (<em>array</em>) – Test target data</p></li>
+<li><p><strong>Xtr</strong> (<em>np.ndarray</em>) – Training input data</p></li>
+<li><p><strong>Ytr</strong> (<em>np.ndarray</em>) – Training target data</p></li>
+<li><p><strong>Xte</strong> (<em>np.ndarray</em>) – Test input data</p></li>
+<li><p><strong>Yte</strong> (<em>np.ndarray</em>) – Test target data</p></li>
 <li><p><strong>scaler</strong> (<em>a scaler object from sklearn.preprocessing</em>) – Scaler object used to normalize the data</p></li>
-<li><p><strong>Xval</strong> (<em>array (optional)</em>) – Validation input data</p></li>
-<li><p><strong>Yval</strong> (<em>array (optional)</em>) – Validation target data</p></li>
+<li><p><strong>Xval</strong> (<em>np.ndarray (optional)</em>) – Validation input data</p></li>
+<li><p><strong>Yval</strong> (<em>np.ndarray (optional)</em>) – Validation target data</p></li>
 </ul>
 </p>
 </dd>

@@ -136,8 +136,6 @@
                 <span class="n">spectral_radius</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Reservoir._initialize_internal_weights_Circ">
-<a class="viewcode-back" href="../../autoapi/reservoir_computing/reservoir/index.html#reservoir_computing.reservoir.Reservoir._initialize_internal_weights_Circ">[docs]</a>
     <span class="k">def</span> <span class="nf">_initialize_internal_weights_Circ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_internal_units</span><span class="p">,</span> <span class="n">spectral_radius</span><span class="p">):</span>
         
         <span class="c1"># Construct reservoir with circular topology</span>
@@ -151,12 +149,9 @@
         <span class="n">e_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
         <span class="n">internal_weights</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e_max</span><span class="p">)</span><span class="o">/</span><span class="n">spectral_radius</span> 
                 
-        <span class="k">return</span> <span class="n">internal_weights</span></div>
-
+        <span class="k">return</span> <span class="n">internal_weights</span>
     
     
-<div class="viewcode-block" id="Reservoir._initialize_internal_weights">
-<a class="viewcode-back" href="../../autoapi/reservoir_computing/reservoir/index.html#reservoir_computing.reservoir.Reservoir._initialize_internal_weights">[docs]</a>
     <span class="k">def</span> <span class="nf">_initialize_internal_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_internal_units</span><span class="p">,</span>
                                      <span class="n">connectivity</span><span class="p">,</span> <span class="n">spectral_radius</span><span class="p">):</span>
 
@@ -173,12 +168,9 @@
         <span class="n">e_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
         <span class="n">internal_weights</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e_max</span><span class="p">)</span><span class="o">/</span><span class="n">spectral_radius</span>       
 
-        <span class="k">return</span> <span class="n">internal_weights</span></div>
+        <span class="k">return</span> <span class="n">internal_weights</span>
 
 
-
-<div class="viewcode-block" id="Reservoir._compute_state_matrix">
-<a class="viewcode-back" href="../../autoapi/reservoir_computing/reservoir/index.html#reservoir_computing.reservoir.Reservoir._compute_state_matrix">[docs]</a>
     <span class="k">def</span> <span class="nf">_compute_state_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">n_drop</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">previous_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
         <span class="k">if</span> <span class="n">previous_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -206,8 +198,7 @@
             <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="n">n_drop</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">state_matrix</span><span class="p">[:,</span> <span class="n">t</span> <span class="o">-</span> <span class="n">n_drop</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">previous_state</span>
 
-        <span class="k">return</span> <span class="n">state_matrix</span></div>
-
+        <span class="k">return</span> <span class="n">state_matrix</span>
 
 
 <div class="viewcode-block" id="Reservoir.get_states">

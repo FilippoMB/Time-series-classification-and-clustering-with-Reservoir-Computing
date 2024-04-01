@@ -8,9 +8,9 @@ def compute_test_scores(pred_class, Yte):
 
     Parameters
     ----------
-    pred_class : array
+    pred_class : np.ndarray
         Predicted class labels
-    Yte : array
+    Yte : np.ndarray
         True class labels
 
     Returns
@@ -37,15 +37,16 @@ def forecasting_datasets(X,
                          test_percent = 0.15, 
                          val_percent = 0.0, 
                          scaler = None):
-    """
+    r"""
     This function does the following:
+
     1. Splits the dataset in training, validation and test sets
     2. Shift the target data by 'horizon' to create the forecasting problem
     3. Normalizes the data
 
     Parameters
     ----------
-    X : array
+    X : np.ndarray
         Input data
     horizon : int
         Forecasting horizon
@@ -60,19 +61,19 @@ def forecasting_datasets(X,
 
     Returns
     -------
-    Xtr : array
+    Xtr : np.ndarray
         Training input data
-    Ytr : array
+    Ytr : np.ndarray
         Training target data
-    Xte : array 
+    Xte : np.ndarray 
         Test input data
-    Yte : array
+    Yte : np.ndarray
         Test target data
     scaler : a scaler object from sklearn.preprocessing
         Scaler object used to normalize the data
-    Xval : array (optional)
+    Xval : np.ndarray (optional)
         Validation input data
-    Yval : array (optional)
+    Yval : np.ndarray (optional)
         Validation target data
     """
     n_data, _ = X.shape

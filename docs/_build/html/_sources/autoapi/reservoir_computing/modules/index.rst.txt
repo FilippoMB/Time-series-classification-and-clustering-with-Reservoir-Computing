@@ -25,65 +25,64 @@ Classes
 
    Build and evaluate a RC-based model for time series classification or clustering.
 
-   The training and test Multivariate Time Series (MTS) are multidimensional arrays of shape [N,T,V], where N is the number of samples, T is the number of time steps in each sample, V is the number of variables in each sample.
+   The training and test Multivariate Time Series (MTS) are multidimensional arrays of shape ``[N,T,V]``, where ``N`` is the number of samples, ``T`` is the number of time steps in each sample, ``V`` is the number of variables in each sample.
 
-   Training and test labels have shape [N,C], with C being the number of classes.
+   Training and test labels have shape ``[N,C]``, with ``C`` being the number of classes.
 
-   The dataset consists of training data and respective labels (X, Y) and test data and respective labels (Xte, Yte).
+   The dataset consists of training data and respective labels ``(X, Y)`` and test data and respective labels ``(Xte, Yte)``.
 
    **Reservoir parameters:**
 
-   :param reservoir: Precomputed reservoir (object of class 'Reservoir'). If None, the following structural hyperparameters must be specified.
-   :param n_internal_units: Processing units in the reservoir.
-   :param spectral_radius: Largest eigenvalue of the reservoir matrix of connection weights.
-   :param leak: Amount of leakage in the reservoir state update (optional).
-   :param connectivity: Percentage of nonzero connection weights.
-   :param input_scaling: Scaling of the input connection weights.
-   :param noise_level: Deviation of the Gaussian noise injected in the state update.
-   :param n_drop: Number of transient states to drop.
-   :param bidir: Use a bidirectional reservoir (True or False).
+   :param reservoir (object of class ``Reservoir``): Precomputed reservoir. If ``None``, the following structural hyperparameters must be specified.
+   :param n_internal_units (int): Processing units in the reservoir.
+   :param spectral_radius (float): Largest eigenvalue of the reservoir matrix of connection weights.
+   :param leak (float): Amount of leakage in the reservoir state update (optional).
+   :param connectivity (float): Percentage of nonzero connection weights.
+   :param input_scaling (float): Scaling of the input connection weights.
+   :param noise_level (float): Deviation of the Gaussian noise injected in the state update.
+   :param n_drop (int): Number of transient states to drop.
+   :param bidir (bool): Use a bidirectional reservoir (``True``) or a standard one (``False``).
 
    **Dimensionality reduction parameters:**
 
-   :param dimred_method: Procedure for reducing the number of features in the sequence of reservoir states. Possible options are: None (no dimensionality reduction), 'pca', or 'tenpca'.
-   :param n_dim: Number of resulting dimensions after the dimensionality reduction procedure.
+   :param dimred_method (str): Procedure for reducing the number of features in the sequence of reservoir states. Possible options are: ``None`` (no dimensionality reduction), ``'pca'``, or ``'tenpca'`` (TensorPCA).
+   :param n_dim (int): Number of resulting dimensions after the dimensionality reduction procedure.
 
    **Representation parameters:**
 
-   :param mts_rep: Type of MTS representation. It can be 'last' (last state), 'output' (output model space), or 'reservoir' (reservoir model space).
-   :param w_ridge_embedding: Regularization parameter of the ridge regression in the output model space and reservoir model space representation; ignored if mts_rep == None.
+   :param mts_rep (str): Type of MTS representation. It can be ``'last'`` (last state), ``'output'`` (output model space), or ``'reservoir'`` (reservoir model space).
+   :param w_ridge_embedding (float): Regularization parameter of the ridge regression in the output model space and reservoir model space representation; ignored if ``mts_rep == None``.
 
    **Readout parameters:**
 
-   :param readout_type: Type of readout used for classification. It can be 'lin' (ridge regression), 'mlp' (multiplayer perceptron), 'svm' (support vector machine), or None. If None, the input representations will be saved instead: this is useful for clustering and visualization.
-   :param w_ridge: Regularization parameter of the ridge regression readout (only for readout_type=='lin').
-   :param mlp_layout: Tuple with the sizes of MLP layers, e.g., (20, 10) defines a MLP with 2 layers of 20 and 10 units respectively (only for readout_type=='mlp').
-   :param num_epochs: Number of iterations during the optimization (only for readout_type=='mlp').
-   :param w_l2: Weight of the L2 regularization (only for readout_type=='mlp').
-   :param nonlinearity: Type of activation function {'relu', 'tanh', 'logistic', 'identity'} (only for readout_type=='mlp').
-   :param svm_gamma: Bandwidth of the RBF kernel (only for readout_type=='svm').
-   :param svm_C: Regularization for SVM hyperplane (only for readout_type=='svm').
-
+   :param readout_type (str): Type of readout used for classification. It can be ``'lin'`` (ridge regression), ``'mlp'`` (multiplayer perceptron), ``'svm'`` (support vector machine), or ``None``. If ``None``, the input representations will be saved instead: this is useful for clustering and visualization.
+   :param w_ridge (float): Regularization parameter of the ridge regression readout (only for ``readout_type=='lin'``).
+   :param mlp_layout (tuple): Tuple with the sizes of MLP layers, e.g., ``(20, 10)`` defines a MLP with 2 layers of 20 and 10 units respectively (only for ``readout_type=='mlp'``).
+   :param num_epochs (int): Number of iterations during the optimization (only for ``readout_type=='mlp'``).
+   :param w_l2 (float): Weight of the L2 regularization (only for ``readout_type=='mlp'``).
+   :param nonlinearity (str): Type of activation function ``{'relu', 'tanh', 'logistic', 'identity'}`` (only for ``readout_type=='mlp'``).
+   :param svm_gamma (float): Bandwidth of the RBF kernel (only for ``readout_type=='svm'``).
+   :param svm_C (float): Regularization for SVM hyperplane (only for ``readout_type=='svm'``).
 
    .. py:method:: fit(X, Y=None, verbose=True)
 
       Train the RC model.
 
-      :param X: Training data.
-      :type X: array-like, shape [N, T, V]
-      :param Y: Target values.
-      :type Y: array-like, shape [N, C]
+      :param X: Array of of shape ``[N, T, V]`` representin the training data.
+      :type X: np.ndarray
+      :param Y: Array of shape ``[N, C]`` representing the target values.
+      :type Y: np.ndarray
 
 
    .. py:method:: predict(Xte)
 
       Computes predictions for out-of-sample (test) data.
 
-      :param Xte: Test data.
-      :type Xte: array-like, shape [N, T, V]
+      :param Xte: Array of shape ``[N, T, V]`` representing the test data.
+      :type Xte: np.ndarray
 
-      :returns: **pred_class** -- Predicted classes.
-      :rtype: array, shape [N]
+      :returns: **pred_class** -- Array of shape ``[N]`` representing the predicted classes.
+      :rtype: np.ndarray
 
 
 
@@ -94,55 +93,58 @@ Classes
 
    Class to perform time series forecasting with RC.
 
-   The training and test data are multidimensional arrays of shape [T,V], with
-   - T = number of time steps in each sample,
-   - V = number of variables in each sample.
+   The training and test data are multidimensional arrays of shape ``[T,V]``, with
 
-   Given a time series X, the training data are supposed to be as follows:
-   Xtr, Ytr = X[0:-forecast_horizon,:], X[forecast_horizon:,:]
+   - ``T`` = number of time steps in each sample,
+   - ``V`` = number of variables in each sample.
 
-   Once trained, the model can be used to compute prediction forecast_horizon steps ahead:
-   Yhat[t,:] = Xte[t+forecast_horizon,:]
+   Given a time series ``X``, the training data are supposed to be as follows:
+
+       ``Xtr, Ytr = X[0:-forecast_horizon,:], X[forecast_horizon:,:]``
+
+   Once trained, the model can be used to compute prediction ``forecast_horizon`` steps ahead:
+
+           ``Yhat[t,:] = Xte[t+forecast_horizon,:]``
 
    **Reservoir parameters:**
 
-   :param reservoir: Precomputed reservoir (object of class 'Reservoir'); if None, the following structural hyperparameters must be specified.
-   :param n_internal_units: Processing units in the reservoir.
-   :param spectral_radius: Largest eigenvalue of the reservoir matrix of connection weights.
-   :param leak: Amount of leakage in the reservoir state update (optional).
-   :param connectivity: Percentage of nonzero connection weights.
-   :param input_scaling: Scaling of the input connection weights.
-   :param noise_level: Deviation of the Gaussian noise injected in the state update.
-   :param n_drop: Number of transient states to drop.
+   :param reservoir (object of class ``Reservoir``);: Precomputed reservoir. If ``None``, the following structural hyperparameters must be specified.
+   :param n_internal_units (int): Processing units in the reservoir.
+   :param spectral_radius (float): Largest eigenvalue of the reservoir matrix of connection weights.
+   :param leak (float): Amount of leakage in the reservoir state update (optional).
+   :param connectivity (float): Percentage of nonzero connection weights.
+   :param input_scaling (float): Scaling of the input connection weights.
+   :param noise_level (float): Deviation of the Gaussian noise injected in the state update.
+   :param n_drop (int): Number of transient states to drop.
 
    **Dimensionality reduction parameters:**
 
-   :param dimred_method: Procedure for reducing the number of features in the sequence of reservoir states; possible options are: None (no dimensionality reduction) or 'pca'.
-   :param n_dim: Number of resulting dimensions after the dimensionality reduction procedure.
+   :param dimred_method (str): Procedure for reducing the number of features in the sequence of reservoir states; possible options are: ``None`` (no dimensionality reduction) or ``'pca'``.
+   :param n_dim (int): Number of resulting dimensions after the dimensionality reduction procedure.
 
    **Readout parameters:**
 
-   :param w_ridge: Regularization parameter of the ridge regression readout (only for readout_type=='lin').
+   :param w_ridge (float): Regularization parameter of the ridge regression readout (only for ``readout_type=='lin'``).
 
    .. py:method:: fit(X, Y, verbose=True)
 
       Train the RC model for forecasting.
 
-      :param X: Training data.
-      :type X: array-like, shape [T, V]
-      :param Y: Target values.
-      :type Y: array-like, shape [T, V]
+      :param X: Array of shape ``[T, V]`` representing the training data.
+      :type X: np.ndarray
+      :param Y: Array of shape ``[T, V]`` representing the target values.
+      :type Y: np.ndarray
 
 
    .. py:method:: predict(Xte)
 
-      Compute predictions for test data.
+      Computes predictions for out-of-sample (test) data.
 
-      :param Xte: Test data.
-      :type Xte: array-like, shape [T, V]
+      :param Xte: Array of shape ``[T, V]`` representing the test data.
+      :type Xte: np.ndarray
 
-      :returns: **Yhat** -- Predicted values.
-      :rtype: array, shape [T, V]
+      :returns: **Yhat** -- Array of shape ``[T, V]`` representing the predicted values.
+      :rtype: np.ndarray
 
 
 

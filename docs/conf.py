@@ -22,7 +22,6 @@ extensions = [
     "sphinx.ext.viewcode",
 #    "sphinx.ext.mathjax",
 ]
-autoapi_dirs = ["../reservoir_computing"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -36,10 +35,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 #
 html_theme = "sphinx_rtd_theme"
 
-#mathjax_path = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 
-nb_execution_mode = "off" # Do not execute the notebooks included in the doc
-
+# -- Options for myst-nb ------------------------------------------------------
 # See more options for configuring myst_nb here: https://myst-nb.readthedocs.io/en/latest/authoring/jupyter-notebooks.html#configuration
 myst_enable_extensions = [
     "amsmath",
@@ -49,26 +46,18 @@ myst_enable_extensions = [
 ]
 myst_url_schemes = ("http", "https", "mailto")
 
-# def skip(app, what, name, obj, skip, options):
-#     if name == "_initialize_internal_weights_Circ":
-#         return True
-#     return None  # Otherwise, let Sphinx handle it.
+nb_execution_mode = "off" # Do not execute the notebooks included in the doc
 
-# def setup(app):
-#     app.connect("autodoc-skip-member", skip)
 
-# autodoc_default_options = {
-#     'exclude-members': '__weakref__',
-#     'private-members': False,  # Exclude private members
-#     'special-members': '__init__',
-#     'undoc-members': True,
-#     'show-inheritance': True,
-# }
+# --- AutoAPI options --------------------------------------------------------
+autoapi_dirs = ["../reservoir_computing"]
 
-def skip_private_members(app, what, name, obj, skip, options):
-    if name.startswith("_"):
-        return True  # Skip private members
-    return None  # Otherwise, let Sphinx decide
-
-def setup(app):
-    app.connect("autodoc-skip-member", skip_private_members)
+autoapi_options = [
+    'members',
+    'undoc-members',
+    # 'private-members',  # Disable generating doc for private members (starting with _)
+    'special-members',
+    'show-inheritance',
+    'show-module-summary',
+    'imported-members',
+]

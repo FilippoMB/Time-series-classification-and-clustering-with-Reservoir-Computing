@@ -23,9 +23,9 @@ Functions
    Wrapper to compute classification accuracy and F1 score
 
    :param pred_class: Predicted class labels
-   :type pred_class: array
+   :type pred_class: np.ndarray
    :param Yte: True class labels
-   :type Yte: array
+   :type Yte: np.ndarray
 
    :returns: * **accuracy** (*float*) -- Classification accuracy
              * **f1** (*float*) -- F1 score
@@ -34,12 +34,13 @@ Functions
 .. py:function:: forecasting_datasets(X, horizon, test_percent=0.15, val_percent=0.0, scaler=None)
 
    This function does the following:
+
    1. Splits the dataset in training, validation and test sets
    2. Shift the target data by 'horizon' to create the forecasting problem
    3. Normalizes the data
 
    :param X: Input data
-   :type X: array
+   :type X: np.ndarray
    :param horizon: Forecasting horizon
    :type horizon: int
    :param test_percent: Percentage of the data to be used for testing
@@ -51,12 +52,12 @@ Functions
                   If None, a StandardScaler is created
    :type scaler: a scaler object from sklearn.preprocessing
 
-   :returns: * **Xtr** (*array*) -- Training input data
-             * **Ytr** (*array*) -- Training target data
-             * **Xte** (*array*) -- Test input data
-             * **Yte** (*array*) -- Test target data
+   :returns: * **Xtr** (*np.ndarray*) -- Training input data
+             * **Ytr** (*np.ndarray*) -- Training target data
+             * **Xte** (*np.ndarray*) -- Test input data
+             * **Yte** (*np.ndarray*) -- Test target data
              * **scaler** (*a scaler object from sklearn.preprocessing*) -- Scaler object used to normalize the data
-             * **Xval** (*array (optional)*) -- Validation input data
-             * **Yval** (*array (optional)*) -- Validation target data
+             * **Xval** (*np.ndarray (optional)*) -- Validation input data
+             * **Yval** (*np.ndarray (optional)*) -- Validation target data
 
 

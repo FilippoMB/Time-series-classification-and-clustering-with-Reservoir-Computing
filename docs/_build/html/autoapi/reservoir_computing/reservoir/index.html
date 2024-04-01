@@ -103,7 +103,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.reservoir.Reservoir" title="reservoir_computing.reservoir.Reservoir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Reservoir</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Build a reservoir and compute the sequence of the internal states.</p></td>
 </tr>
 </tbody>
 </table>
@@ -111,56 +111,60 @@
 <dt class="sig sig-object py" id="reservoir_computing.reservoir.Reservoir">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reservoir_computing.reservoir.</span></span><span class="sig-name descname"><span class="pre">Reservoir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_internal_units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.99</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_scaling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/reservoir.html#Reservoir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.reservoir.Reservoir" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="reservoir_computing.reservoir.Reservoir._initialize_internal_weights_Circ">
-<span class="sig-name descname"><span class="pre">_initialize_internal_weights_Circ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_internal_units</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/reservoir.html#Reservoir._initialize_internal_weights_Circ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.reservoir.Reservoir._initialize_internal_weights_Circ" title="Link to this definition"></a></dt>
-<dd><p>Generate internal weights with circular topology.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="reservoir_computing.reservoir.Reservoir._initialize_internal_weights">
-<span class="sig-name descname"><span class="pre">_initialize_internal_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_internal_units</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/reservoir.html#Reservoir._initialize_internal_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.reservoir.Reservoir._initialize_internal_weights" title="Link to this definition"></a></dt>
-<dd><p>Generate internal weights with a sparse, uniformly random topology.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="reservoir_computing.reservoir.Reservoir._compute_state_matrix">
-<span class="sig-name descname"><span class="pre">_compute_state_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">previous_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/reservoir.html#Reservoir._compute_state_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.reservoir.Reservoir._compute_state_matrix" title="Link to this definition"></a></dt>
-<dd><p>Compute the reservoir states on input data X.</p>
-</dd></dl>
-
+<p>Build a reservoir and compute the sequence of the internal states.</p>
+<section id="parameters">
+<h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
+<dl>
+<dt>n_internal_units<span class="classifier">int (default <code class="docutils literal notranslate"><span class="pre">100</span></code>)</span></dt><dd><p>Processing units in the reservoir.</p>
+</dd>
+<dt>spectral_radius<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.99</span></code>)</span></dt><dd><p>Largest eigenvalue of the reservoir matrix of connection weights.</p>
+</dd>
+<dt>leak<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</span></dt><dd><p>Amount of leakage in the reservoir state update.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">1.0</span></code>, no leakage is used.</p>
+</dd>
+<dt>connectivity<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.3</span></code>)</span></dt><dd><p>Percentage of nonzero connection weights.
+Unused in circle reservoir.</p>
+</dd>
+<dt>input_scaling<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.2</span></code>)</span></dt><dd><p>Scaling of the input connection weights.</p>
+</dd>
+<dt>noise_level<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.0</span></code>)</span></dt><dd><p>Standard deviation of the Gaussian noise injected in the state update.</p>
+</dd>
+<dt>circle<span class="classifier">bool (default <code class="docutils literal notranslate"><span class="pre">False</span></code>)</span></dt><dd><p>Generate determinisitc reservoir with circle topology.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="reservoir_computing.reservoir.Reservoir.get_states">
 <span class="sig-name descname"><span class="pre">get_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/reservoir.html#Reservoir.get_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.reservoir.Reservoir.get_states" title="Link to this definition"></a></dt>
 <dd><p>Compute reservoir states and return them.</p>
-<section id="parameters">
-<h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
-<dl class="simple">
-<dt>X = array</dt><dd><p>Time series, 3D array of shape (N,T,V), where N is the number of time series,
-T is the length of each time series, and V is the number of variables in each
+<section id="id1">
+<h5>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<dl>
+<dt>X<span class="classifier">np.ndarray</span></dt><dd><p>Time series, 3D array of shape <code class="docutils literal notranslate"><span class="pre">[N,T,V]</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of time series,
+<code class="docutils literal notranslate"><span class="pre">T</span></code> is the length of each time series, and <code class="docutils literal notranslate"><span class="pre">V</span></code> is the number of variables in each
 time point.</p>
 </dd>
-<dt>n_drop = int (default is 0)</dt><dd><p>Washout period, i.e., number of initial samples to drop
+<dt>n_drop<span class="classifier">int (default is <code class="docutils literal notranslate"><span class="pre">0</span></code>)</span></dt><dd><p>Washout period, i.e., number of initial samples to drop
 due to the transient phase.</p>
 </dd>
-<dt>bidir = bool (default is True)</dt><dd><p>If True, use bidirectional reservoir</p>
+<dt>bidir<span class="classifier">bool (default is <code class="docutils literal notranslate"><span class="pre">True</span></code>)</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use bidirectional reservoir</p>
 </dd>
-<dt>initial_state = array (default is None)</dt><dd><p>Initialize the first state of the reservoir to the given value.
-If None, the initial states is a zero-vector.</p>
+<dt>initial_state<span class="classifier">np.ndarray (default is <code class="docutils literal notranslate"><span class="pre">None</span></code>)</span></dt><dd><p>Initialize the first state of the reservoir to the given value.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the initial states is a zero-vector.</p>
 </dd>
 </dl>
 </section>
 <section id="returns">
-<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<h5>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h5>
 <dl class="simple">
-<dt>states = array</dt><dd><p>Reservoir states, 3D array of shape (N,T,n_internal_units), where N is the number
-of time series, T is the length of each time series, and n_internal_units is the
+<dt>states<span class="classifier">np.ndarray</span></dt><dd><p>Reservoir states, 3D array of shape <code class="docutils literal notranslate"><span class="pre">[N,T,n_internal_units]</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number
+of time series, <code class="docutils literal notranslate"><span class="pre">T</span></code> is the length of each time series, and <code class="docutils literal notranslate"><span class="pre">n_internal_units</span></code> is the
 number of processing units in the reservoir.</p>
 </dd>
 </dl>
 </section>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>

@@ -103,22 +103,33 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.tensorPCA.tensorPCA" title="reservoir_computing.tensorPCA.tensorPCA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensorPCA</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Compute PCA on a dataset of multivariate time series represented as a 3-dimensional tensor</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="reservoir_computing.tensorPCA.tensorPCA">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reservoir_computing.tensorPCA.</span></span><span class="sig-name descname"><span class="pre">tensorPCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/tensorPCA.html#tensorPCA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.tensorPCA.tensorPCA" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Compute PCA on a dataset of multivariate time series represented as a 3-dimensional tensor
+and reduce the size along the third dimension from <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">T,</span> <span class="pre">V]</span></code> to <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">T,</span> <span class="pre">D]</span></code>, where <code class="docutils literal notranslate"><span class="pre">D</span> <span class="pre">&lt;=</span> <span class="pre">V</span></code> .</p>
+<p>The input dataset must be a 3-dimensional tensor, where the first dimension <code class="docutils literal notranslate"><span class="pre">N</span></code> represents
+the number of observations, the second dimension <code class="docutils literal notranslate"><span class="pre">T</span></code> represents the number of time steps
+in the time series, and the third dimension <code class="docutils literal notranslate"><span class="pre">V</span></code> represents the number of variables in the time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n_components</strong> (<em>int</em>) – The number of principal components to keep after the dimensionality reduction. This
+determines the size of the third dimension <code class="docutils literal notranslate"><span class="pre">D</span></code> in the output tensor.</p>
+</dd>
+</dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="reservoir_computing.tensorPCA.tensorPCA.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/tensorPCA.html#tensorPCA.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.tensorPCA.tensorPCA.fit" title="Link to this definition"></a></dt>
-<dd><p>Fit the tensorPCA model to the input dataset X.</p>
+<dd><p>Fit the tensorPCA model to the input dataset <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
 <section id="parameters">
 <h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
 <dl class="simple">
-<dt>X = array</dt><dd><p>Time series, 3D array of shape (N,T,V), where N is the number of time series,
-T is the length of each time series, and V is the number of variables in each.</p>
+<dt>X<span class="classifier">np.ndarray</span></dt><dd><p>Time series, 3D array of shape <code class="docutils literal notranslate"><span class="pre">[N,T,V]</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of time series,
+<code class="docutils literal notranslate"><span class="pre">T</span></code> is the length of each time series, and <code class="docutils literal notranslate"><span class="pre">V</span></code> is the number of variables in each.</p>
 </dd>
 </dl>
 </section>
@@ -127,12 +138,46 @@ T is the length of each time series, and V is the number of variables in each.</
 <dl class="py method">
 <dt class="sig sig-object py" id="reservoir_computing.tensorPCA.tensorPCA.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/tensorPCA.html#tensorPCA.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.tensorPCA.tensorPCA.transform" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Transform the input dataset X using the tensorPCA model.</p>
+<section id="id1">
+<h4>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">np.ndarray</span></dt><dd><p>Time series, 3D array of shape <code class="docutils literal notranslate"><span class="pre">[N,T,V]</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of time series,
+<code class="docutils literal notranslate"><span class="pre">T</span></code> is the length of each time series, and <code class="docutils literal notranslate"><span class="pre">V</span></code> is the number of variables in each.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xpca<span class="classifier">np.ndarray</span></dt><dd><p>Transformed time series, 3D array of shape <code class="docutils literal notranslate"><span class="pre">[N,T,D]</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of time series,
+<code class="docutils literal notranslate"><span class="pre">T</span></code> is the length of each time series, and <code class="docutils literal notranslate"><span class="pre">D</span></code> is the number of principal components.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="reservoir_computing.tensorPCA.tensorPCA.fit_transform">
 <span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/tensorPCA.html#tensorPCA.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.tensorPCA.tensorPCA.fit_transform" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Fit the tensorPCA model to the input dataset <code class="docutils literal notranslate"><span class="pre">X</span></code> and transform it.</p>
+<section id="id2">
+<h4>Parameters:<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">np.ndarray</span></dt><dd><p>Time series, 3D array of shape <code class="docutils literal notranslate"><span class="pre">[N,T,V]</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of time series,
+<code class="docutils literal notranslate"><span class="pre">T</span></code> is the length of each time series, and <code class="docutils literal notranslate"><span class="pre">V</span></code> is the number of variables in each.</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h4>Returns:<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xpca<span class="classifier">np.ndarray</span></dt><dd><p>Transformed time series, 3D array of shape <code class="docutils literal notranslate"><span class="pre">[N,T,D]</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of time series,
+<code class="docutils literal notranslate"><span class="pre">T</span></code> is the length of each time series, and <code class="docutils literal notranslate"><span class="pre">D</span></code> is the number of principal components.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 </dd></dl>
 

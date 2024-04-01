@@ -20,21 +20,60 @@ Classes
 .. py:class:: tensorPCA(n_components)
 
 
+   Compute PCA on a dataset of multivariate time series represented as a 3-dimensional tensor
+   and reduce the size along the third dimension from ``[N, T, V]`` to ``[N, T, D]``, where ``D <= V`` .
+
+   The input dataset must be a 3-dimensional tensor, where the first dimension ``N`` represents
+   the number of observations, the second dimension ``T`` represents the number of time steps
+   in the time series, and the third dimension ``V`` represents the number of variables in the time series.
+
+   :param n_components: The number of principal components to keep after the dimensionality reduction. This
+                        determines the size of the third dimension ``D`` in the output tensor.
+   :type n_components: int
+
    .. py:method:: fit(X)
 
-      Fit the tensorPCA model to the input dataset X.
+      Fit the tensorPCA model to the input dataset ``X``.
 
       Parameters:
       ------------
-      X = array
-          Time series, 3D array of shape (N,T,V), where N is the number of time series,
-          T is the length of each time series, and V is the number of variables in each.
+      X : np.ndarray
+          Time series, 3D array of shape ``[N,T,V]``, where ``N`` is the number of time series,
+          ``T`` is the length of each time series, and ``V`` is the number of variables in each.
 
 
    .. py:method:: transform(X)
 
+      Transform the input dataset X using the tensorPCA model.
+
+      Parameters:
+      ------------
+      X : np.ndarray
+          Time series, 3D array of shape ``[N,T,V]``, where ``N`` is the number of time series,
+          ``T`` is the length of each time series, and ``V`` is the number of variables in each.
+
+      Returns:
+      ------------
+      Xpca : np.ndarray
+          Transformed time series, 3D array of shape ``[N,T,D]``, where ``N`` is the number of time series,
+          ``T`` is the length of each time series, and ``D`` is the number of principal components.
+
 
    .. py:method:: fit_transform(X)
+
+      Fit the tensorPCA model to the input dataset ``X`` and transform it.
+
+      Parameters:
+      ------------
+      X : np.ndarray
+          Time series, 3D array of shape ``[N,T,V]``, where ``N`` is the number of time series,
+          ``T`` is the length of each time series, and ``V`` is the number of variables in each.
+
+      Returns:
+      ------------
+      Xpca : np.ndarray
+          Transformed time series, 3D array of shape ``[N,T,D]``, where ``N`` is the number of time series,
+          ``T`` is the length of each time series, and ``D`` is the number of principal components.
 
 
 
