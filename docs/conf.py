@@ -20,6 +20,7 @@ extensions = [
     "autoapi.extension",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+#    "sphinx.ext.mathjax",
 ]
 autoapi_dirs = ["../reservoir_computing"]
 
@@ -34,6 +35,19 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+
+#mathjax_path = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+
+nb_execution_mode = "off" # Do not execute the notebooks included in the doc
+
+# See more options for configuring myst_nb here: https://myst-nb.readthedocs.io/en/latest/authoring/jupyter-notebooks.html#configuration
+myst_enable_extensions = [
+    "amsmath",
+    "deflist",
+    "dollarmath",
+#    "html_image",
+]
+myst_url_schemes = ("http", "https", "mailto")
 
 # def skip(app, what, name, obj, skip, options):
 #     if name == "_initialize_internal_weights_Circ":
@@ -52,9 +66,9 @@ html_theme = "sphinx_rtd_theme"
 # }
 
 def skip_private_members(app, what, name, obj, skip, options):
-    if name.startswith('_'):
+    if name.startswith("_"):
         return True  # Skip private members
     return None  # Otherwise, let Sphinx decide
 
 def setup(app):
-    app.connect('autodoc-skip-member', skip_private_members)
+    app.connect("autodoc-skip-member", skip_private_members)

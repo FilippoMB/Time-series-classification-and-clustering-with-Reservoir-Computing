@@ -20,6 +20,8 @@
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -80,7 +82,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Probabilistic forecasting with GBRT</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/examples/prediction_with_GBRT.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/prediction_with_GBRT.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -88,7 +90,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="probabilistic-forecasting-with-gbrt">
+  <section class="tex2jax_ignore mathjax_ignore" id="probabilistic-forecasting-with-gbrt">
 <h1>Probabilistic forecasting with GBRT<a class="headerlink" href="#probabilistic-forecasting-with-gbrt" title="Link to this heading"></a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
@@ -258,7 +260,7 @@ Yte:  [[33 34 35]]
 <ul class="simple">
 <li><p>We are now ready to train the readout to predict the desired output given the sequence of (reduced) Reservoir states.</p></li>
 <li><p>We start by using a linear readout implemented by a Ridge regressor.</p></li>
-<li><p>After the readout is trained, we use it to compute the predictions $\hat{Y}_\text{te}$ of the test data.</p></li>
+<li><p>After the readout is trained, we use it to compute the predictions <span class="math notranslate nohighlight">\(\hat{Y}_\text{te}\)</span> of the test data.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
