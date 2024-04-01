@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Framework overview &mdash; reservoir_computing  documentation</title>
+  <title>Time series classification and clustering with Reservoir Computing &mdash; reservoir_computing  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -69,7 +69,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Framework overview</li>
+      <li class="breadcrumb-item active">Time series classification and clustering with Reservoir Computing</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -79,12 +79,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <p><a class="reference external" href="https://arxiv.org/abs/1803.07870"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-1803.07870-b31b1b.svg" /></a>
+  <section id="time-series-classification-and-clustering-with-reservoir-computing">
+<h1>Time series classification and clustering with Reservoir Computing<a class="headerlink" href="#time-series-classification-and-clustering-with-reservoir-computing" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://arxiv.org/abs/1803.07870"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-1803.07870-b31b1b.svg" /></a>
 <a class="reference external" href="https://pepy.tech/project/reservoir-computing"><img alt="Downloads" src="https://static.pepy.tech/badge/reservoir-computing" /></a></p>
-<section id="framework-overview">
-<h1>Framework overview<a class="headerlink" href="#framework-overview" title="Link to this heading"></a></h1>
 <p align="center">
-<img src="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/raw/master/docs/source/_static/img/RC_classifier.JPG" width="603.5" height="320">
+<img src="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/raw/master/docs/RC_classifier.png" style="width: 22cm">
 <p>This library allows to quickly implement different architectures for time series data based on <em>Reservoir Computing (RC)</em>, the family of approaches popularized in machine learning by Echo State Networks.
 This library is primarly design to perform <strong>classification</strong> and <strong>clustering</strong> of both univariate and multivariate time series. However, it can also be used to perform time series <strong>forecasting</strong>.</p>
 <section id="classification">
@@ -143,9 +143,9 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </div>
 <p>The following notebooks illustrate more advanced use-cases.</p>
 <ul class="simple">
-<li><p>Perform dimensionality reduction, cluster analysis, and visualize the results: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/clustering_visualization.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1_BahDTpTB8dEHARJtCLNe0JxVT8WAXuD?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
-<li><p>Probabilistic forecasting with advanced regression models as readout: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/prediction_with_GBRT.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1wxIRcX_y7572x6WeezfWfJiTurVsc2aW?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
-<li><p>Use advanced classifiers as readout: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/advanced_classifiers.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1PnH_lffbE1nfghYwPa2j0H2_4mgtRwQo?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
+<li><p>Perform dimensionality reduction, cluster analysis, and visualize the results: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/docs/examples/clustering_visualization.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1_BahDTpTB8dEHARJtCLNe0JxVT8WAXuD?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
+<li><p>Probabilistic forecasting with advanced regression models as readout: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/docs/examples/prediction_with_GBRT.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1wxIRcX_y7572x6WeezfWfJiTurVsc2aW?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
+<li><p>Use advanced classifiers as readout: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/docs/examples/prediction_with_GBRT.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1PnH_lffbE1nfghYwPa2j0H2_4mgtRwQo?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
 </ul>
 </section>
 <section id="configure-the-rc-model">
