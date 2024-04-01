@@ -122,15 +122,15 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Reservoir</strong><strong>)</strong> (<em>reservoir</em><em> (</em><em>object</em><em> of </em><em>class</em>) – Precomputed reservoir. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the following structural hyperparameters must be specified.</p></li>
-<li><p><strong>(</strong><strong>int</strong><strong>)</strong> (<em>n_drop</em>) – Processing units in the reservoir.</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> (<em>noise_level</em>) – Largest eigenvalue of the reservoir matrix of connection weights.</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Amount of leakage in the reservoir state update (optional).</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Percentage of nonzero connection weights.</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Scaling of the input connection weights.</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Deviation of the Gaussian noise injected in the state update.</p></li>
-<li><p><strong>(</strong><strong>int</strong><strong>)</strong> – Number of transient states to drop.</p></li>
-<li><p><strong>(</strong><strong>bool</strong><strong>)</strong> (<em>bidir</em>) – Use a bidirectional reservoir (<code class="docutils literal notranslate"><span class="pre">True</span></code>) or a standard one (<code class="docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
+<li><p><strong>reservoir</strong> – (object of class <code class="docutils literal notranslate"><span class="pre">Reservoir</span></code>) Precomputed reservoir. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the following structural hyperparameters must be specified.</p></li>
+<li><p><strong>n_internal_units</strong> – (int) Processing units in the reservoir.</p></li>
+<li><p><strong>spectral_radius</strong> – (float) Largest eigenvalue of the reservoir matrix of connection weights.</p></li>
+<li><p><strong>leak</strong> – (float) Amount of leakage in the reservoir state update (optional).</p></li>
+<li><p><strong>connectivity</strong> – (float) Percentage of nonzero connection weights.</p></li>
+<li><p><strong>input_scaling</strong> – (float) Scaling of the input connection weights.</p></li>
+<li><p><strong>noise_level</strong> – (float) Deviation of the Gaussian noise injected in the state update.</p></li>
+<li><p><strong>n_drop</strong> – (int) Number of transient states to drop.</p></li>
+<li><p><strong>bidir</strong> – (bool) Use a bidirectional reservoir (<code class="docutils literal notranslate"><span class="pre">True</span></code>) or a standard one (<code class="docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 </ul>
 </dd>
 </dl>
@@ -138,8 +138,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>dimred_method</em>) – Procedure for reducing the number of features in the sequence of reservoir states. Possible options are: <code class="docutils literal notranslate"><span class="pre">None</span></code> (no dimensionality reduction), <code class="docutils literal notranslate"><span class="pre">'pca'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'tenpca'</span></code> (TensorPCA).</p></li>
-<li><p><strong>(</strong><strong>int</strong><strong>)</strong> (<em>n_dim</em>) – Number of resulting dimensions after the dimensionality reduction procedure.</p></li>
+<li><p><strong>dimred_method</strong> – (str) Procedure for reducing the number of features in the sequence of reservoir states. Possible options are: <code class="docutils literal notranslate"><span class="pre">None</span></code> (no dimensionality reduction), <code class="docutils literal notranslate"><span class="pre">'pca'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'tenpca'</span></code> (TensorPCA).</p></li>
+<li><p><strong>n_dim</strong> – (int) Number of resulting dimensions after the dimensionality reduction procedure.</p></li>
 </ul>
 </dd>
 </dl>
@@ -147,8 +147,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>mts_rep</em>) – Type of MTS representation. It can be <code class="docutils literal notranslate"><span class="pre">'last'</span></code> (last state), <code class="docutils literal notranslate"><span class="pre">'output'</span></code> (output model space), or <code class="docutils literal notranslate"><span class="pre">'reservoir'</span></code> (reservoir model space).</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> (<em>w_ridge_embedding</em>) – Regularization parameter of the ridge regression in the output model space and reservoir model space representation; ignored if <code class="docutils literal notranslate"><span class="pre">mts_rep</span> <span class="pre">==</span> <span class="pre">None</span></code>.</p></li>
+<li><p><strong>mts_rep</strong> – (str) Type of MTS representation. It can be <code class="docutils literal notranslate"><span class="pre">'last'</span></code> (last state), <code class="docutils literal notranslate"><span class="pre">'output'</span></code> (output model space), or <code class="docutils literal notranslate"><span class="pre">'reservoir'</span></code> (reservoir model space).</p></li>
+<li><p><strong>w_ridge_embedding</strong> – (float) Regularization parameter of the ridge regression in the output model space and reservoir model space representation; ignored if <code class="docutils literal notranslate"><span class="pre">mts_rep</span> <span class="pre">==</span> <span class="pre">None</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -156,14 +156,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>nonlinearity</em>) – Type of readout used for classification. It can be <code class="docutils literal notranslate"><span class="pre">'lin'</span></code> (ridge regression), <code class="docutils literal notranslate"><span class="pre">'mlp'</span></code> (multiplayer perceptron), <code class="docutils literal notranslate"><span class="pre">'svm'</span></code> (support vector machine), or <code class="docutils literal notranslate"><span class="pre">None</span></code>. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the input representations will be saved instead: this is useful for clustering and visualization.</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> (<em>svm_C</em>) – Regularization parameter of the ridge regression readout (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='lin'</span></code>).</p></li>
-<li><p><strong>(</strong><strong>tuple</strong><strong>)</strong> (<em>mlp_layout</em>) – Tuple with the sizes of MLP layers, e.g., <code class="docutils literal notranslate"><span class="pre">(20,</span> <span class="pre">10)</span></code> defines a MLP with 2 layers of 20 and 10 units respectively (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='mlp'</span></code>).</p></li>
-<li><p><strong>(</strong><strong>int</strong><strong>)</strong> (<em>num_epochs</em>) – Number of iterations during the optimization (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='mlp'</span></code>).</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Weight of the L2 regularization (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='mlp'</span></code>).</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – Type of activation function <code class="docutils literal notranslate"><span class="pre">{'relu',</span> <span class="pre">'tanh',</span> <span class="pre">'logistic',</span> <span class="pre">'identity'}</span></code> (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='mlp'</span></code>).</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Bandwidth of the RBF kernel (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='svm'</span></code>).</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Regularization for SVM hyperplane (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='svm'</span></code>).</p></li>
+<li><p><strong>readout_type</strong> – (str) Type of readout used for classification. It can be <code class="docutils literal notranslate"><span class="pre">'lin'</span></code> (ridge regression), <code class="docutils literal notranslate"><span class="pre">'mlp'</span></code> (multiplayer perceptron), <code class="docutils literal notranslate"><span class="pre">'svm'</span></code> (support vector machine), or <code class="docutils literal notranslate"><span class="pre">None</span></code>. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the input representations will be saved instead: this is useful for clustering and visualization.</p></li>
+<li><p><strong>w_ridge</strong> – (float) Regularization parameter of the ridge regression readout (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='lin'</span></code>).</p></li>
+<li><p><strong>mlp_layout</strong> – (tuple) Tuple with the sizes of MLP layers, e.g., <code class="docutils literal notranslate"><span class="pre">(20,</span> <span class="pre">10)</span></code> defines a MLP with 2 layers of 20 and 10 units respectively (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='mlp'</span></code>).</p></li>
+<li><p><strong>num_epochs</strong> – (int) Number of iterations during the optimization (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='mlp'</span></code>).</p></li>
+<li><p><strong>w_l2</strong> – (float) Weight of the L2 regularization (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='mlp'</span></code>).</p></li>
+<li><p><strong>nonlinearity</strong> – (str) Type of activation function <code class="docutils literal notranslate"><span class="pre">{'relu',</span> <span class="pre">'tanh',</span> <span class="pre">'logistic',</span> <span class="pre">'identity'}</span></code> (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='mlp'</span></code>).</p></li>
+<li><p><strong>svm_gamma</strong> – (float) Bandwidth of the RBF kernel (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='svm'</span></code>).</p></li>
+<li><p><strong>svm_C</strong> – (float) Regularization for SVM hyperplane (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='svm'</span></code>).</p></li>
 </ul>
 </dd>
 </dl>
@@ -171,31 +171,41 @@
 <dt class="sig sig-object py" id="reservoir_computing.modules.RC_model.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_model.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_model.fit" title="Link to this definition"></a></dt>
 <dd><p>Train the RC model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em>) – Array of of shape <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">T,</span> <span class="pre">V]</span></code> representin the training data.</p></li>
-<li><p><strong>Y</strong> (<em>np.ndarray</em>) – Array of shape <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">C]</span></code> representing the target values.</p></li>
-</ul>
+<section id="parameters">
+<h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">np.ndarray</span></dt><dd><p>Array of of shape <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">T,</span> <span class="pre">V]</span></code> representin the training data.</p>
+</dd>
+<dt>Y<span class="classifier">np.ndarray</span></dt><dd><p>Array of shape <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">C]</span></code> representing the target values.</p>
+</dd>
+<dt>verbose<span class="classifier">bool</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, print the training time.</p>
 </dd>
 </dl>
+</section>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<p>None</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="reservoir_computing.modules.RC_model.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Xte</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_model.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_model.predict" title="Link to this definition"></a></dt>
 <dd><p>Computes predictions for out-of-sample (test) data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Xte</strong> (<em>np.ndarray</em>) – Array of shape <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">T,</span> <span class="pre">V]</span></code> representing the test data.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>pred_class</strong> – Array of shape <code class="docutils literal notranslate"><span class="pre">[N]</span></code> representing the predicted classes.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<section id="id1">
+<h4>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xte<span class="classifier">np.ndarray</span></dt><dd><p>Array of shape <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">T,</span> <span class="pre">V]</span></code> representing the test data.</p>
 </dd>
 </dl>
+</section>
+<section id="id2">
+<h4>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>pred_class<span class="classifier">np.ndarray</span></dt><dd><p>Array of shape <code class="docutils literal notranslate"><span class="pre">[N]</span></code> representing the predicted classes.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </dd></dl>
@@ -222,14 +232,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Reservoir</strong><strong>)</strong><strong>;</strong> (<em>reservoir</em><em> (</em><em>object</em><em> of </em><em>class</em>) – Precomputed reservoir. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the following structural hyperparameters must be specified.</p></li>
-<li><p><strong>(</strong><strong>int</strong><strong>)</strong> (<em>n_drop</em>) – Processing units in the reservoir.</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> (<em>noise_level</em>) – Largest eigenvalue of the reservoir matrix of connection weights.</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Amount of leakage in the reservoir state update (optional).</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Percentage of nonzero connection weights.</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Scaling of the input connection weights.</p></li>
-<li><p><strong>(</strong><strong>float</strong><strong>)</strong> – Deviation of the Gaussian noise injected in the state update.</p></li>
-<li><p><strong>(</strong><strong>int</strong><strong>)</strong> – Number of transient states to drop.</p></li>
+<li><p><strong>reservoir</strong> – (object of class <code class="docutils literal notranslate"><span class="pre">Reservoir</span></code>) Precomputed reservoir. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the following structural hyperparameters must be specified.</p></li>
+<li><p><strong>n_internal_units</strong> – (int) Processing units in the reservoir.</p></li>
+<li><p><strong>spectral_radius</strong> – (float) Largest eigenvalue of the reservoir matrix of connection weights.</p></li>
+<li><p><strong>leak</strong> – (float) Amount of leakage in the reservoir state update (optional).</p></li>
+<li><p><strong>connectivity</strong> – (float) Percentage of nonzero connection weights.</p></li>
+<li><p><strong>input_scaling</strong> – (float) Scaling of the input connection weights.</p></li>
+<li><p><strong>noise_level</strong> – (float) Deviation of the Gaussian noise injected in the state update.</p></li>
+<li><p><strong>n_drop</strong> – (int) Number of transient states to drop.</p></li>
 </ul>
 </dd>
 </dl>
@@ -237,46 +247,56 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>dimred_method</em>) – Procedure for reducing the number of features in the sequence of reservoir states; possible options are: <code class="docutils literal notranslate"><span class="pre">None</span></code> (no dimensionality reduction) or <code class="docutils literal notranslate"><span class="pre">'pca'</span></code>.</p></li>
-<li><p><strong>(</strong><strong>int</strong><strong>)</strong> (<em>n_dim</em>) – Number of resulting dimensions after the dimensionality reduction procedure.</p></li>
+<li><p><strong>dimred_method</strong> – (str) Procedure for reducing the number of features in the sequence of reservoir states; possible options are: <code class="docutils literal notranslate"><span class="pre">None</span></code> (no dimensionality reduction) or <code class="docutils literal notranslate"><span class="pre">'pca'</span></code>.</p></li>
+<li><p><strong>n_dim</strong> – (int) Number of resulting dimensions after the dimensionality reduction procedure.</p></li>
 </ul>
 </dd>
 </dl>
 <p><strong>Readout parameters:</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>(</strong><strong>float</strong><strong>)</strong> (<em>w_ridge</em>) – Regularization parameter of the ridge regression readout (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='lin'</span></code>).</p>
+<dd class="field-odd"><p><strong>w_ridge</strong> – (float) Regularization parameter of the ridge regression readout (only for <code class="docutils literal notranslate"><span class="pre">readout_type=='lin'</span></code>).</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="reservoir_computing.modules.RC_forecaster.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_forecaster.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_forecaster.fit" title="Link to this definition"></a></dt>
 <dd><p>Train the RC model for forecasting.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em>) – Array of shape <code class="docutils literal notranslate"><span class="pre">[T,</span> <span class="pre">V]</span></code> representing the training data.</p></li>
-<li><p><strong>Y</strong> (<em>np.ndarray</em>) – Array of shape <code class="docutils literal notranslate"><span class="pre">[T,</span> <span class="pre">V]</span></code> representing the target values.</p></li>
-</ul>
+<section id="id3">
+<h4>Parameters:<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">np.ndarray</span></dt><dd><p>Array of shape <code class="docutils literal notranslate"><span class="pre">[T,</span> <span class="pre">V]</span></code> representing the training data.</p>
+</dd>
+<dt>Y<span class="classifier">np.ndarray</span></dt><dd><p>Array of shape <code class="docutils literal notranslate"><span class="pre">[T,</span> <span class="pre">V]</span></code> representing the target values.</p>
+</dd>
+<dt>verbose<span class="classifier">bool</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, print the training time.</p>
 </dd>
 </dl>
+</section>
+<section id="id4">
+<h4>Returns:<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<p>None</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="reservoir_computing.modules.RC_forecaster.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Xte</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_forecaster.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_forecaster.predict" title="Link to this definition"></a></dt>
 <dd><p>Computes predictions for out-of-sample (test) data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Xte</strong> (<em>np.ndarray</em>) – Array of shape <code class="docutils literal notranslate"><span class="pre">[T,</span> <span class="pre">V]</span></code> representing the test data.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>Yhat</strong> – Array of shape <code class="docutils literal notranslate"><span class="pre">[T,</span> <span class="pre">V]</span></code> representing the predicted values.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<section id="id5">
+<h4>Parameters:<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xte<span class="classifier">np.ndarray</span></dt><dd><p>Array of shape <code class="docutils literal notranslate"><span class="pre">[T,</span> <span class="pre">V]</span></code> representing the test data.</p>
 </dd>
 </dl>
+</section>
+<section id="id6">
+<h4>Returns:<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Yhat<span class="classifier">np.ndarray</span></dt><dd><p>Array of shape <code class="docutils literal notranslate"><span class="pre">[T,</span> <span class="pre">V]</span></code> representing the predicted values.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </dd></dl>

@@ -41,6 +41,10 @@ Classes
           Time series, 3D array of shape ``[N,T,V]``, where ``N`` is the number of time series,
           ``T`` is the length of each time series, and ``V`` is the number of variables in each.
 
+      Returns:
+      ------------
+      None
+
 
    .. py:method:: transform(X)
 

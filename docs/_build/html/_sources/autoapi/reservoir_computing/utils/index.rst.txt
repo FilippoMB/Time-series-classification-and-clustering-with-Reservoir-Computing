@@ -22,13 +22,19 @@ Functions
 
    Wrapper to compute classification accuracy and F1 score
 
-   :param pred_class: Predicted class labels
-   :type pred_class: np.ndarray
-   :param Yte: True class labels
-   :type Yte: np.ndarray
+   Parameters:
+   ----------
+   pred_class : np.ndarray
+       Predicted class labels
+   Yte : np.ndarray
+       True class labels
 
-   :returns: * **accuracy** (*float*) -- Classification accuracy
-             * **f1** (*float*) -- F1 score
+   Returns:
+   -------
+   accuracy : float
+       Classification accuracy
+   f1 : float
+       F1 score
 
 
 .. py:function:: forecasting_datasets(X, horizon, test_percent=0.15, val_percent=0.0, scaler=None)
@@ -39,25 +45,36 @@ Functions
    2. Shift the target data by 'horizon' to create the forecasting problem
    3. Normalizes the data
 
-   :param X: Input data
-   :type X: np.ndarray
-   :param horizon: Forecasting horizon
-   :type horizon: int
-   :param test_percent: Percentage of the data to be used for testing
-   :type test_percent: float
-   :param val_percent: Percentage of the data to be used for validation
-                       If 0, no validation set is created
-   :type val_percent: float
-   :param scaler: Scaler object to normalize the data
-                  If None, a StandardScaler is created
-   :type scaler: a scaler object from sklearn.preprocessing
+   Parameters:
+   ----------
+   X : np.ndarray
+       Input data
+   horizon : int
+       Forecasting horizon
+   test_percent : float
+       Percentage of the data to be used for testing
+   val_percent : float
+       Percentage of the data to be used for validation
+       If 0, no validation set is created
+   scaler : a scaler object from sklearn.preprocessing
+       Scaler object to normalize the data
+       If None, a StandardScaler is created
 
-   :returns: * **Xtr** (*np.ndarray*) -- Training input data
-             * **Ytr** (*np.ndarray*) -- Training target data
-             * **Xte** (*np.ndarray*) -- Test input data
-             * **Yte** (*np.ndarray*) -- Test target data
-             * **scaler** (*a scaler object from sklearn.preprocessing*) -- Scaler object used to normalize the data
-             * **Xval** (*np.ndarray (optional)*) -- Validation input data
-             * **Yval** (*np.ndarray (optional)*) -- Validation target data
+   Returns:
+   -------
+   Xtr : np.ndarray
+       Training input data
+   Ytr : np.ndarray
+       Training target data
+   Xte : np.ndarray
+       Test input data
+   Yte : np.ndarray
+       Test target data
+   scaler : a scaler object from sklearn.preprocessing
+       Scaler object used to normalize the data
+   Xval : np.ndarray (optional)
+       Validation input data
+   Yval : np.ndarray (optional)
+       Validation target data
 
 

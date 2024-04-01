@@ -31,6 +31,10 @@ class tensorPCA:
         X : np.ndarray
             Time series, 3D array of shape ``[N,T,V]``, where ``N`` is the number of time series,
             ``T`` is the length of each time series, and ``V`` is the number of variables in each.
+
+        Returns:
+        ------------
+        None
         """
         if len(X.shape) is not 3:
             raise RuntimeError('Input must be a 3d tensor')

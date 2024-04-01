@@ -6,14 +6,14 @@ def compute_test_scores(pred_class, Yte):
     """
     Wrapper to compute classification accuracy and F1 score
 
-    Parameters
+    Parameters:
     ----------
     pred_class : np.ndarray
         Predicted class labels
     Yte : np.ndarray
         True class labels
 
-    Returns
+    Returns:
     -------
     accuracy : float
         Classification accuracy
@@ -44,7 +44,7 @@ def forecasting_datasets(X,
     2. Shift the target data by 'horizon' to create the forecasting problem
     3. Normalizes the data
 
-    Parameters
+    Parameters:
     ----------
     X : np.ndarray
         Input data
@@ -59,7 +59,7 @@ def forecasting_datasets(X,
         Scaler object to normalize the data
         If None, a StandardScaler is created
 
-    Returns
+    Returns:
     -------
     Xtr : np.ndarray
         Training input data

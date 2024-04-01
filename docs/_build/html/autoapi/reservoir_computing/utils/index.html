@@ -114,21 +114,24 @@
 <dt class="sig sig-object py" id="reservoir_computing.utils.compute_test_scores">
 <span class="sig-prename descclassname"><span class="pre">reservoir_computing.utils.</span></span><span class="sig-name descname"><span class="pre">compute_test_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Yte</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/utils.html#compute_test_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.utils.compute_test_scores" title="Link to this definition"></a></dt>
 <dd><p>Wrapper to compute classification accuracy and F1 score</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pred_class</strong> (<em>np.ndarray</em>) – Predicted class labels</p></li>
-<li><p><strong>Yte</strong> (<em>np.ndarray</em>) – True class labels</p></li>
-</ul>
+<section id="parameters">
+<h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>pred_class<span class="classifier">np.ndarray</span></dt><dd><p>Predicted class labels</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>accuracy</strong> (<em>float</em>) – Classification accuracy</p></li>
-<li><p><strong>f1</strong> (<em>float</em>) – F1 score</p></li>
-</ul>
-</p>
+<dt>Yte<span class="classifier">np.ndarray</span></dt><dd><p>True class labels</p>
 </dd>
 </dl>
+</section>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>accuracy<span class="classifier">float</span></dt><dd><p>Classification accuracy</p>
+</dd>
+<dt>f1<span class="classifier">float</span></dt><dd><p>F1 score</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py function">
@@ -140,31 +143,42 @@
 <li><p>Shift the target data by ‘horizon’ to create the forecasting problem</p></li>
 <li><p>Normalizes the data</p></li>
 </ol>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data</p></li>
-<li><p><strong>horizon</strong> (<em>int</em>) – Forecasting horizon</p></li>
-<li><p><strong>test_percent</strong> (<em>float</em>) – Percentage of the data to be used for testing</p></li>
-<li><p><strong>val_percent</strong> (<em>float</em>) – Percentage of the data to be used for validation
-If 0, no validation set is created</p></li>
-<li><p><strong>scaler</strong> (<em>a scaler object from sklearn.preprocessing</em>) – Scaler object to normalize the data
-If None, a StandardScaler is created</p></li>
-</ul>
+<section id="id1">
+<h4>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">np.ndarray</span></dt><dd><p>Input data</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>Xtr</strong> (<em>np.ndarray</em>) – Training input data</p></li>
-<li><p><strong>Ytr</strong> (<em>np.ndarray</em>) – Training target data</p></li>
-<li><p><strong>Xte</strong> (<em>np.ndarray</em>) – Test input data</p></li>
-<li><p><strong>Yte</strong> (<em>np.ndarray</em>) – Test target data</p></li>
-<li><p><strong>scaler</strong> (<em>a scaler object from sklearn.preprocessing</em>) – Scaler object used to normalize the data</p></li>
-<li><p><strong>Xval</strong> (<em>np.ndarray (optional)</em>) – Validation input data</p></li>
-<li><p><strong>Yval</strong> (<em>np.ndarray (optional)</em>) – Validation target data</p></li>
-</ul>
-</p>
+<dt>horizon<span class="classifier">int</span></dt><dd><p>Forecasting horizon</p>
+</dd>
+<dt>test_percent<span class="classifier">float</span></dt><dd><p>Percentage of the data to be used for testing</p>
+</dd>
+<dt>val_percent<span class="classifier">float</span></dt><dd><p>Percentage of the data to be used for validation
+If 0, no validation set is created</p>
+</dd>
+<dt>scaler<span class="classifier">a scaler object from sklearn.preprocessing</span></dt><dd><p>Scaler object to normalize the data
+If None, a StandardScaler is created</p>
 </dd>
 </dl>
+</section>
+<section id="id2">
+<h4>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xtr<span class="classifier">np.ndarray</span></dt><dd><p>Training input data</p>
+</dd>
+<dt>Ytr<span class="classifier">np.ndarray</span></dt><dd><p>Training target data</p>
+</dd>
+<dt>Xte<span class="classifier">np.ndarray</span></dt><dd><p>Test input data</p>
+</dd>
+<dt>Yte<span class="classifier">np.ndarray</span></dt><dd><p>Test target data</p>
+</dd>
+<dt>scaler<span class="classifier">a scaler object from sklearn.preprocessing</span></dt><dd><p>Scaler object used to normalize the data</p>
+</dd>
+<dt>Xval<span class="classifier">np.ndarray (optional)</span></dt><dd><p>Validation input data</p>
+</dd>
+<dt>Yval<span class="classifier">np.ndarray (optional)</span></dt><dd><p>Validation target data</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </section>
