@@ -9,7 +9,7 @@
 This library allows to quickly implement different architectures for time series data based on *Reservoir Computing (RC)*, the family of approaches popularized in machine learning by Echo State Networks.
 This library is primarly design to perform **classification** and **clustering** of both univariate and multivariate time series. However, it can also be used to perform time series **forecasting**. 
 
-### Classification
+## Classification
 Several options are available to customize the RC model, by selecting different configurations for each module.
 1. The **reservoir** module specifies the reservoir configuration (*e.g.*, bidirectional, leaky neurons, circle topology). Given a multivariate time series $\mathbf{X}$ it generates a sequence of the same length of Reservoir states $\mathbf{H}$.
 2. The **dimensionality reduction** module (optionally) applies a dimensionality reduction on the  sequence of the reservoir's states $\mathbf{H}$ generating a new sequence $\mathbf{\bar H}$.
@@ -19,13 +19,13 @@ Several options are available to customize the RC model, by selecting different 
 This library implements the *reservoir model space* a very powerful representation $\mathbf{r}_\mathbf{X}$ for the time series.
 Details about the methodology are found in the [original paper](https://arxiv.org/abs/1803.07870).
 
-### Clustering
+## Clustering
 The representation $\mathbf{r}_\mathbf{X}$ obtained at step 3 can be used to perform time series clustering.
 
-### Forecasting
+## Forecasting
 The sequences $\mathbf{H}$ and $\mathbf{\bar H}$ obtained at steps 1 and 2 can be directly used to forecast the future values of the time series.
 
-## Installation
+# Installation
 
 The recommended installation is with pip:
 
@@ -40,7 +40,7 @@ cd Time-series-classification-and-clustering-with-Reservoir-Computing
 pip install -e .
 ````
 
-## Quick start
+# Quick start
 
 The following scripts provide minimalistic examples that illustrate how to use the library for different tasks.
 
@@ -75,14 +75,13 @@ The following notebooks illustrate more advanced use-cases.
 - Probabilistic forecasting with advanced regression models as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/prediction_with_GBRT.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1wxIRcX_y7572x6WeezfWfJiTurVsc2aW?usp=sharing)
 - Use advanced classifiers as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/notebooks/advanced_classifiers.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1PnH_lffbE1nfghYwPa2j0H2_4mgtRwQo?usp=sharing)
 
-## Configure the RC-model
+# Configure the RC-model
 
 The main class ```RC_model``` contained in [modules.py](https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/modules.py) permits to specify, train and test an RC-model.
 The RC-model is configured by passing to the constructor of the class ```RC_model``` a set of parameters. To get an idea, you can check ```classification_example.py``` or ```clustering_example.py``` where the parameters are specified through a dictionary (````config````). 
 
 The available configuration hyperparameters are listed in the following and, for the sake of clarity, are grouped according to which module of the architecture they refer to.
 
-    
 **1. Reservoir:**
 
 - n_drop - number of transient states to drop

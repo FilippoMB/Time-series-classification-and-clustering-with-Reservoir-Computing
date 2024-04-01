@@ -1,0 +1,380 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Advanced classification models\n",
+    "\n",
+    "This example shows how to use more advanced classifiers instead of the linear classifier that is used by default."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import requests\n",
+    "from io import BytesIO\n",
+    "import pprint\n",
+    "import numpy as np\n",
+    "import scipy.io\n",
+    "from sklearn.preprocessing import OneHotEncoder\n",
+    "\n",
+    "from reservoir_computing.modules import RC_model\n",
+    "from reservoir_computing.utils import compute_test_scores\n",
+    "\n",
+    "np.random.seed(0) # Fix the seed for reproducibility"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's start by defining the configuration for the Reservoir, the dimensionality reduction module, and the type of Multivariate Time Series (MTS) representation."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "config = {}\n",
+    "\n",
+    "# Hyperarameters of the reservoir\n",
+    "config['n_internal_units'] = 450        # size of the reservoir\n",
+    "config['spectral_radius'] = 0.59        # largest eigenvalue of the reservoir\n",
+    "config['leak'] = 0.6                    # amount of leakage in the reservoir state update (None or 1.0 --> no leakage)\n",
+    "config['connectivity'] = 0.25           # percentage of nonzero connections in the reservoir\n",
+    "config['input_scaling'] = 0.1           # scaling of the input weights\n",
+    "config['noise_level'] = 0.01            # noise in the reservoir state update\n",
+    "config['n_drop'] = 5                    # transient states to be dropped\n",
+    "config['bidir'] = True                  # if True, use bidirectional reservoir\n",
+    "config['circ'] = False                  # use reservoir with circle topology\n",
+    "\n",
+    "# Dimensionality reduction hyperparameters\n",
+    "config['dimred_method'] = 'tenpca'      # options: {None (no dimensionality reduction), 'pca', 'tenpca'}\n",
+    "config['n_dim'] = 75                    # number of resulting dimensions after the dimensionality reduction procedure\n",
+    "\n",
+    "# Type of MTS representation\n",
+    "config['mts_rep'] = 'reservoir'         # MTS representation:  {'last', 'mean', 'output', 'reservoir'}\n",
+    "config['w_ridge_embedding'] = 10.0      # regularization parameter of the ridge regression"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We will start using a simple linear classifier as the readout. In particular, we will use the [RidgeClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeClassifier.html) from sklearn. The classifier requires to define a regularization parameter that we call `w_ridge` (but in sklearn is called `alpha`)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Type of readout\n",
+    "config['readout_type'] = 'lin'          # readout used for classification\n",
+    "config['w_ridge'] = 1.0                 # regularization of the ridge regression readout"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Next, we loead and pre-process a dataset of MTS representing the stroke for drawing different Japanese vowels. Note that we need to transform the labels to one-hot encoded vectors."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Loaded data from https://raw.githubusercontent.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/master/dataset/JpVow.mat\n",
+      "Data shapes:\n",
+      " Tr: (270, 29, 12)\n",
+      " Te: (370, 29, 12)\n"
+     ]
+    }
+   ],
+   "source": [
+    "data_url = 'https://raw.githubusercontent.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/master/dataset/JpVow.mat'\n",
+    "response = requests.get(data_url)\n",
+    "response.raise_for_status()\n",
+    "data = scipy.io.loadmat(BytesIO(response.content))\n",
+    "\n",
+    "Xtr = data['X']  # shape is [N,T,V]\n",
+    "if len(Xtr.shape) < 3:\n",
+    "    Xtr = np.atleast_3d(Xtr)\n",
+    "Ytr = data['Y']  # shape is [N,1]\n",
+    "Xte = data['Xte']\n",
+    "if len(Xte.shape) < 3:\n",
+    "    Xte = np.atleast_3d(Xte)\n",
+    "Yte = data['Yte']\n",
+    "\n",
+    "print(f\"Loaded data from {data_url}\\nData shapes:\\n Tr: {Xtr.shape}\\n Te: {Xte.shape}\")\n",
+    "\n",
+    "# One-hot encoding for labels\n",
+    "onehot_encoder = OneHotEncoder(sparse_output=False)\n",
+    "Ytr = onehot_encoder.fit_transform(Ytr)\n",
+    "Yte = onehot_encoder.transform(Yte)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "At this point we initialize the RC classifier by passing the configuration we specified before and then we fit it on the training data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Training completed in 0.01 min\n"
+     ]
+    }
+   ],
+   "source": [
+    "classifier =  RC_model(reservoir=None,     \n",
+    "                       n_internal_units=config['n_internal_units'],\n",
+    "                       spectral_radius=config['spectral_radius'],\n",
+    "                       leak=config['leak'],\n",
+    "                       connectivity=config['connectivity'],\n",
+    "                       input_scaling=config['input_scaling'],\n",
+    "                       noise_level=config['noise_level'],\n",
+    "                       circle=config['circ'],\n",
+    "                       n_drop=config['n_drop'],\n",
+    "                       bidir=config['bidir'],\n",
+    "                       dimred_method=config['dimred_method'], \n",
+    "                       n_dim=config['n_dim'],\n",
+    "                       mts_rep=config['mts_rep'],\n",
+    "                       w_ridge_embedding=config['w_ridge_embedding'],\n",
+    "                       readout_type=config['readout_type'],            \n",
+    "                       w_ridge=config['w_ridge'])\n",
+    "\n",
+    "# Train the model\n",
+    "tr_time = classifier.fit(Xtr, Ytr) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "At this point, we can predict the labels of the test set and see how much they resemble the real ones by computing the classification accuracy and the F1 score."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Accuracy = 0.973, F1 = 0.973\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Compute predictions on test data\n",
+    "pred_class = classifier.predict(Xte) \n",
+    "accuracy, f1 = compute_test_scores(pred_class, Yte)\n",
+    "print(f\"Accuracy = {accuracy:.3f}, F1 = {f1:.3f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That is a pretty high accuracy. Even a simple model such as the RidgeClassifier can classify almost perfectly the test data thanks to the powerful representational power of the representation provided by the RC model.\n",
+    "\n",
+    "Next, we will try more classifiers more powerful than the RidgeClassifier. In this example, we do not expect to see extreme changes in the performance since the classification performance is already very high. However, in more complex tasks using a more powerful classifier can bring substantial benefits.\n",
+    "\n",
+    "We will start with [SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) the Support Vector Machine Classifier of sklearn.\n",
+    "\n",
+    "The first thing is to define the hyperparameters of the new classifier and pass them to the RC model."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 57,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Type of readout\n",
+    "config['readout_type'] = 'svm'          # readout used for classification\n",
+    "config['svm_gamma'] = 5e-3              # bandwith of the RBF kernel\n",
+    "config['svm_C'] = 10.0                  # regularization for SVM hyperplane"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Next, we re-create the RC model, we train, and then we test it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 58,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Training completed in 0.01 min\n",
+      "Accuracy = 0.954, F1 = 0.955\n"
+     ]
+    }
+   ],
+   "source": [
+    "classifier =  RC_model(reservoir=None,     \n",
+    "                       n_internal_units=config['n_internal_units'],\n",
+    "                       spectral_radius=config['spectral_radius'],\n",
+    "                       leak=config['leak'],\n",
+    "                       connectivity=config['connectivity'],\n",
+    "                       input_scaling=config['input_scaling'],\n",
+    "                       noise_level=config['noise_level'],\n",
+    "                       circle=config['circ'],\n",
+    "                       n_drop=config['n_drop'],\n",
+    "                       bidir=config['bidir'],\n",
+    "                       dimred_method=config['dimred_method'], \n",
+    "                       n_dim=config['n_dim'],\n",
+    "                       mts_rep=config['mts_rep'],\n",
+    "                       w_ridge_embedding=config['w_ridge_embedding'],\n",
+    "                       readout_type=config['readout_type'],            \n",
+    "                       svm_gamma=config['svm_gamma'],\n",
+    "                       svm_C=config['svm_C'])\n",
+    "\n",
+    "# Train the model\n",
+    "tr_time = classifier.fit(Xtr, Ytr) \n",
+    "\n",
+    "# Compute predictions on test data\n",
+    "pred_class = classifier.predict(Xte) \n",
+    "accuracy, f1 = compute_test_scores(pred_class, Yte)\n",
+    "print(f\"Accuracy = {accuracy:.3f}, F1 = {f1:.3f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As expected, the performance is still good but not much different from the one we got earlier.\n",
+    "\n",
+    "Next, we can use a simple neural network as the classifier. We will use the Multilayer Perceptron ([MLPClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html)) from sklearn.\n",
+    "\n",
+    "In this case, we have more hyperparameters to tune. To find the optimal ones when dealing with a real-world application you should do a proper hyperparameter search using a validation set."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Type of readout\n",
+    "config['readout_type'] = 'mlp'          # readout used for classification\n",
+    "config['mlp_layout'] = (64,32)          # neurons in each MLP layer\n",
+    "config['num_epochs'] = 2000             # number of epochs \n",
+    "config['w_l2'] = 1e-4                   # weight of the L2 regularization\n",
+    "config['nonlinearity'] = 'tanh'         # type of activation function {'relu', 'tanh', 'logistic', 'identity'}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As before, we create our RC classifier, we train it and test on unseen data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Training completed in 0.11 min\n",
+      "Accuracy = 0.968, F1 = 0.969\n"
+     ]
+    }
+   ],
+   "source": [
+    "classifier =  RC_model(reservoir=None,     \n",
+    "                       n_internal_units=config['n_internal_units'],\n",
+    "                       spectral_radius=config['spectral_radius'],\n",
+    "                       leak=config['leak'],\n",
+    "                       connectivity=config['connectivity'],\n",
+    "                       input_scaling=config['input_scaling'],\n",
+    "                       noise_level=config['noise_level'],\n",
+    "                       circle=config['circ'],\n",
+    "                       n_drop=config['n_drop'],\n",
+    "                       bidir=config['bidir'],\n",
+    "                       dimred_method=config['dimred_method'], \n",
+    "                       n_dim=config['n_dim'],\n",
+    "                       mts_rep=config['mts_rep'],\n",
+    "                       w_ridge_embedding=config['w_ridge_embedding'],\n",
+    "                       readout_type=config['readout_type'],            \n",
+    "                       mlp_layout=config['mlp_layout'],\n",
+    "                       num_epochs=config['num_epochs'],\n",
+    "                       w_l2=config['w_l2'],\n",
+    "                       nonlinearity=config['nonlinearity'])\n",
+    "\n",
+    "# Train the model\n",
+    "tr_time = classifier.fit(Xtr, Ytr) \n",
+    "\n",
+    "# Compute predictions on test data\n",
+    "pred_class = classifier.predict(Xte) \n",
+    "accuracy, f1 = compute_test_scores(pred_class, Yte)\n",
+    "print(f\"Accuracy = {accuracy:.3f}, F1 = {f1:.3f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Also in this case, the classifier obtains good performance but not too different from the previous cases.\n",
+    "\n",
+    "More complicated models such as SVC and an MLP requires a proper tuning but, on difficult task, can achieve better performance compared to a simple linear classifier."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "sta2003",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.13"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

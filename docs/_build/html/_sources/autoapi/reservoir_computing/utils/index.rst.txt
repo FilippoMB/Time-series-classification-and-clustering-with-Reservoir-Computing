@@ -1,0 +1,62 @@
+:py:mod:`reservoir_computing.utils`
+===================================
+
+.. py:module:: reservoir_computing.utils
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   reservoir_computing.utils.compute_test_scores
+   reservoir_computing.utils.forecasting_datasets
+
+
+
+.. py:function:: compute_test_scores(pred_class, Yte)
+
+   Wrapper to compute classification accuracy and F1 score
+
+   :param pred_class: Predicted class labels
+   :type pred_class: array
+   :param Yte: True class labels
+   :type Yte: array
+
+   :returns: * **accuracy** (*float*) -- Classification accuracy
+             * **f1** (*float*) -- F1 score
+
+
+.. py:function:: forecasting_datasets(X, horizon, test_percent=0.15, val_percent=0.0, scaler=None)
+
+   This function does the following:
+   1. Splits the dataset in training, validation and test sets
+   2. Shift the target data by 'horizon' to create the forecasting problem
+   3. Normalizes the data
+
+   :param X: Input data
+   :type X: array
+   :param horizon: Forecasting horizon
+   :type horizon: int
+   :param test_percent: Percentage of the data to be used for testing
+   :type test_percent: float
+   :param val_percent: Percentage of the data to be used for validation
+                       If 0, no validation set is created
+   :type val_percent: float
+   :param scaler: Scaler object to normalize the data
+                  If None, a StandardScaler is created
+   :type scaler: a scaler object from sklearn.preprocessing
+
+   :returns: * **Xtr** (*array*) -- Training input data
+             * **Ytr** (*array*) -- Training target data
+             * **Xte** (*array*) -- Test input data
+             * **Yte** (*array*) -- Test target data
+             * **scaler** (*a scaler object from sklearn.preprocessing*) -- Scaler object used to normalize the data
+             * **Xval** (*array (optional)*) -- Validation input data
+             * **Yval** (*array (optional)*) -- Validation target data
+
+

@@ -14,22 +14,22 @@ class Reservoir(object):
         Build a reservoir and compute the sequence of the internal states.
         
         Parameters:
-        ----------
-        n_internal_units = int (default 100)
+        ------------
+        n_internal_units : int (default 100)
             Processing units in the reservoir.
-        spectral_radius = float (default 0.99)
+        spectral_radius : float (default 0.99)
             Largest eigenvalue of the reservoir matrix of connection weights.
-        leak = float (default None)
+        leak : float (default None)
             Amount of leakage in the reservoir state update. 
             If None or 1.0, no leakage is used.
-        connectivity = float (default 0.3)
+        connectivity : float (default 0.3)
             Percentage of nonzero connection weights.
             Unused in circle reservoir.
-        input_scaling = float (default 0.2)
+        input_scaling : float (default 0.2)
             Scaling of the input connection weights.
-        noise_level = float (default 0.0)
+        noise_level : float (default 0.0)
             Standard deviation of the Gaussian noise injected in the state update.
-        circle = bool (default False)
+        circle : bool (default False)
             Generate determinisitc reservoir with circle topology.
         """
         
@@ -55,6 +55,8 @@ class Reservoir(object):
 
 
     def _initialize_internal_weights_Circ(self, n_internal_units, spectral_radius):
+        """Generate internal weights with circular topology.
+        """
         
         # Construct reservoir with circular topology
         internal_weights = np.zeros((n_internal_units, n_internal_units))
@@ -72,6 +74,8 @@ class Reservoir(object):
     
     def _initialize_internal_weights(self, n_internal_units,
                                      connectivity, spectral_radius):
+        """Generate internal weights with a sparse, uniformly random topology.
+        """
 
         # Generate sparse, uniformly distributed weights.
         internal_weights = sparse.rand(n_internal_units,
@@ -90,6 +94,9 @@ class Reservoir(object):
 
 
     def _compute_state_matrix(self, X, n_drop=0, previous_state=None):
+        """Compute the reservoir states on input data X.
+        """
+
         N, T, _ = X.shape
         if previous_state is None:
             previous_state = np.zeros((N, self._n_internal_units), dtype=float)
@@ -124,7 +131,7 @@ class Reservoir(object):
         Compute reservoir states and return them.
 
         Parameters:
-        ----------
+        ------------
         X = array
             Time series, 3D array of shape (N,T,V), where N is the number of time series,
             T is the length of each time series, and V is the number of variables in each
@@ -139,7 +146,7 @@ class Reservoir(object):
             If None, the initial states is a zero-vector. 
 
         Returns:
-        -------
+        ------------
         states = array
             Reservoir states, 3D array of shape (N,T,n_internal_units), where N is the number
             of time series, T is the length of each time series, and n_internal_units is the

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reservoir_computing.modules &mdash; reservoir_computing  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            reservoir_computing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/advanced_classifiers.html">Advanced classification models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/clustering_visualization.html">Cluster analysis and visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">reservoir_computing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">reservoir_computing.modules</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for reservoir_computing.modules</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">pdist</span><span class="p">,</span> <span class="n">cdist</span><span class="p">,</span> <span class="n">squareform</span>
+
+<span class="kn">from</span> <span class="nn">.reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
+<span class="kn">from</span> <span class="nn">.tensorPCA</span> <span class="kn">import</span> <span class="n">tensorPCA</span>
+
+            
+<div class="viewcode-block" id="RC_model">
+<a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model">[docs]</a>
+<span class="k">class</span> <span class="nc">RC_model</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build and evaluate a RC-based model for time series classification or clustering.</span>
+<span class="sd">    The training and test MTS are multidimensional arrays of shape [N,T,V], with</span>
+<span class="sd">        - N = number of samples</span>
+<span class="sd">        - T = number of time steps in each sample</span>
+<span class="sd">        - V = number of variables in each sample</span>
+<span class="sd">    Training and test labels have shape [N,C], with C the number of classes</span>
+<span class="sd">    </span>
+<span class="sd">    The dataset consists of:</span>
+<span class="sd">        X, Y = training data and respective labels</span>
+<span class="sd">        Xte, Yte = test data and respective labels</span>
+<span class="sd">        </span>
+<span class="sd">    Reservoir parameters:</span>
+<span class="sd">        reservoir = precomputed reservoir (oject of class &#39;Reservoir&#39;);</span>
+<span class="sd">            if None, the following structural hyperparameters must be specified</span>
+<span class="sd">        n_internal_units = processing units in the reservoir</span>
+<span class="sd">        spectral_radius = largest eigenvalue of the reservoir matrix of connection weights</span>
+<span class="sd">        leak = amount of leakage in the reservoir state update (optional)</span>
+<span class="sd">        connectivity = percentage of nonzero connection weights</span>
+<span class="sd">        input_scaling = scaling of the input connection weights</span>
+<span class="sd">        noise_level = deviation of the Gaussian noise injected in the state update</span>
+<span class="sd">        n_drop = number of transient states to drop</span>
+<span class="sd">        bidir = use a bidirectional reservoir (True or false)</span>
+<span class="sd">            </span>
+<span class="sd">    Dimensionality reduction parameters:</span>
+<span class="sd">        dimred_method = procedure for reducing the number of features in the sequence of reservoir states;</span>
+<span class="sd">            possible options are: None (no dimensionality reduction), &#39;pca&#39; or &#39;tenpca&#39;</span>
+<span class="sd">        n_dim = number of resulting dimensions after the dimensionality reduction procedure</span>
+<span class="sd">        </span>
+<span class="sd">    Representation parameters:</span>
+<span class="sd">        mts_rep = type of MTS representation. It can be &#39;last&#39; (last state), &#39;output&#39; (output model space),</span>
+<span class="sd">            or &#39;reservoir&#39; (reservoir model space)</span>
+<span class="sd">        w_ridge_embedding = regularization parameter of the ridge regression in the output model space</span>
+<span class="sd">            and reservoir model space representation; ignored if mts_rep == None</span>
+<span class="sd">        </span>
+<span class="sd">    Readout parameters:</span>
+<span class="sd">        readout_type = type of readout used for classification. It can be &#39;lin&#39; (ridge regression), </span>
+<span class="sd">            &#39;mlp&#39; (multiplayer perceptron), &#39;svm&#39; (support vector machine), or None.</span>
+<span class="sd">            If None, the input representations will be saved instead: this is useful for clustering and visualization.</span>
+<span class="sd">        w_ridge = regularization parameter of the ridge regression readout (only for readout_type==&#39;lin&#39;)              </span>
+<span class="sd">        mlp_layout = tuple with the sizes of MLP layers, e.g. (20, 10) defines a MLP with 2 layers </span>
+<span class="sd">            of 20 and 10 units respectively. (only for readout_type==&#39;mlp&#39;)</span>
+<span class="sd">        num_epochs = number of iterations during the optimization (only for readout_type==&#39;mlp&#39;)</span>
+<span class="sd">        w_l2 = weight of the L2 regularization (only for readout_type==&#39;mlp&#39;)</span>
+<span class="sd">        nonlinearity = type of activation function {&#39;relu&#39;, &#39;tanh&#39;, &#39;logistic&#39;, &#39;identity&#39;} (only for readout_type==&#39;mlp&#39;)</span>
+<span class="sd">        svm_gamma = bandwith of the RBF kernel (only for readout_type==&#39;svm&#39;)</span>
+<span class="sd">        svm_C = regularization for SVM hyperplane (only for readout_type==&#39;svm&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="c1"># reservoir</span>
+              <span class="n">reservoir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>     
+              <span class="n">n_internal_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">spectral_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">leak</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">connectivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">input_scaling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">noise_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">n_drop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">bidir</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+              <span class="n">circle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+              <span class="c1"># dim red</span>
+              <span class="n">dimred_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+              <span class="n">n_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="c1"># representation</span>
+              <span class="n">mts_rep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">w_ridge_embedding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="c1"># readout</span>
+              <span class="n">readout_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>               
+              <span class="n">w_ridge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>              
+              <span class="n">mlp_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">num_epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">w_l2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">nonlinearity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+              <span class="n">svm_gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+              <span class="n">svm_C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="o">=</span><span class="n">n_drop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bidir</span><span class="o">=</span><span class="n">bidir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span><span class="o">=</span><span class="n">dimred_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mts_rep</span><span class="o">=</span><span class="n">mts_rep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span><span class="o">=</span><span class="n">readout_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svm_gamma</span><span class="o">=</span><span class="n">svm_gamma</span>
+                        
+        <span class="c1"># Initialize reservoir</span>
+        <span class="k">if</span> <span class="n">reservoir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reservoir</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">(</span><span class="n">n_internal_units</span><span class="o">=</span><span class="n">n_internal_units</span><span class="p">,</span>
+                                  <span class="n">spectral_radius</span><span class="o">=</span><span class="n">spectral_radius</span><span class="p">,</span>
+                                  <span class="n">leak</span><span class="o">=</span><span class="n">leak</span><span class="p">,</span>
+                                  <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">,</span>
+                                  <span class="n">input_scaling</span><span class="o">=</span><span class="n">input_scaling</span><span class="p">,</span>
+                                  <span class="n">noise_level</span><span class="o">=</span><span class="n">noise_level</span><span class="p">,</span>
+                                  <span class="n">circle</span><span class="o">=</span><span class="n">circle</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reservoir</span> <span class="o">=</span> <span class="n">reservoir</span>
+                
+        <span class="c1"># Initialize dimensionality reduction method</span>
+        <span class="k">if</span> <span class="n">dimred_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dimred_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;pca&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_dim</span><span class="p">)</span>            
+            <span class="k">elif</span> <span class="n">dimred_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;tenpca&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span> <span class="o">=</span> <span class="n">tensorPCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_dim</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Invalid dimred method ID&#39;</span><span class="p">)</span>
+                
+        <span class="c1"># Initialize ridge regression model</span>
+        <span class="k">if</span> <span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;output&#39;</span> <span class="ow">or</span> <span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;reservoir&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">w_ridge_embedding</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        
+        <span class="c1"># Initialize readout type            </span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="o">==</span> <span class="s1">&#39;lin&#39;</span><span class="p">:</span> <span class="c1"># Ridge regression</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">readout</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">w_ridge</span><span class="p">)</span>        
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="o">==</span> <span class="s1">&#39;svm&#39;</span><span class="p">:</span> <span class="c1"># SVM readout</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">readout</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">svm_C</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;precomputed&#39;</span><span class="p">)</span>          
+            <span class="k">elif</span> <span class="n">readout_type</span> <span class="o">==</span> <span class="s1">&#39;mlp&#39;</span><span class="p">:</span> <span class="c1"># MLP (deep readout)  </span>
+                <span class="c1"># pass</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">readout</span> <span class="o">=</span> <span class="n">MLPClassifier</span><span class="p">(</span>
+                    <span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="n">mlp_layout</span><span class="p">,</span> 
+                    <span class="n">activation</span><span class="o">=</span><span class="n">nonlinearity</span><span class="p">,</span> 
+                    <span class="n">alpha</span><span class="o">=</span><span class="n">w_l2</span><span class="p">,</span>
+                    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> 
+                    <span class="n">learning_rate</span><span class="o">=</span><span class="s1">&#39;adaptive&#39;</span><span class="p">,</span> <span class="c1"># &#39;constant&#39; or &#39;adaptive&#39;</span>
+                    <span class="n">learning_rate_init</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> 
+                    <span class="n">max_iter</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span> 
+                    <span class="n">early_stopping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># if True, set validation_fraction &gt; 0</span>
+                    <span class="n">validation_fraction</span><span class="o">=</span><span class="mf">0.0</span> <span class="c1"># used for early stopping</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Invalid readout type&#39;</span><span class="p">)</span>  
+        
+        
+<div class="viewcode-block" id="RC_model.fit">
+<a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Train the RC model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [N, T, V]</span>
+<span class="sd">            Training data.</span>
+
+<span class="sd">        Y : array-like, shape [N, C]</span>
+<span class="sd">            Target values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+                
+        <span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        
+        <span class="c1"># ============ Compute reservoir states ============ </span>
+        <span class="n">res_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reservoir</span><span class="o">.</span><span class="n">get_states</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_drop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="p">,</span> <span class="n">bidir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bidir</span><span class="p">)</span>
+        
+        <span class="c1"># ============ Dimensionality reduction of the reservoir states ============  </span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;pca&#39;</span><span class="p">:</span>
+                <span class="c1"># matricize</span>
+                <span class="n">N_samples</span> <span class="o">=</span> <span class="n">res_states</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">res_states</span> <span class="o">=</span> <span class="n">res_states</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">res_states</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>                   
+                <span class="c1"># ..transform..</span>
+                <span class="n">red_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">res_states</span><span class="p">)</span>          
+                <span class="c1"># ..and put back in tensor form</span>
+                <span class="n">red_states</span> <span class="o">=</span> <span class="n">red_states</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N_samples</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">red_states</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>          
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;tenpca&#39;</span><span class="p">:</span>
+                <span class="n">red_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">res_states</span><span class="p">)</span>       
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># Skip dimensionality reduction</span>
+            <span class="n">red_states</span> <span class="o">=</span> <span class="n">res_states</span>
+
+        <span class="c1"># ============ Generate representation of the MTS ============</span>
+        <span class="n">coeff_tr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">biases_tr</span> <span class="o">=</span> <span class="p">[]</span>   
+        
+        <span class="c1"># Output model space representation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;output&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bidir</span><span class="p">:</span>
+                <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X</span><span class="p">,</span><span class="n">X</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>                
+                
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">red_states</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="o">+</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span>
+                <span class="n">coeff_tr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+                <span class="n">biases_tr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">intercept_</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+            <span class="n">input_repr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">coeff_tr</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">biases_tr</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            
+        <span class="c1"># Reservoir model space representation</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;reservoir&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">red_states</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">red_states</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span>
+                <span class="n">coeff_tr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+                <span class="n">biases_tr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">intercept_</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+            <span class="n">input_repr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">coeff_tr</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">biases_tr</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Last state representation        </span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;last&#39;</span><span class="p">:</span>
+            <span class="n">input_repr</span> <span class="o">=</span> <span class="n">red_states</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+            
+        <span class="c1"># Mean state representation        </span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span>
+            <span class="n">input_repr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">red_states</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Invalid representation ID&#39;</span><span class="p">)</span>            
+            
+        <span class="c1"># ============ Train readout ============</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># Just store the input representations</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_repr</span> <span class="o">=</span> <span class="n">input_repr</span>
+            
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="o">==</span> <span class="s1">&#39;lin&#39;</span><span class="p">:</span> <span class="c1"># Ridge regression</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">input_repr</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>          
+            
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="o">==</span> <span class="s1">&#39;svm&#39;</span><span class="p">:</span> <span class="c1"># SVM readout</span>
+            <span class="n">Ktr</span> <span class="o">=</span> <span class="n">squareform</span><span class="p">(</span><span class="n">pdist</span><span class="p">(</span><span class="n">input_repr</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;sqeuclidean&#39;</span><span class="p">))</span> 
+            <span class="n">Ktr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">svm_gamma</span><span class="o">*</span><span class="n">Ktr</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Ktr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_repr_tr</span> <span class="o">=</span> <span class="n">input_repr</span> <span class="c1"># store them to build test kernel</span>
+            
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="o">==</span> <span class="s1">&#39;mlp&#39;</span><span class="p">:</span> <span class="c1"># MLP (deep readout)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">input_repr</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+                        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">tot_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">time_start</span><span class="p">)</span><span class="o">/</span><span class="mi">60</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training completed in </span><span class="si">{</span><span class="n">tot_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> min&quot;</span><span class="p">)</span></div>
+
+
+            
+<div class="viewcode-block" id="RC_model.predict">
+<a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xte</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes predictions for out-of-sample (test) data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Xte : array-like, shape [N, T, V]</span>
+<span class="sd">            Test data.</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pred_class : array, shape [N]</span>
+<span class="sd">            Predicted classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># ============ Compute reservoir states ============</span>
+        <span class="n">res_states_te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reservoir</span><span class="o">.</span><span class="n">get_states</span><span class="p">(</span><span class="n">Xte</span><span class="p">,</span> <span class="n">n_drop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="p">,</span> <span class="n">bidir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bidir</span><span class="p">)</span> 
+        
+        <span class="c1"># ============ Dimensionality reduction of the reservoir states ============ </span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;pca&#39;</span><span class="p">:</span>
+                <span class="c1"># matricize</span>
+                <span class="n">N_samples_te</span> <span class="o">=</span> <span class="n">res_states_te</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">res_states_te</span> <span class="o">=</span> <span class="n">res_states_te</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">res_states_te</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>                    
+                <span class="c1"># ..transform..</span>
+                <span class="n">red_states_te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">res_states_te</span><span class="p">)</span>            
+                <span class="c1"># ..and put back in tensor form</span>
+                <span class="n">red_states_te</span> <span class="o">=</span> <span class="n">red_states_te</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N_samples_te</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">red_states_te</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>            
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;tenpca&#39;</span><span class="p">:</span>
+                <span class="n">red_states_te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">res_states_te</span><span class="p">)</span>        
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># Skip dimensionality reduction</span>
+            <span class="n">red_states_te</span> <span class="o">=</span> <span class="n">res_states_te</span>             
+        
+        <span class="c1"># ============ Generate representation of the MTS ============</span>
+        <span class="n">coeff_te</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">biases_te</span> <span class="o">=</span> <span class="p">[]</span>   
+        
+        <span class="c1"># Output model space representation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;output&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bidir</span><span class="p">:</span>
+                <span class="n">Xte</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">Xte</span><span class="p">,</span><span class="n">Xte</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  
+                    
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Xte</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">red_states_te</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">Xte</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="o">+</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span>
+                <span class="n">coeff_te</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+                <span class="n">biases_te</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">intercept_</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+            <span class="n">input_repr_te</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">coeff_te</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">biases_te</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Reservoir model space representation</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;reservoir&#39;</span><span class="p">:</span>    
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Xte</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">red_states_te</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">red_states_te</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span>
+                <span class="n">coeff_te</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+                <span class="n">biases_te</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ridge_embedding</span><span class="o">.</span><span class="n">intercept_</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+            <span class="n">input_repr_te</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">coeff_te</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">biases_te</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+        <span class="c1"># Last state representation        </span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;last&#39;</span><span class="p">:</span>
+            <span class="n">input_repr_te</span> <span class="o">=</span> <span class="n">red_states_te</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+            
+        <span class="c1"># Mean state representation        </span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mts_rep</span><span class="o">==</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span>
+            <span class="n">input_repr_te</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">red_states_te</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Invalid representation ID&#39;</span><span class="p">)</span>   
+            
+        <span class="c1"># ============ Apply readout ============</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="o">==</span> <span class="s1">&#39;lin&#39;</span><span class="p">:</span> <span class="c1"># Ridge regression        </span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">input_repr_te</span><span class="p">)</span>
+            <span class="n">pred_class</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="o">==</span> <span class="s1">&#39;svm&#39;</span><span class="p">:</span> <span class="c1"># SVM readout</span>
+            <span class="n">Kte</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">input_repr_te</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_repr_tr</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;sqeuclidean&#39;</span><span class="p">)</span>
+            <span class="n">Kte</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">svm_gamma</span><span class="o">*</span><span class="n">Kte</span><span class="p">)</span>
+            <span class="n">pred_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Kte</span><span class="p">)</span>
+            
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout_type</span> <span class="o">==</span> <span class="s1">&#39;mlp&#39;</span><span class="p">:</span> <span class="c1"># MLP (deep readout)</span>
+            <span class="n">pred_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">input_repr_te</span><span class="p">)</span>
+            <span class="n">pred_class</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">pred_class</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">pred_class</span></div>
+</div>
+
+    
+
+<div class="viewcode-block" id="RC_forecaster">
+<a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster">[docs]</a>
+<span class="k">class</span> <span class="nc">RC_forecaster</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to perform time series forecasting with RC.</span>
+
+<span class="sd">    The training and test data are multidimensional arrays of shape [T,V], with</span>
+<span class="sd">        - T = number of time steps in each sample</span>
+<span class="sd">        - V = number of variables in each sample</span>
+<span class="sd">    </span>
+<span class="sd">    Given a time series X, the training data are supposed to be as follows:</span>
+<span class="sd">        Xtr, Ytr = X[0:-forecast_horizon,:], X[forecast_horizon:,:]</span>
+
+<span class="sd">    Once trained, the model can be used to compute prediction forecast_horizon steps ahead:</span>
+<span class="sd">        Yhat[t,:] = Xte[t+forecast_horizon,:]</span>
+<span class="sd">        </span>
+<span class="sd">    Reservoir parameters:</span>
+<span class="sd">        reservoir = precomputed reservoir (oject of class &#39;Reservoir&#39;);</span>
+<span class="sd">            if None, the following structural hyperparameters must be specified</span>
+<span class="sd">        n_internal_units = processing units in the reservoir</span>
+<span class="sd">        spectral_radius = largest eigenvalue of the reservoir matrix of connection weights</span>
+<span class="sd">        leak = amount of leakage in the reservoir state update (optional)</span>
+<span class="sd">        connectivity = percentage of nonzero connection weights</span>
+<span class="sd">        input_scaling = scaling of the input connection weights</span>
+<span class="sd">        noise_level = deviation of the Gaussian noise injected in the state update</span>
+<span class="sd">        n_drop = number of transient states to drop</span>
+<span class="sd">            </span>
+<span class="sd">    Dimensionality reduction parameters:</span>
+<span class="sd">        dimred_method = procedure for reducing the number of features in the sequence of reservoir states;</span>
+<span class="sd">            possible options are: None (no dimensionality reduction) or &#39;pca&#39;</span>
+<span class="sd">        n_dim = number of resulting dimensions after the dimensionality reduction procedure</span>
+<span class="sd">        </span>
+<span class="sd">    Readout parameters:</span>
+<span class="sd">        w_ridge = regularization parameter of the ridge regression readout (only for readout_type==&#39;lin&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="c1"># reservoir</span>
+                <span class="n">reservoir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>     
+                <span class="n">n_internal_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">spectral_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">leak</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">connectivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">input_scaling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">noise_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">n_drop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">circle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="c1"># dim red</span>
+                <span class="n">dimred_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                <span class="n">n_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="c1"># readout              </span>
+                <span class="n">w_ridge</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="o">=</span><span class="n">n_drop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span><span class="o">=</span><span class="n">dimred_method</span>  
+                        
+        <span class="c1"># Initialize reservoir</span>
+        <span class="k">if</span> <span class="n">reservoir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reservoir</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">(</span><span class="n">n_internal_units</span><span class="o">=</span><span class="n">n_internal_units</span><span class="p">,</span>
+                                        <span class="n">spectral_radius</span><span class="o">=</span><span class="n">spectral_radius</span><span class="p">,</span>
+                                        <span class="n">leak</span><span class="o">=</span><span class="n">leak</span><span class="p">,</span>
+                                        <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">,</span>
+                                        <span class="n">input_scaling</span><span class="o">=</span><span class="n">input_scaling</span><span class="p">,</span>
+                                        <span class="n">noise_level</span><span class="o">=</span><span class="n">noise_level</span><span class="p">,</span>
+                                        <span class="n">circle</span><span class="o">=</span><span class="n">circle</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reservoir</span> <span class="o">=</span> <span class="n">reservoir</span>
+                
+        <span class="c1"># Initialize dimensionality reduction method</span>
+        <span class="k">if</span> <span class="n">dimred_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dimred_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;pca&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_dim</span><span class="p">)</span>            
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Invalid dimred method ID&#39;</span><span class="p">)</span>
+            
+        <span class="c1"># Initialize readout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readout</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">w_ridge</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RC_forecaster.fit">
+<a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Train the RC model for forecasting.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [T, V]</span>
+<span class="sd">            Training data.</span>
+<span class="sd">        </span>
+<span class="sd">        Y : array-like, shape [T, V]</span>
+<span class="sd">            Target values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        
+        <span class="c1"># ============ Compute reservoir states ============ </span>
+        <span class="n">res_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reservoir</span><span class="o">.</span><span class="n">get_states</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="kc">None</span><span class="p">,:,:],</span> <span class="n">n_drop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="p">,</span> <span class="n">bidir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+        <span class="c1"># ============ Dimensionality reduction of the reservoir states ============  </span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;pca&#39;</span><span class="p">:</span>
+                <span class="n">red_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">res_states</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>          
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># Skip dimensionality reduction</span>
+            <span class="n">red_states</span> <span class="o">=</span> <span class="n">res_states</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># ============ Train readout ============</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">red_states</span><span class="p">,</span> <span class="n">Y</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="p">:,:])</span>          
+            
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">tot_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">time_start</span><span class="p">)</span><span class="o">/</span><span class="mi">60</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training completed in </span><span class="si">{</span><span class="n">tot_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> min&quot;</span><span class="p">)</span></div>
+
+    
+    
+<div class="viewcode-block" id="RC_forecaster.predict">
+<a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xte</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute predictions for test data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Xte : array-like, shape [T, V]</span>
+<span class="sd">            Test data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Yhat : array, shape [T, V]</span>
+<span class="sd">            Predicted values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># ============ Compute reservoir states ============</span>
+        <span class="n">res_states_te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reservoir</span><span class="o">.</span><span class="n">get_states</span><span class="p">(</span><span class="n">Xte</span><span class="p">[</span><span class="kc">None</span><span class="p">,:,:],</span> <span class="n">n_drop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="p">,</span> <span class="n">bidir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+        
+        <span class="c1"># ============ Dimensionality reduction of the reservoir states ============ </span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimred_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;pca&#39;</span><span class="p">:</span>
+                <span class="n">red_states_te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">res_states_te</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>                          
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># Skip dimensionality reduction</span>
+            <span class="n">red_states_te</span> <span class="o">=</span> <span class="n">res_states_te</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        
+                    
+        <span class="c1"># ============ Apply readout ============</span>
+        <span class="n">Yhat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">red_states_te</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">Yhat</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Filippo Maria Bianchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

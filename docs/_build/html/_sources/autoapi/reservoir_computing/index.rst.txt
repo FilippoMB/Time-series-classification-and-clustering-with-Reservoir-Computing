@@ -1,0 +1,18 @@
+:py:mod:`reservoir_computing`
+=============================
+
+.. py:module:: reservoir_computing
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   modules/index.rst
+   reservoir/index.rst
+   tensorPCA/index.rst
+   utils/index.rst
+
+

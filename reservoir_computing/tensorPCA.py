@@ -15,7 +15,7 @@ class tensorPCA:
             - V: number of variables in the time series
 
         Parameters:
-        ----------
+        ------------
         n_components = int
             Number of components to keep after the dimensionality reduction.
         """
@@ -27,7 +27,7 @@ class tensorPCA:
         Fit the tensorPCA model to the input dataset X.
         
         Parameters:
-        ----------
+        ------------
         X = array
             Time series, 3D array of shape (N,T,V), where N is the number of time series,
             T is the length of each time series, and V is the number of variables in each.

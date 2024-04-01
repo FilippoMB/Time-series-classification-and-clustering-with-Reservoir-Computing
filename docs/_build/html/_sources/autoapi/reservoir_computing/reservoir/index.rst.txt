@@ -1,0 +1,70 @@
+:py:mod:`reservoir_computing.reservoir`
+=======================================
+
+.. py:module:: reservoir_computing.reservoir
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   reservoir_computing.reservoir.Reservoir
+
+
+
+
+.. py:class:: Reservoir(n_internal_units=100, spectral_radius=0.99, leak=None, connectivity=0.3, input_scaling=0.2, noise_level=0.0, circle=False)
+
+
+   Bases: :py:obj:`object`
+
+   .. py:method:: _initialize_internal_weights_Circ(n_internal_units, spectral_radius)
+
+      Generate internal weights with circular topology.
+
+
+
+   .. py:method:: _initialize_internal_weights(n_internal_units, connectivity, spectral_radius)
+
+      Generate internal weights with a sparse, uniformly random topology.
+
+
+
+   .. py:method:: _compute_state_matrix(X, n_drop=0, previous_state=None)
+
+      Compute the reservoir states on input data X.
+
+
+
+   .. py:method:: get_states(X, n_drop=0, bidir=True, initial_state=None)
+
+      Compute reservoir states and return them.
+
+      Parameters:
+      ------------
+      X = array
+          Time series, 3D array of shape (N,T,V), where N is the number of time series,
+          T is the length of each time series, and V is the number of variables in each
+          time point.
+      n_drop = int (default is 0)
+          Washout period, i.e., number of initial samples to drop
+          due to the transient phase.
+      bidir = bool (default is True)
+          If True, use bidirectional reservoir
+      initial_state = array (default is None)
+          Initialize the first state of the reservoir to the given value.
+          If None, the initial states is a zero-vector.
+
+      Returns:
+      ------------
+      states = array
+          Reservoir states, 3D array of shape (N,T,n_internal_units), where N is the number
+          of time series, T is the length of each time series, and n_internal_units is the
+          number of processing units in the reservoir.
+
+
+

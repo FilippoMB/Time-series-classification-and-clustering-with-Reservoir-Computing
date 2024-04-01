@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reservoir_computing.utils &mdash; reservoir_computing  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Advanced classification models" href="../../../examples/advanced_classifiers.html" />
+    <link rel="prev" title="reservoir_computing.tensorPCA" href="../tensorPCA/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            reservoir_computing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../modules/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.modules</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reservoir/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.reservoir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tensorPCA/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.tensorPCA</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/advanced_classifiers.html">Advanced classification models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/clustering_visualization.html">Cluster analysis and visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">reservoir_computing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.utils</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/reservoir_computing/utils/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-reservoir_computing.utils">
+<span id="reservoir-computing-utils"></span><h1><a class="reference internal" href="#module-reservoir_computing.utils" title="reservoir_computing.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.utils</span></code></a><a class="headerlink" href="#module-reservoir_computing.utils" title="Link to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.utils.compute_test_scores" title="reservoir_computing.utils.compute_test_scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_test_scores</span></code></a>(pred_class, Yte)</p></td>
+<td><p>Wrapper to compute classification accuracy and F1 score</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#reservoir_computing.utils.forecasting_datasets" title="reservoir_computing.utils.forecasting_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forecasting_datasets</span></code></a>(X, horizon[, test_percent, ...])</p></td>
+<td><p>This function does the following:</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="reservoir_computing.utils.compute_test_scores">
+<span class="sig-prename descclassname"><span class="pre">reservoir_computing.utils.</span></span><span class="sig-name descname"><span class="pre">compute_test_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Yte</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/utils.html#compute_test_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.utils.compute_test_scores" title="Link to this definition"></a></dt>
+<dd><p>Wrapper to compute classification accuracy and F1 score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred_class</strong> (<em>array</em>) – Predicted class labels</p></li>
+<li><p><strong>Yte</strong> (<em>array</em>) – True class labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>accuracy</strong> (<em>float</em>) – Classification accuracy</p></li>
+<li><p><strong>f1</strong> (<em>float</em>) – F1 score</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reservoir_computing.utils.forecasting_datasets">
+<span class="sig-prename descclassname"><span class="pre">reservoir_computing.utils.</span></span><span class="sig-name descname"><span class="pre">forecasting_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/utils.html#forecasting_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.utils.forecasting_datasets" title="Link to this definition"></a></dt>
+<dd><p>This function does the following:
+1. Splits the dataset in training, validation and test sets
+2. Shift the target data by ‘horizon’ to create the forecasting problem
+3. Normalizes the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array</em>) – Input data</p></li>
+<li><p><strong>horizon</strong> (<em>int</em>) – Forecasting horizon</p></li>
+<li><p><strong>test_percent</strong> (<em>float</em>) – Percentage of the data to be used for testing</p></li>
+<li><p><strong>val_percent</strong> (<em>float</em>) – Percentage of the data to be used for validation
+If 0, no validation set is created</p></li>
+<li><p><strong>scaler</strong> (<em>a scaler object from sklearn.preprocessing</em>) – Scaler object to normalize the data
+If None, a StandardScaler is created</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>Xtr</strong> (<em>array</em>) – Training input data</p></li>
+<li><p><strong>Ytr</strong> (<em>array</em>) – Training target data</p></li>
+<li><p><strong>Xte</strong> (<em>array</em>) – Test input data</p></li>
+<li><p><strong>Yte</strong> (<em>array</em>) – Test target data</p></li>
+<li><p><strong>scaler</strong> (<em>a scaler object from sklearn.preprocessing</em>) – Scaler object used to normalize the data</p></li>
+<li><p><strong>Xval</strong> (<em>array (optional)</em>) – Validation input data</p></li>
+<li><p><strong>Yval</strong> (<em>array (optional)</em>) – Validation target data</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tensorPCA/index.html" class="btn btn-neutral float-left" title="reservoir_computing.tensorPCA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../../examples/advanced_classifiers.html" class="btn btn-neutral float-right" title="Advanced classification models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Filippo Maria Bianchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

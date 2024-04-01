@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reservoir_computing.modules &mdash; reservoir_computing  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="reservoir_computing.reservoir" href="../reservoir/index.html" />
+    <link rel="prev" title="reservoir_computing" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            reservoir_computing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.modules</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reservoir/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.reservoir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tensorPCA/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.tensorPCA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/advanced_classifiers.html">Advanced classification models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/clustering_visualization.html">Cluster analysis and visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">reservoir_computing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.modules</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/reservoir_computing/modules/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-reservoir_computing.modules">
+<span id="reservoir-computing-modules"></span><h1><a class="reference internal" href="#module-reservoir_computing.modules" title="reservoir_computing.modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.modules</span></code></a><a class="headerlink" href="#module-reservoir_computing.modules" title="Link to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.modules.RC_model" title="reservoir_computing.modules.RC_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RC_model</span></code></a></p></td>
+<td><p>Build and evaluate a RC-based model for time series classification or clustering.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#reservoir_computing.modules.RC_forecaster" title="reservoir_computing.modules.RC_forecaster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RC_forecaster</span></code></a></p></td>
+<td><p>Class to perform time series forecasting with RC.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="reservoir_computing.modules.RC_model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reservoir_computing.modules.</span></span><span class="sig-name descname"><span class="pre">RC_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reservoir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_internal_units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_scaling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimred_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mts_rep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_ridge_embedding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readout_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_ridge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlp_layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_l2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonlinearity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svm_gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svm_C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_model" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Build and evaluate a RC-based model for time series classification or clustering.</p>
+<p>The training and test Multivariate Time Series (MTS) are multidimensional arrays of shape [N,T,V], where N is the number of samples, T is the number of time steps in each sample, V is the number of variables in each sample.</p>
+<p>Training and test labels have shape [N,C], with C being the number of classes.</p>
+<p>The dataset consists of training data and respective labels (X, Y) and test data and respective labels (Xte, Yte).</p>
+<p><strong>Reservoir parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reservoir</strong> – Precomputed reservoir (object of class ‘Reservoir’). If None, the following structural hyperparameters must be specified.</p></li>
+<li><p><strong>n_internal_units</strong> – Processing units in the reservoir.</p></li>
+<li><p><strong>spectral_radius</strong> – Largest eigenvalue of the reservoir matrix of connection weights.</p></li>
+<li><p><strong>leak</strong> – Amount of leakage in the reservoir state update (optional).</p></li>
+<li><p><strong>connectivity</strong> – Percentage of nonzero connection weights.</p></li>
+<li><p><strong>input_scaling</strong> – Scaling of the input connection weights.</p></li>
+<li><p><strong>noise_level</strong> – Deviation of the Gaussian noise injected in the state update.</p></li>
+<li><p><strong>n_drop</strong> – Number of transient states to drop.</p></li>
+<li><p><strong>bidir</strong> – Use a bidirectional reservoir (True or False).</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Dimensionality reduction parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dimred_method</strong> – Procedure for reducing the number of features in the sequence of reservoir states. Possible options are: None (no dimensionality reduction), ‘pca’, or ‘tenpca’.</p></li>
+<li><p><strong>n_dim</strong> – Number of resulting dimensions after the dimensionality reduction procedure.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Representation parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mts_rep</strong> – Type of MTS representation. It can be ‘last’ (last state), ‘output’ (output model space), or ‘reservoir’ (reservoir model space).</p></li>
+<li><p><strong>w_ridge_embedding</strong> – Regularization parameter of the ridge regression in the output model space and reservoir model space representation; ignored if mts_rep == None.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Readout parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>readout_type</strong> – Type of readout used for classification. It can be ‘lin’ (ridge regression), ‘mlp’ (multiplayer perceptron), ‘svm’ (support vector machine), or None. If None, the input representations will be saved instead: this is useful for clustering and visualization.</p></li>
+<li><p><strong>w_ridge</strong> – Regularization parameter of the ridge regression readout (only for readout_type==’lin’).</p></li>
+<li><p><strong>mlp_layout</strong> – Tuple with the sizes of MLP layers, e.g., (20, 10) defines a MLP with 2 layers of 20 and 10 units respectively (only for readout_type==’mlp’).</p></li>
+<li><p><strong>num_epochs</strong> – Number of iterations during the optimization (only for readout_type==’mlp’).</p></li>
+<li><p><strong>w_l2</strong> – Weight of the L2 regularization (only for readout_type==’mlp’).</p></li>
+<li><p><strong>nonlinearity</strong> – Type of activation function {‘relu’, ‘tanh’, ‘logistic’, ‘identity’} (only for readout_type==’mlp’).</p></li>
+<li><p><strong>svm_gamma</strong> – Bandwidth of the RBF kernel (only for readout_type==’svm’).</p></li>
+<li><p><strong>svm_C</strong> – Regularization for SVM hyperplane (only for readout_type==’svm’).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.modules.RC_model.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_model.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_model.fit" title="Link to this definition"></a></dt>
+<dd><p>Train the RC model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> [</em><em>N</em><em>, </em><em>T</em><em>, </em><em>V</em><em>]</em>) – Training data.</p></li>
+<li><p><strong>Y</strong> (<em>array-like</em><em>, </em><em>shape</em><em> [</em><em>N</em><em>, </em><em>C</em><em>]</em>) – Target values.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.modules.RC_model.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Xte</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_model.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_model.predict" title="Link to this definition"></a></dt>
+<dd><p>Computes predictions for out-of-sample (test) data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Xte</strong> (<em>array-like</em><em>, </em><em>shape</em><em> [</em><em>N</em><em>, </em><em>T</em><em>, </em><em>V</em><em>]</em>) – Test data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pred_class</strong> – Predicted classes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array, shape [N]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="reservoir_computing.modules.RC_forecaster">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reservoir_computing.modules.</span></span><span class="sig-name descname"><span class="pre">RC_forecaster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reservoir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_internal_units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_scaling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimred_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_ridge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_forecaster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_forecaster" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to perform time series forecasting with RC.</p>
+<p>The training and test data are multidimensional arrays of shape [T,V], with
+- T = number of time steps in each sample,
+- V = number of variables in each sample.</p>
+<p>Given a time series X, the training data are supposed to be as follows:
+Xtr, Ytr = X[0:-forecast_horizon,:], X[forecast_horizon:,:]</p>
+<p>Once trained, the model can be used to compute prediction forecast_horizon steps ahead:
+Yhat[t,:] = Xte[t+forecast_horizon,:]</p>
+<p><strong>Reservoir parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reservoir</strong> – Precomputed reservoir (object of class ‘Reservoir’); if None, the following structural hyperparameters must be specified.</p></li>
+<li><p><strong>n_internal_units</strong> – Processing units in the reservoir.</p></li>
+<li><p><strong>spectral_radius</strong> – Largest eigenvalue of the reservoir matrix of connection weights.</p></li>
+<li><p><strong>leak</strong> – Amount of leakage in the reservoir state update (optional).</p></li>
+<li><p><strong>connectivity</strong> – Percentage of nonzero connection weights.</p></li>
+<li><p><strong>input_scaling</strong> – Scaling of the input connection weights.</p></li>
+<li><p><strong>noise_level</strong> – Deviation of the Gaussian noise injected in the state update.</p></li>
+<li><p><strong>n_drop</strong> – Number of transient states to drop.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Dimensionality reduction parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dimred_method</strong> – Procedure for reducing the number of features in the sequence of reservoir states; possible options are: None (no dimensionality reduction) or ‘pca’.</p></li>
+<li><p><strong>n_dim</strong> – Number of resulting dimensions after the dimensionality reduction procedure.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Readout parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>w_ridge</strong> – Regularization parameter of the ridge regression readout (only for readout_type==’lin’).</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.modules.RC_forecaster.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_forecaster.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_forecaster.fit" title="Link to this definition"></a></dt>
+<dd><p>Train the RC model for forecasting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> [</em><em>T</em><em>, </em><em>V</em><em>]</em>) – Training data.</p></li>
+<li><p><strong>Y</strong> (<em>array-like</em><em>, </em><em>shape</em><em> [</em><em>T</em><em>, </em><em>V</em><em>]</em>) – Target values.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.modules.RC_forecaster.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Xte</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/modules.html#RC_forecaster.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.modules.RC_forecaster.predict" title="Link to this definition"></a></dt>
+<dd><p>Compute predictions for test data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Xte</strong> (<em>array-like</em><em>, </em><em>shape</em><em> [</em><em>T</em><em>, </em><em>V</em><em>]</em>) – Test data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Yhat</strong> – Predicted values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array, shape [T, V]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="reservoir_computing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../reservoir/index.html" class="btn btn-neutral float-right" title="reservoir_computing.reservoir" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Filippo Maria Bianchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
