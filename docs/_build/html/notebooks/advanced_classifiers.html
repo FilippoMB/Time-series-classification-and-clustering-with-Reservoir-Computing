@@ -51,7 +51,12 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced classification models</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced classification models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#linear-readout">Linear readout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#support-vector-classifier-readout">Support Vector Classifier readout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-layer-perceptron-readout">Multi Layer Perceptron readout</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="clustering_visualization.html">Cluster analysis and visualization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
 </ul>
@@ -127,6 +132,8 @@
 </div>
 </div>
 </div>
+<section id="linear-readout">
+<h2>Linear readout<a class="headerlink" href="#linear-readout" title="Link to this heading"></a></h2>
 <p>We will start using a simple linear classifier as the readout. In particular, we will use the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeClassifier.html">RidgeClassifier</a> from sklearn. The classifier requires to define a regularization parameter that we call <code class="docutils literal notranslate"><span class="pre">w_ridge</span></code> (but in sklearn is called <code class="docutils literal notranslate"><span class="pre">alpha</span></code>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -221,6 +228,9 @@ Data shapes:
 </div>
 <p>That is a pretty high accuracy. Even a simple model such as the RidgeClassifier can classify almost perfectly the test data thanks to the powerful representational power of the representation provided by the RC model.</p>
 <p>Next, we will try more classifiers more powerful than the RidgeClassifier. In this example, we do not expect to see extreme changes in the performance since the classification performance is already very high. However, in more complex tasks using a more powerful classifier can bring substantial benefits.</p>
+</section>
+<section id="support-vector-classifier-readout">
+<h2>Support Vector Classifier readout<a class="headerlink" href="#support-vector-classifier-readout" title="Link to this heading"></a></h2>
 <p>We will start with <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">SVC</a> the Support Vector Machine Classifier of sklearn.</p>
 <p>The first thing is to define the hyperparameters of the new classifier and pass them to the RC model.</p>
 <div class="cell docutils container">
@@ -272,6 +282,9 @@ Accuracy = 0.954, F1 = 0.955
 </div>
 </div>
 <p>As expected, the performance is still good but not much different from the one we got earlier.</p>
+</section>
+<section id="multi-layer-perceptron-readout">
+<h2>Multi Layer Perceptron readout<a class="headerlink" href="#multi-layer-perceptron-readout" title="Link to this heading"></a></h2>
 <p>Next, we can use a simple neural network as the classifier. We will use the Multilayer Perceptron (<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html">MLPClassifier</a>) from sklearn.</p>
 <p>In this case, we have more hyperparameters to tune. To find the optimal ones when dealing with a real-world application you should do a proper hyperparameter search using a validation set.</p>
 <div class="cell docutils container">
@@ -320,14 +333,15 @@ Accuracy = 0.954, F1 = 0.955
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training completed in 0.11 min
-Accuracy = 0.968, F1 = 0.969
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training completed in 0.12 min
+Accuracy = 0.959, F1 = 0.961
 </pre></div>
 </div>
 </div>
 </div>
 <p>Also in this case, the classifier obtains good performance but not too different from the previous cases.</p>
 <p>More complicated models such as SVC and an MLP requires a proper tuning but, on difficult task, can achieve better performance compared to a simple linear classifier.</p>
+</section>
 </section>
 
 

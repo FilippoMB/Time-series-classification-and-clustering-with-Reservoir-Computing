@@ -55,7 +55,6 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clustering_visualization.html">Cluster analysis and visualization</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Probabilistic forecasting with GBRT</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#load-the-data">Load the data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#prepare-the-datasets">Prepare the datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#define-the-reservoir">Define the Reservoir</a></li>
@@ -92,11 +91,9 @@
              
   <section class="tex2jax_ignore mathjax_ignore" id="probabilistic-forecasting-with-gbrt">
 <h1>Probabilistic forecasting with GBRT<a class="headerlink" href="#probabilistic-forecasting-with-gbrt" title="Link to this heading"></a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>The class <code class="docutils literal notranslate"><span class="pre">reservoir_computing.RC_forecaster</span></code> allows to quickly perform forecasting by fitting a linear model that maps the reservoir states into the predictions. The linear is implemented as the ridge regressor from sklearn <code class="docutils literal notranslate"><span class="pre">sklearn.linear_model.Ridge</span></code>.</p>
 <p>It is however possible to use other regression models from sklearn, including those that computes confidence intervals obtaining, in this way, a probabilistic forecasting.</p>
-<p>In this notebook we will use <code class="docutils literal notranslate"><span class="pre">sklearn.ensemble.HistGradientBoostingRegressor</span></code>, a Gradient Boost Regression Tree (GBRT) that allows to compute different quantiles.</p>
+<p>In this example we will use <code class="docutils literal notranslate"><span class="pre">sklearn.ensemble.HistGradientBoostingRegressor</span></code>, a Gradient Boost Regression Tree (GBRT) that allows to compute different quantiles.</p>
 <p>Let’s start by importing the necessary libraries.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -117,7 +114,6 @@
 </div>
 </div>
 </div>
-</section>
 <section id="load-the-data">
 <h2>Load the data<a class="headerlink" href="#load-the-data" title="Link to this heading"></a></h2>
 <ul class="simple">

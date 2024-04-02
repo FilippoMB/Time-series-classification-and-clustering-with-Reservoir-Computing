@@ -18,7 +18,7 @@ Classes
 
 
 
-.. py:class:: RC_model(reservoir=None, n_internal_units=None, spectral_radius=None, leak=None, connectivity=None, input_scaling=None, noise_level=None, n_drop=None, bidir=False, circle=False, dimred_method=None, n_dim=None, mts_rep=None, w_ridge_embedding=None, readout_type=None, w_ridge=None, mlp_layout=None, num_epochs=None, w_l2=None, nonlinearity=None, svm_gamma=1.0, svm_C=1.0)
+.. py:class:: RC_model(reservoir=None, n_internal_units=100, spectral_radius=0.99, leak=None, connectivity=0.3, input_scaling=0.2, noise_level=0.0, n_drop=0, bidir=False, circle=False, dimred_method=None, n_dim=None, mts_rep='mean', w_ridge_embedding=1.0, readout_type='lin', w_ridge=1.0, mlp_layout=None, num_epochs=None, w_l2=None, nonlinearity=None, svm_gamma=1.0, svm_C=1.0)
 
 
    Bases: :py:obj:`object`
@@ -33,43 +33,72 @@ Classes
 
    **Reservoir parameters:**
 
-   :param reservoir: (object of class ``Reservoir``) Precomputed reservoir. If ``None``, the following structural hyperparameters must be specified.
-   :param n_internal_units: (int) Processing units in the reservoir.
-   :param spectral_radius: (float) Largest eigenvalue of the reservoir matrix of connection weights.
-   :param leak: (float) Amount of leakage in the reservoir state update (optional).
-   :param connectivity: (float) Percentage of nonzero connection weights.
-   :param input_scaling: (float) Scaling of the input connection weights.
-   :param noise_level: (float) Deviation of the Gaussian noise injected in the state update.
-   :param n_drop: (int) Number of transient states to drop.
-   :param bidir: (bool) Use a bidirectional reservoir (``True``) or a standard one (``False``).
+   :param reservoir: object of class ``Reservoir`` (default ``None``)
+       Precomputed reservoir. If ``None``, the following structural hyperparameters must be specified.
+   :param n_internal_units: int (default ``100``)
+       Processing units in the reservoir.
+   :param spectral_radius: float (default ``0.99``)
+       Largest eigenvalue of the reservoir matrix of connection weights.
+   :param leak: float (default ``None``)
+       Amount of leakage in the reservoir state update.
+       If ``None`` or ``1.0``, no leakage is used.
+   :param connectivity: float (default ``0.3``)
+       Percentage of nonzero connection weights.
+       Unused in circle reservoir.
+   :param input_scaling: float (default ``0.2``)
+       Scaling of the input connection weights.
+   :param noise_level: float (default ``0.0``)
+       Standard deviation of the Gaussian noise injected in the state update.
+   :param n_drop: int (default ``0``)
+       Number of transient states to drop.
+   :param bidir: bool (default ``False``)
+       Use a bidirectional reservoir (``True``) or a standard one (``False``).
+   :param circle: bool (default ``False``)
+       Generate determinisitc reservoir with circle topology.
 
    **Dimensionality reduction parameters:**
 
-   :param dimred_method: (str) Procedure for reducing the number of features in the sequence of reservoir states. Possible options are: ``None`` (no dimensionality reduction), ``'pca'``, or ``'tenpca'`` (TensorPCA).
-   :param n_dim: (int) Number of resulting dimensions after the dimensionality reduction procedure.
+   :param dimred_method: str (default ``None``)
+       Procedure for reducing the number of features in the sequence of reservoir states.
+       Possible options are: ``None`` (no dimensionality reduction), ``'pca'``, or ``'tenpca'`` (TensorPCA).
+   :param n_dim: int (default ``None``)
+       Number of resulting dimensions after the dimensionality reduction procedure.
 
    **Representation parameters:**
 
-   :param mts_rep: (str) Type of MTS representation. It can be ``'last'`` (last state), ``'output'`` (output model space), or ``'reservoir'`` (reservoir model space).
-   :param w_ridge_embedding: (float) Regularization parameter of the ridge regression in the output model space and reservoir model space representation; ignored if ``mts_rep == None``.
+   :param mts_rep: str (default ``None``)
+       Type of MTS representation.
+       It can be ``'last'`` (last state), ``'mean'`` (mean of the states),
+       ``'output'`` (output model space), or ``'reservoir'`` (reservoir model space).
+   :param w_ridge_embedding: float (default ``1.0``)
+       Regularization parameter of the ridge regression in the output model space
+       and reservoir model space representation; ignored if ``mts_rep == None``.
 
    **Readout parameters:**
 
-   :param readout_type: (str) Type of readout used for classification. It can be ``'lin'`` (ridge regression), ``'mlp'`` (multiplayer perceptron), ``'svm'`` (support vector machine), or ``None``. If ``None``, the input representations will be saved instead: this is useful for clustering and visualization.
-   :param w_ridge: (float) Regularization parameter of the ridge regression readout (only for ``readout_type=='lin'``).
-   :param mlp_layout: (tuple) Tuple with the sizes of MLP layers, e.g., ``(20, 10)`` defines a MLP with 2 layers of 20 and 10 units respectively (only for ``readout_type=='mlp'``).
-   :param num_epochs: (int) Number of iterations during the optimization (only for ``readout_type=='mlp'``).
-   :param w_l2: (float) Weight of the L2 regularization (only for ``readout_type=='mlp'``).
-   :param nonlinearity: (str) Type of activation function ``{'relu', 'tanh', 'logistic', 'identity'}`` (only for ``readout_type=='mlp'``).
-   :param svm_gamma: (float) Bandwidth of the RBF kernel (only for ``readout_type=='svm'``).
-   :param svm_C: (float) Regularization for SVM hyperplane (only for ``readout_type=='svm'``).
+   :param readout_type: str (default ``'lin'``)
+       Type of readout used for classification. It can be ``'lin'`` (ridge regression), ``'mlp'`` (multiplayer perceptron), ``'svm'`` (support vector machine), or ``None``. If ``None``, the input representations will be saved instead: this is useful for clustering and visualization.
+   :param w_ridge: float (default ``1.0``)
+       Regularization parameter of the ridge regression readout (only for ``readout_type=='lin'``).
+   :param mlp_layout: tuple (default ``None``)
+       Tuple with the sizes of MLP layers, e.g., ``(20, 10)`` defines a MLP with 2 layers of 20 and 10 units respectively (only for ``readout_type=='mlp'``).
+   :param num_epochs: int (default ``None``)
+       Number of iterations during the optimization (only for ``readout_type=='mlp'``).
+   :param w_l2: float (default ``None``)
+       Weight of the L2 regularization (only for ``readout_type=='mlp'``).
+   :param nonlinearity: str (default ``None``)
+       Type of activation function ``{'relu', 'tanh', 'logistic', 'identity'}`` (only for ``readout_type=='mlp'``).
+   :param svm_gamma: float (default ``1.0``)
+       Bandwidth of the RBF kernel (only for ``readout_type=='svm'``).
+   :param svm_C: float (default ``1.0``)
+       Regularization for SVM hyperplane (only for ``readout_type=='svm'``).
 
    .. py:method:: fit(X, Y=None, verbose=True)
 
       Train the RC model.
 
       Parameters:
-      ----------
+      -----------
       X : np.ndarray
           Array of of shape ``[N, T, V]`` representin the training data.
 
@@ -80,7 +109,7 @@ Classes
           If ``True``, print the training time.
 
       Returns:
-      -------
+      --------
       None
 
 
@@ -89,18 +118,18 @@ Classes
       Computes predictions for out-of-sample (test) data.
 
       Parameters:
-      ----------
+      -----------
       Xte : np.ndarray
           Array of shape ``[N, T, V]`` representing the test data.
 
       Returns:
-      -------
+      --------
       pred_class : np.ndarray
           Array of shape ``[N]`` representing the predicted classes.
 
 
 
-.. py:class:: RC_forecaster(reservoir=None, n_internal_units=None, spectral_radius=None, leak=None, connectivity=None, input_scaling=None, noise_level=None, n_drop=None, circle=False, dimred_method=None, n_dim=None, w_ridge=1.0)
+.. py:class:: RC_forecaster(reservoir=None, n_internal_units=100, spectral_radius=0.99, leak=None, connectivity=0.3, input_scaling=0.2, noise_level=0.0, n_drop=0, circle=False, dimred_method=None, n_dim=None, w_ridge=1.0)
 
 
    Bases: :py:obj:`object`
@@ -122,30 +151,44 @@ Classes
 
    **Reservoir parameters:**
 
-   :param reservoir: (object of class ``Reservoir``) Precomputed reservoir. If ``None``, the following structural hyperparameters must be specified.
-   :param n_internal_units: (int) Processing units in the reservoir.
-   :param spectral_radius: (float) Largest eigenvalue of the reservoir matrix of connection weights.
-   :param leak: (float) Amount of leakage in the reservoir state update (optional).
-   :param connectivity: (float) Percentage of nonzero connection weights.
-   :param input_scaling: (float) Scaling of the input connection weights.
-   :param noise_level: (float) Deviation of the Gaussian noise injected in the state update.
-   :param n_drop: (int) Number of transient states to drop.
+   :param reservoir: object of class ``Reservoir`` (default ``None``)
+       Precomputed reservoir. If ``None``, the following structural hyperparameters must be specified.
+   :param n_internal_units: int (default ``100``)
+       Processing units in the reservoir.
+   :param spectral_radius: float (default ``0.99``)
+       Largest eigenvalue of the reservoir matrix of connection weights.
+   :param leak: float (default ``None``)
+       Amount of leakage in the reservoir state update.
+   :param connectivity: float (default ``0.3``)
+       Percentage of nonzero connection weights.
+   :param input_scaling: float (default ``0.2``)
+       Scaling of the input connection weights.
+   :param noise_level: float (default ``0.0``)
+       Standard deviation of the Gaussian noise injected in the state update.
+   :param n_drop: int (default ``0``)
+       Number of transient states to drop.
+   :param circle: bool (default ``False``)
+       Generate determinisitc reservoir with circle topology.
 
    **Dimensionality reduction parameters:**
 
-   :param dimred_method: (str) Procedure for reducing the number of features in the sequence of reservoir states; possible options are: ``None`` (no dimensionality reduction) or ``'pca'``.
-   :param n_dim: (int) Number of resulting dimensions after the dimensionality reduction procedure.
+   :param dimred_method: str (default ``None``)
+       Procedure for reducing the number of features in the sequence of reservoir states.
+       Possible options are: ``None`` (no dimensionality reduction), ``'pca'``, or ``'tenpca'`` (TensorPCA).
+   :param n_dim: int (default ``None``)
+       Number of resulting dimensions after the dimensionality reduction procedure.
 
    **Readout parameters:**
 
-   :param w_ridge: (float) Regularization parameter of the ridge regression readout (only for ``readout_type=='lin'``).
+   :param w_ridge: float (default ``1.0``)
+       Regularization parameter of the ridge regression readout.
 
    .. py:method:: fit(X, Y, verbose=True)
 
       Train the RC model for forecasting.
 
       Parameters:
-      ----------
+      -----------
       X : np.ndarray
           Array of shape ``[T, V]`` representing the training data.
 
@@ -156,7 +199,7 @@ Classes
           If ``True``, print the training time.
 
       Returns:
-      -------
+      --------
       None
 
 
@@ -165,12 +208,12 @@ Classes
       Computes predictions for out-of-sample (test) data.
 
       Parameters:
-      ----------
+      -----------
       Xte : np.ndarray
           Array of shape ``[T, V]`` representing the test data.
 
       Returns:
-      -------
+      --------
       Yhat : np.ndarray
           Array of shape ``[T, V]`` representing the predicted values.
 

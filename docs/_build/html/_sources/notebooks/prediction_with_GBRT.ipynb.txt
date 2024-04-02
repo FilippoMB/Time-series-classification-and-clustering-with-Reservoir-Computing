@@ -6,13 +6,11 @@
    "source": [
     "# Probabilistic forecasting with GBRT\n",
     "\n",
-    "## Introduction\n",
-    "\n",
     "The class `reservoir_computing.RC_forecaster` allows to quickly perform forecasting by fitting a linear model that maps the reservoir states into the predictions. The linear is implemented as the ridge regressor from sklearn `sklearn.linear_model.Ridge`.\n",
     "\n",
     "It is however possible to use other regression models from sklearn, including those that computes confidence intervals obtaining, in this way, a probabilistic forecasting. \n",
     "\n",
-    "In this notebook we will use `sklearn.ensemble.HistGradientBoostingRegressor`, a Gradient Boost Regression Tree (GBRT) that allows to compute different quantiles.\n",
+    "In this example we will use `sklearn.ensemble.HistGradientBoostingRegressor`, a Gradient Boost Regression Tree (GBRT) that allows to compute different quantiles.\n",
     "\n",
     "Let's start by importing the necessary libraries."
    ]

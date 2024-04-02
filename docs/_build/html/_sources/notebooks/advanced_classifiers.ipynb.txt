@@ -11,7 +11,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 51,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -37,7 +37,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 52,
+   "execution_count": 2,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -67,12 +67,14 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "## Linear readout\n",
+    "\n",
     "We will start using a simple linear classifier as the readout. In particular, we will use the [RidgeClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeClassifier.html) from sklearn. The classifier requires to define a regularization parameter that we call `w_ridge` (but in sklearn is called `alpha`)."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 53,
+   "execution_count": 3,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -90,7 +92,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 54,
+   "execution_count": 4,
    "metadata": {},
    "outputs": [
     {
@@ -136,7 +138,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 55,
+   "execution_count": 5,
    "metadata": {},
    "outputs": [
     {
@@ -178,7 +180,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 56,
+   "execution_count": 6,
    "metadata": {},
    "outputs": [
     {
@@ -204,6 +206,8 @@
     "\n",
     "Next, we will try more classifiers more powerful than the RidgeClassifier. In this example, we do not expect to see extreme changes in the performance since the classification performance is already very high. However, in more complex tasks using a more powerful classifier can bring substantial benefits.\n",
     "\n",
+    "## Support Vector Classifier readout\n",
+    "\n",
     "We will start with [SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) the Support Vector Machine Classifier of sklearn.\n",
     "\n",
     "The first thing is to define the hyperparameters of the new classifier and pass them to the RC model."
@@ -211,7 +215,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 57,
+   "execution_count": 7,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -230,7 +234,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 58,
+   "execution_count": 8,
    "metadata": {},
    "outputs": [
     {
@@ -276,6 +280,8 @@
    "source": [
     "As expected, the performance is still good but not much different from the one we got earlier.\n",
     "\n",
+    "## Multi Layer Perceptron readout\n",
+    "\n",
     "Next, we can use a simple neural network as the classifier. We will use the Multilayer Perceptron ([MLPClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html)) from sklearn.\n",
     "\n",
     "In this case, we have more hyperparameters to tune. To find the optimal ones when dealing with a real-world application you should do a proper hyperparameter search using a validation set."
@@ -283,7 +289,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 59,
+   "execution_count": 9,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -304,15 +310,15 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 61,
+   "execution_count": 10,
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Training completed in 0.11 min\n",
-      "Accuracy = 0.968, F1 = 0.969\n"
+      "Training completed in 0.12 min\n",
+      "Accuracy = 0.959, F1 = 0.961\n"
      ]
     }
    ],
