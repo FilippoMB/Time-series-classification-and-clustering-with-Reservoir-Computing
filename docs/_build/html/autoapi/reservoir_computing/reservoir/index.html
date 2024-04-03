@@ -50,6 +50,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.datasets</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../modules/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.modules</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.reservoir</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tensorPCA/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.tensorPCA</span></code></a></li>
@@ -61,11 +62,17 @@
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
 </ul>
 
         </div>
@@ -117,7 +124,8 @@
 <dl>
 <dt>n_internal_units<span class="classifier">int (default <code class="docutils literal notranslate"><span class="pre">100</span></code>)</span></dt><dd><p>Processing units in the reservoir.</p>
 </dd>
-<dt>spectral_radius<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.99</span></code>)</span></dt><dd><p>Largest eigenvalue of the reservoir matrix of connection weights.</p>
+<dt>spectral_radius<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.99</span></code>)</span></dt><dd><p>Largest eigenvalue of the reservoir matrix of connection weights.
+To ensure the Echo State Property, set <code class="docutils literal notranslate"><span class="pre">spectral_radius</span> <span class="pre">&lt;=</span> <span class="pre">leak</span> <span class="pre">&lt;=</span> <span class="pre">1</span></code>)</p>
 </dd>
 <dt>leak<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</span></dt><dd><p>Amount of leakage in the reservoir state update.
 If <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">1.0</span></code>, no leakage is used.</p>
@@ -125,11 +133,13 @@ If <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <dt>connectivity<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.3</span></code>)</span></dt><dd><p>Percentage of nonzero connection weights.
 Unused in circle reservoir.</p>
 </dd>
-<dt>input_scaling<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.2</span></code>)</span></dt><dd><p>Scaling of the input connection weights.</p>
+<dt>input_scaling<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.2</span></code>)</span></dt><dd><p>Scaling of the input connection weights.
+Note that the input weights are randomly drawn from <code class="docutils literal notranslate"><span class="pre">{-1,1}</span></code>.</p>
 </dd>
 <dt>noise_level<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.0</span></code>)</span></dt><dd><p>Standard deviation of the Gaussian noise injected in the state update.</p>
 </dd>
-<dt>circle<span class="classifier">bool (default <code class="docutils literal notranslate"><span class="pre">False</span></code>)</span></dt><dd><p>Generate determinisitc reservoir with circle topology.</p>
+<dt>circle<span class="classifier">bool (default <code class="docutils literal notranslate"><span class="pre">False</span></code>)</span></dt><dd><p>Generate determinisitc reservoir with circle topology where each connection
+has the same weight.</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -143,8 +153,7 @@ Unused in circle reservoir.</p>
 <code class="docutils literal notranslate"><span class="pre">T</span></code> is the length of each time series, and <code class="docutils literal notranslate"><span class="pre">V</span></code> is the number of variables in each
 time point.</p>
 </dd>
-<dt>n_drop<span class="classifier">int (default is <code class="docutils literal notranslate"><span class="pre">0</span></code>)</span></dt><dd><p>Washout period, i.e., number of initial samples to drop
-due to the transient phase.</p>
+<dt>n_drop<span class="classifier">int (default is <code class="docutils literal notranslate"><span class="pre">0</span></code>)</span></dt><dd><p>Washout period, i.e., number of initial samples to drop due to the transient phase.</p>
 </dd>
 <dt>bidir<span class="classifier">bool (default is <code class="docutils literal notranslate"><span class="pre">True</span></code>)</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use bidirectional reservoir</p>
 </dd>

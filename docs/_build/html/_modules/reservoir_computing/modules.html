@@ -46,11 +46,17 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebooks/prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
 </ul>
 
         </div>
@@ -93,77 +99,113 @@
 <div class="viewcode-block" id="RC_model">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model">[docs]</a>
 <span class="k">class</span> <span class="nc">RC_model</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Build and evaluate a RC-based model for time series classification or clustering.</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Build and evaluate a RC-based model for time series classification or clustering.</span>
-<span class="sd">    The training and test MTS are multidimensional arrays of shape [N,T,V], with</span>
-<span class="sd">        - N = number of samples</span>
-<span class="sd">        - T = number of time steps in each sample</span>
-<span class="sd">        - V = number of variables in each sample</span>
-<span class="sd">    Training and test labels have shape [N,C], with C the number of classes</span>
+<span class="sd">    The training and test Multivariate Time Series (MTS) are multidimensional arrays of shape ``[N,T,V]``, where ``N`` is the number of samples, ``T`` is the number of time steps in each sample, ``V`` is the number of variables in each sample.</span>
 <span class="sd">    </span>
-<span class="sd">    The dataset consists of:</span>
-<span class="sd">        X, Y = training data and respective labels</span>
-<span class="sd">        Xte, Yte = test data and respective labels</span>
-<span class="sd">        </span>
-<span class="sd">    Reservoir parameters:</span>
-<span class="sd">        reservoir = precomputed reservoir (oject of class &#39;Reservoir&#39;);</span>
-<span class="sd">            if None, the following structural hyperparameters must be specified</span>
-<span class="sd">        n_internal_units = processing units in the reservoir</span>
-<span class="sd">        spectral_radius = largest eigenvalue of the reservoir matrix of connection weights</span>
-<span class="sd">        leak = amount of leakage in the reservoir state update (optional)</span>
-<span class="sd">        connectivity = percentage of nonzero connection weights</span>
-<span class="sd">        input_scaling = scaling of the input connection weights</span>
-<span class="sd">        noise_level = deviation of the Gaussian noise injected in the state update</span>
-<span class="sd">        n_drop = number of transient states to drop</span>
-<span class="sd">        bidir = use a bidirectional reservoir (True or false)</span>
-<span class="sd">            </span>
-<span class="sd">    Dimensionality reduction parameters:</span>
-<span class="sd">        dimred_method = procedure for reducing the number of features in the sequence of reservoir states;</span>
-<span class="sd">            possible options are: None (no dimensionality reduction), &#39;pca&#39; or &#39;tenpca&#39;</span>
-<span class="sd">        n_dim = number of resulting dimensions after the dimensionality reduction procedure</span>
-<span class="sd">        </span>
-<span class="sd">    Representation parameters:</span>
-<span class="sd">        mts_rep = type of MTS representation. It can be &#39;last&#39; (last state), &#39;output&#39; (output model space),</span>
-<span class="sd">            or &#39;reservoir&#39; (reservoir model space)</span>
-<span class="sd">        w_ridge_embedding = regularization parameter of the ridge regression in the output model space</span>
-<span class="sd">            and reservoir model space representation; ignored if mts_rep == None</span>
-<span class="sd">        </span>
-<span class="sd">    Readout parameters:</span>
-<span class="sd">        readout_type = type of readout used for classification. It can be &#39;lin&#39; (ridge regression), </span>
-<span class="sd">            &#39;mlp&#39; (multiplayer perceptron), &#39;svm&#39; (support vector machine), or None.</span>
-<span class="sd">            If None, the input representations will be saved instead: this is useful for clustering and visualization.</span>
-<span class="sd">        w_ridge = regularization parameter of the ridge regression readout (only for readout_type==&#39;lin&#39;)              </span>
-<span class="sd">        mlp_layout = tuple with the sizes of MLP layers, e.g. (20, 10) defines a MLP with 2 layers </span>
-<span class="sd">            of 20 and 10 units respectively. (only for readout_type==&#39;mlp&#39;)</span>
-<span class="sd">        num_epochs = number of iterations during the optimization (only for readout_type==&#39;mlp&#39;)</span>
-<span class="sd">        w_l2 = weight of the L2 regularization (only for readout_type==&#39;mlp&#39;)</span>
-<span class="sd">        nonlinearity = type of activation function {&#39;relu&#39;, &#39;tanh&#39;, &#39;logistic&#39;, &#39;identity&#39;} (only for readout_type==&#39;mlp&#39;)</span>
-<span class="sd">        svm_gamma = bandwith of the RBF kernel (only for readout_type==&#39;svm&#39;)</span>
-<span class="sd">        svm_C = regularization for SVM hyperplane (only for readout_type==&#39;svm&#39;)</span>
+<span class="sd">    Training and test labels have shape ``[N,C]``, with ``C`` being the number of classes.</span>
+<span class="sd">    </span>
+<span class="sd">    The dataset consists of training data and respective labels ``(X, Y)`` and test data and respective labels ``(Xte, Yte)``.</span>
+<span class="sd">    </span>
+<span class="sd">    **Reservoir parameters:**</span>
+<span class="sd">    </span>
+<span class="sd">    :param reservoir: object of class ``Reservoir`` (default ``None``) </span>
+<span class="sd">        Precomputed reservoir. If ``None``, the following structural hyperparameters must be specified.</span>
+<span class="sd">    :param n_internal_units: int (default ``100``) </span>
+<span class="sd">        Processing units in the reservoir.</span>
+<span class="sd">    :param spectral_radius: float (default ``0.99``) </span>
+<span class="sd">        Largest eigenvalue of the reservoir matrix of connection weights.</span>
+<span class="sd">        To ensure the Echo State Property, set ``spectral_radius &lt;= leak &lt;= 1``)</span>
+<span class="sd">    :param leak: float (default ``None``) </span>
+<span class="sd">        Amount of leakage in the reservoir state update.</span>
+<span class="sd">        If ``None`` or ``1.0``, no leakage is used.</span>
+<span class="sd">    :param connectivity: float (default ``0.3``) </span>
+<span class="sd">        Percentage of nonzero connection weights.</span>
+<span class="sd">        Unused in circle reservoir.</span>
+<span class="sd">    :param input_scaling: float (default ``0.2``)</span>
+<span class="sd">        Scaling of the input connection weights.</span>
+<span class="sd">        Note that the input weights are randomly drawn from ``{-1,1}``.</span>
+<span class="sd">    :param noise_level: float (default ``0.0``) </span>
+<span class="sd">        Standard deviation of the Gaussian noise injected in the state update.</span>
+<span class="sd">    :param n_drop: int (default ``0``)</span>
+<span class="sd">        Number of transient states to drop.</span>
+<span class="sd">    :param bidir: bool (default ``False``)</span>
+<span class="sd">        Use a bidirectional reservoir (``True``) or a standard one (``False``).</span>
+<span class="sd">    :param circle: bool (default ``False``)</span>
+<span class="sd">        Generate determinisitc reservoir with circle topology where each connection </span>
+<span class="sd">        has the same weight.</span>
+<span class="sd">    </span>
+<span class="sd">    **Dimensionality reduction parameters:**</span>
+<span class="sd">    </span>
+<span class="sd">    :param dimred_method: str (default ``None``)</span>
+<span class="sd">        Procedure for reducing the number of features in the sequence of reservoir states. </span>
+<span class="sd">        Possible options are: ``None`` (no dimensionality reduction), ``&#39;pca&#39;`` (standard PCA), </span>
+<span class="sd">        or ``&#39;tenpca&#39;`` (tensorial PCA for multivariate time series data).</span>
+<span class="sd">    :param n_dim: int (default ``None``) </span>
+<span class="sd">        Number of resulting dimensions after the dimensionality reduction procedure.</span>
+<span class="sd">    </span>
+<span class="sd">    **Representation parameters:**</span>
+<span class="sd">    </span>
+<span class="sd">    :param mts_rep: str (default ``None``) </span>
+<span class="sd">        Type of MTS representation. </span>
+<span class="sd">        It can be ``&#39;last&#39;`` (last state), ``&#39;mean&#39;`` (mean of all the states),</span>
+<span class="sd">        ``&#39;output&#39;`` (output model space), or ``&#39;reservoir&#39;`` (reservoir model space).</span>
+<span class="sd">    :param w_ridge_embedding: float (default ``1.0``) </span>
+<span class="sd">        Regularization parameter of the ridge regression in the output model space </span>
+<span class="sd">        and reservoir model space representation; ignored if ``mts_rep == None``.</span>
+<span class="sd">    </span>
+<span class="sd">    **Readout parameters:**</span>
+<span class="sd">    </span>
+<span class="sd">    :param readout_type: str (default ``&#39;lin&#39;``) </span>
+<span class="sd">        Type of readout used for classification. It can be ``&#39;lin&#39;`` (ridge regression), </span>
+<span class="sd">        ``&#39;mlp&#39;`` (multiplayer perceptron), ``&#39;svm&#39;`` (support vector machine), </span>
+<span class="sd">        or ``None``. </span>
+<span class="sd">        If ``None``, the input representations will be saved in the ``.input_repr`` attribute: </span>
+<span class="sd">        this is useful for clustering and visualization.</span>
+<span class="sd">        Also, if ````None````, the other Readout hyperparameters can be left unspecified.</span>
+<span class="sd">    :param w_ridge: float (default ``1.0``) </span>
+<span class="sd">        Regularization parameter of the ridge regression readout (only for ``readout_type==&#39;lin&#39;``).</span>
+<span class="sd">    :param mlp_layout: tuple (default ``None``) </span>
+<span class="sd">        Tuple with the sizes of MLP layers, e.g., ``(20, 10)`` defines a MLP with 2 layers of 20 and 10 units respectively.</span>
+<span class="sd">        Used only when ``readout_type==&#39;mlp&#39;``.</span>
+<span class="sd">    :param num_epochs: int (default ``None``) </span>
+<span class="sd">        Number of iterations during the optimization.</span>
+<span class="sd">        Used only when ``readout_type==&#39;mlp&#39;``.</span>
+<span class="sd">    :param w_l2: float (default ``None``) </span>
+<span class="sd">        Weight of the L2 regularization.</span>
+<span class="sd">        Used only when ``readout_type==&#39;mlp&#39;``.</span>
+<span class="sd">    :param nonlinearity: str (default ``None``) </span>
+<span class="sd">        Type of activation function ``{&#39;relu&#39;, &#39;tanh&#39;, &#39;logistic&#39;, &#39;identity&#39;}``.</span>
+<span class="sd">        Used only when ``readout_type==&#39;mlp&#39;``.</span>
+<span class="sd">    :param svm_gamma: float (default ``1.0``) </span>
+<span class="sd">        Bandwidth of the RBF kernel.</span>
+<span class="sd">        Used only when ``readout_type==&#39;svm&#39;``.</span>
+<span class="sd">    :param svm_C: float (default ``1.0``) </span>
+<span class="sd">        Regularization for SVM hyperplane.</span>
+<span class="sd">        Used only when ``readout_type==&#39;svm&#39;``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
               <span class="c1"># reservoir</span>
               <span class="n">reservoir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>     
-              <span class="n">n_internal_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">spectral_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">n_internal_units</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+              <span class="n">spectral_radius</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span>
               <span class="n">leak</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">connectivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">input_scaling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">noise_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">n_drop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">connectivity</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+              <span class="n">input_scaling</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+              <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+              <span class="n">n_drop</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
               <span class="n">bidir</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
               <span class="n">circle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
               <span class="c1"># dim red</span>
               <span class="n">dimred_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
               <span class="n">n_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="c1"># representation</span>
-              <span class="n">mts_rep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">w_ridge_embedding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">mts_rep</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span>
+              <span class="n">w_ridge_embedding</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
               <span class="c1"># readout</span>
-              <span class="n">readout_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>               
-              <span class="n">w_ridge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>              
+              <span class="n">readout_type</span><span class="o">=</span><span class="s1">&#39;lin&#39;</span><span class="p">,</span>               
+              <span class="n">w_ridge</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>              
               <span class="n">mlp_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">num_epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">w_l2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -230,16 +272,22 @@
 <div class="viewcode-block" id="RC_model.fit">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.fit">[docs]</a>
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Train the RC model.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Train the RC model.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        X : array-like, shape [N, T, V]</span>
-<span class="sd">            Training data.</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        X : np.ndarray </span>
+<span class="sd">            Array of of shape ``[N, T, V]`` representin the training data.</span>
 
-<span class="sd">        Y : array-like, shape [N, C]</span>
-<span class="sd">            Target values.</span>
+<span class="sd">        Y : np.ndarray </span>
+<span class="sd">            Array of shape ``[N, C]`` representing the target values.</span>
+
+<span class="sd">        verbose : bool</span>
+<span class="sd">            If ``True``, print the training time.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
                 
         <span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -321,19 +369,17 @@
 <div class="viewcode-block" id="RC_model.predict">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.predict">[docs]</a>
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xte</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes predictions for out-of-sample (test) data.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes predictions for out-of-sample (test) data.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        Xte : array-like, shape [N, T, V]</span>
-<span class="sd">            Test data.</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Xte : np.ndarray</span>
+<span class="sd">            Array of shape ``[N, T, V]`` representing the test data.</span>
 
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        pred_class : array, shape [N]</span>
-<span class="sd">            Predicted classes.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        pred_class : np.ndarray</span>
+<span class="sd">            Array of shape ``[N]`` representing the predicted classes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># ============ Compute reservoir states ============</span>
@@ -410,49 +456,70 @@
 <div class="viewcode-block" id="RC_forecaster">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster">[docs]</a>
 <span class="k">class</span> <span class="nc">RC_forecaster</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class to perform time series forecasting with RC.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class to perform time series forecasting with RC.</span>
 
-<span class="sd">    The training and test data are multidimensional arrays of shape [T,V], with</span>
-<span class="sd">        - T = number of time steps in each sample</span>
-<span class="sd">        - V = number of variables in each sample</span>
+<span class="sd">    The training and test data are multidimensional arrays of shape ``[T,V]``, with</span>
+
+<span class="sd">    - ``T`` = number of time steps in each sample,</span>
+<span class="sd">    - ``V`` = number of variables in each sample.</span>
+
+<span class="sd">    Given a time series ``X``, the training data are supposed to be as follows:</span>
 <span class="sd">    </span>
-<span class="sd">    Given a time series X, the training data are supposed to be as follows:</span>
-<span class="sd">        Xtr, Ytr = X[0:-forecast_horizon,:], X[forecast_horizon:,:]</span>
+<span class="sd">        ``Xtr, Ytr = X[0:-forecast_horizon,:], X[forecast_horizon:,:]``</span>
 
-<span class="sd">    Once trained, the model can be used to compute prediction forecast_horizon steps ahead:</span>
-<span class="sd">        Yhat[t,:] = Xte[t+forecast_horizon,:]</span>
+<span class="sd">    Once trained, the model can be used to compute prediction ``forecast_horizon`` steps ahead:</span>
 <span class="sd">        </span>
-<span class="sd">    Reservoir parameters:</span>
-<span class="sd">        reservoir = precomputed reservoir (oject of class &#39;Reservoir&#39;);</span>
-<span class="sd">            if None, the following structural hyperparameters must be specified</span>
-<span class="sd">        n_internal_units = processing units in the reservoir</span>
-<span class="sd">        spectral_radius = largest eigenvalue of the reservoir matrix of connection weights</span>
-<span class="sd">        leak = amount of leakage in the reservoir state update (optional)</span>
-<span class="sd">        connectivity = percentage of nonzero connection weights</span>
-<span class="sd">        input_scaling = scaling of the input connection weights</span>
-<span class="sd">        noise_level = deviation of the Gaussian noise injected in the state update</span>
-<span class="sd">        n_drop = number of transient states to drop</span>
-<span class="sd">            </span>
-<span class="sd">    Dimensionality reduction parameters:</span>
-<span class="sd">        dimred_method = procedure for reducing the number of features in the sequence of reservoir states;</span>
-<span class="sd">            possible options are: None (no dimensionality reduction) or &#39;pca&#39;</span>
-<span class="sd">        n_dim = number of resulting dimensions after the dimensionality reduction procedure</span>
-<span class="sd">        </span>
-<span class="sd">    Readout parameters:</span>
-<span class="sd">        w_ridge = regularization parameter of the ridge regression readout (only for readout_type==&#39;lin&#39;)</span>
+<span class="sd">            ``Yhat[t,:] = Xte[t+forecast_horizon,:]``</span>
+
+<span class="sd">    **Reservoir parameters:**</span>
+
+<span class="sd">    :param reservoir: object of class ``Reservoir`` (default ``None``)</span>
+<span class="sd">        Precomputed reservoir. If ``None``, the following structural hyperparameters must be specified.</span>
+<span class="sd">    :param n_internal_units: int (default ``100``) </span>
+<span class="sd">        Processing units in the reservoir.</span>
+<span class="sd">    :param spectral_radius: float (default ``0.99``) </span>
+<span class="sd">        Largest eigenvalue of the reservoir matrix of connection weights.</span>
+<span class="sd">        To ensure the Echo State Property, set ``spectral_radius &lt;= leak &lt;= 1``)</span>
+<span class="sd">    :param leak: float (default ``None``) </span>
+<span class="sd">        Amount of leakage in the reservoir state update.</span>
+<span class="sd">    :param connectivity: float (default ``0.3``)</span>
+<span class="sd">        Percentage of nonzero connection weights.</span>
+<span class="sd">    :param input_scaling: float (default ``0.2``) </span>
+<span class="sd">        Scaling of the input connection weights.</span>
+<span class="sd">        Note that the input weights are randomly drawn from ``{-1,1}``.</span>
+<span class="sd">    :param noise_level: float (default ``0.0``)</span>
+<span class="sd">        Standard deviation of the Gaussian noise injected in the state update.</span>
+<span class="sd">    :param n_drop: int (default ``0``)</span>
+<span class="sd">        Number of transient states to drop.</span>
+<span class="sd">    :param circle: bool (default ``False``)</span>
+<span class="sd">        Generate determinisitc reservoir with circle topology where each connection </span>
+<span class="sd">        has the same weight.</span>
+
+<span class="sd">    **Dimensionality reduction parameters:**</span>
+
+<span class="sd">    :param dimred_method: str (default ``None``)</span>
+<span class="sd">        Procedure for reducing the number of features in the sequence of reservoir states. </span>
+<span class="sd">        Possible options are: ``None`` (no dimensionality reduction), ``&#39;pca&#39;`` (standard PCA), </span>
+<span class="sd">        or ``&#39;tenpca&#39;`` (tensorial PCA for multivariate time series data).</span>
+<span class="sd">    :param n_dim: int (default ``None``) </span>
+<span class="sd">        Number of resulting dimensions after the dimensionality reduction procedure.</span>
+
+<span class="sd">    **Readout parameters:**</span>
+
+<span class="sd">    :param w_ridge: float (default ``1.0``) </span>
+<span class="sd">        Regularization parameter of the ridge regression readout.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                 <span class="c1"># reservoir</span>
                 <span class="n">reservoir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>     
-                <span class="n">n_internal_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">spectral_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">n_internal_units</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                <span class="n">spectral_radius</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span>
                 <span class="n">leak</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">connectivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">input_scaling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">noise_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">n_drop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">connectivity</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                <span class="n">input_scaling</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">n_drop</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="n">circle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="c1"># dim red</span>
                 <span class="n">dimred_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
@@ -488,16 +555,22 @@
 <div class="viewcode-block" id="RC_forecaster.fit">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.fit">[docs]</a>
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Train the RC model for forecasting.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Train the RC model for forecasting.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        X : array-like, shape [T, V]</span>
-<span class="sd">            Training data.</span>
-<span class="sd">        </span>
-<span class="sd">        Y : array-like, shape [T, V]</span>
-<span class="sd">            Target values.</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        X : np.ndarray </span>
+<span class="sd">            Array of shape ``[T, V]`` representing the training data.</span>
+
+<span class="sd">        Y : np.ndarray</span>
+<span class="sd">            Array of shape ``[T, V]`` representing the target values.</span>
+
+<span class="sd">        verbose : bool</span>
+<span class="sd">            If ``True``, print the training time.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -520,22 +593,20 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training completed in </span><span class="si">{</span><span class="n">tot_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> min&quot;</span><span class="p">)</span></div>
 
     
-    
 <div class="viewcode-block" id="RC_forecaster.predict">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.predict">[docs]</a>
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xte</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute predictions for test data.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes predictions for out-of-sample (test) data.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        Xte : array-like, shape [T, V]</span>
-<span class="sd">            Test data.</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Xte : np.ndarray</span>
+<span class="sd">            Array of shape ``[T, V]`` representing the test data.</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Yhat : array, shape [T, V]</span>
-<span class="sd">            Predicted values.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        Yhat : np.ndarray</span>
+<span class="sd">            Array of shape ``[T, V]`` representing the predicted values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># ============ Compute reservoir states ============</span>

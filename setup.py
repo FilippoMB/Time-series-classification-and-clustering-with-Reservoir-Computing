@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="reservoir_computing",
-    version="0.35",
+    version="0.35.1",
     packages=find_packages(),
     python_requires='>=3.9',
     install_requires=[
@@ -16,7 +16,11 @@ setup(
     description="Library for implementing reservoir computing models (Echo State Networks) for multivariate time series classification, clustering, and forecasting.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing",
+    #url="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing",
+    project_urls={
+        "Documentation": "https://reservoir-computing.readthedocs.io/en/latest/",
+        "Source Code": "https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing",
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

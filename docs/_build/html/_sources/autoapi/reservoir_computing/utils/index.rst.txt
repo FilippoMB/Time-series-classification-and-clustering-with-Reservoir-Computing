@@ -14,7 +14,7 @@ Functions
 .. autoapisummary::
 
    reservoir_computing.utils.compute_test_scores
-   reservoir_computing.utils.forecasting_datasets
+   reservoir_computing.utils.make_forecasting_dataset
 
 
 
@@ -37,7 +37,7 @@ Functions
        F1 score
 
 
-.. py:function:: forecasting_datasets(X, horizon, test_percent=0.15, val_percent=0.0, scaler=None)
+.. py:function:: make_forecasting_dataset(X, horizon, test_percent=0.15, val_percent=0.0, scaler=None)
 
    This function does the following:
 

@@ -1,0 +1,246 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Time series clustering"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pprint\n",
+    "import numpy as np\n",
+    "from scipy.cluster.hierarchy import linkage, fcluster\n",
+    "import scipy.spatial.distance as ssd\n",
+    "from sklearn.metrics.pairwise import cosine_distances\n",
+    "from sklearn.metrics import v_measure_score\n",
+    "\n",
+    "from reservoir_computing.modules import RC_model\n",
+    "from reservoir_computing.datasets import ClfLoader\n",
+    "\n",
+    "np.random.seed(0) # Fix the seed for reproducibility"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Configure the RC model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "{'bidir': True,\n",
+      " 'circle': False,\n",
+      " 'connectivity': 0.25,\n",
+      " 'dimred_method': 'tenpca',\n",
+      " 'input_scaling': 0.1,\n",
+      " 'leak': None,\n",
+      " 'mts_rep': 'reservoir',\n",
+      " 'n_dim': 75,\n",
+      " 'n_drop': 5,\n",
+      " 'n_internal_units': 450,\n",
+      " 'noise_level': 0.0,\n",
+      " 'readout_type': None,\n",
+      " 'spectral_radius': 0.9,\n",
+      " 'w_ridge_embedding': 5.0}\n"
+     ]
+    }
+   ],
+   "source": [
+    "config = {}\n",
+    "\n",
+    "# Reservoir\n",
+    "config['n_internal_units'] = 450        # size of the reservoir\n",
+    "config['spectral_radius'] = 0.9         # largest eigenvalue of the reservoir\n",
+    "config['leak'] = None                   # amount of leakage in the reservoir state update (None or 1.0 --> no leakage)\n",
+    "config['connectivity'] = 0.25           # percentage of nonzero connections in the reservoir\n",
+    "config['input_scaling'] = 0.1           # scaling of the input weights\n",
+    "config['noise_level'] = 0.0             # noise in the reservoir state update\n",
+    "config['n_drop'] = 5                    # transient states to be dropped\n",
+    "config['bidir'] = True                  # if True, use bidirectional reservoir\n",
+    "config['circle'] = False                # use reservoir with circle topology\n",
+    "\n",
+    "# Dimensionality reduction\n",
+    "config['dimred_method'] ='tenpca'       # options: {None (no dimensionality reduction), 'pca', 'tenpca'}\n",
+    "config['n_dim'] = 75                    # number of resulting dimensions after the dimensionality reduction procedure\n",
+    "\n",
+    "# MTS representation\n",
+    "config['mts_rep'] = 'reservoir'         # MTS representation:  {'last', 'mean', 'output', 'reservoir'}\n",
+    "config['w_ridge_embedding'] = 5.0       # regularization parameter of the ridge regression\n",
+    "\n",
+    "# Readout\n",
+    "config['readout_type'] = None           # by setting None, the input representations will be stored\n",
+    "\n",
+    "pprint.pprint(config)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Prepare the data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Loaded Japanese_Vowels dataset.\n",
+      "Number of classes: 9\n",
+      "Data shapes:\n",
+      "  Xtr: (270, 29, 12)\n",
+      "  Ytr: (270, 1)\n",
+      "  Xte: (370, 29, 12)\n",
+      "  Yte: (370, 1)\n"
+     ]
+    }
+   ],
+   "source": [
+    "Xtr, Ytr, Xte, Yte = ClfLoader().get_data('Japanese_Vowels')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Since we are doing clustering, we do not need the train/test split\n",
+    "X = np.concatenate((Xtr, Xte), axis=0)\n",
+    "Y = np.concatenate((Ytr, Yte), axis=0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Initialize and fit the RC model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rcm =  RC_model(**config)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Training completed in 0.02 min\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Generate representations of the input MTS\n",
+    "rcm.fit(X)\n",
+    "mts_representations = rcm.input_repr"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Compute the clustering partition"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Compute Dissimilarity matrix\n",
+    "Dist = cosine_distances(mts_representations)\n",
+    "distArray = ssd.squareform(Dist)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Found 9 clusters\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Hierarchical clustering\n",
+    "distArray = ssd.squareform(Dist)\n",
+    "Z = linkage(distArray, 'ward')\n",
+    "clust = fcluster(Z, t=4.0, criterion=\"distance\")\n",
+    "print(f\"Found {len(np.unique(clust))} clusters\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Normalized Mutual Information (v-score): 0.899\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Evaluate the agreement between class and cluster labels\n",
+    "nmi = v_measure_score(Y[:,0], clust)\n",
+    "print(f\"Normalized Mutual Information (v-score): {nmi:.3f}\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "sta2003",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.13"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

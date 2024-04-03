@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reservoir_computing.datasets &mdash; reservoir_computing  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="reservoir_computing.modules" href="../modules/index.html" />
+    <link rel="prev" title="reservoir_computing" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            reservoir_computing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../modules/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.modules</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reservoir/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.reservoir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tensorPCA/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.tensorPCA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/advanced_classifiers.html">Advanced classification models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">reservoir_computing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.datasets</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/reservoir_computing/datasets/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-reservoir_computing.datasets">
+<span id="reservoir-computing-datasets"></span><h1><a class="reference internal" href="#module-reservoir_computing.datasets" title="reservoir_computing.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.datasets</span></code></a><a class="headerlink" href="#module-reservoir_computing.datasets" title="Link to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.datasets.ClfLoader" title="reservoir_computing.datasets.ClfLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClfLoader</span></code></a></p></td>
+<td><p>Class to download and load time series classification datasets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#reservoir_computing.datasets.PredLoader" title="reservoir_computing.datasets.PredLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PredLoader</span></code></a></p></td>
+<td><p>Class to download and load time series forecasting datasets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.datasets.SynthLoader" title="reservoir_computing.datasets.SynthLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SynthLoader</span></code></a></p></td>
+<td><p>Class to generate synthetic time series.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.datasets.mackey_glass" title="reservoir_computing.datasets.mackey_glass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mackey_glass</span></code></a>([sample_len, tau, delta_t, seed, n_samples])</p></td>
+<td><p>Generate the Mackey Glass time-series.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#reservoir_computing.datasets.mso" title="reservoir_computing.datasets.mso"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mso</span></code></a>([T, N, seed, freq])</p></td>
+<td><p>Generates the Multiple Sinewave Oscillator (MSO) time-series</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.datasets.lorenz" title="reservoir_computing.datasets.lorenz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lorenz</span></code></a>([sigma, rho, beta, y0, t_span, dt])</p></td>
+<td><p>Generate the Lorenz attractor time-series.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#reservoir_computing.datasets.rossler" title="reservoir_computing.datasets.rossler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rossler</span></code></a>([a, b, c, y0, t_span, dt])</p></td>
+<td><p>Generate the Rossler attractor time-series.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.datasets.downloader" title="reservoir_computing.datasets.downloader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">downloader</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.ClfLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reservoir_computing.datasets.</span></span><span class="sig-name descname"><span class="pre">ClfLoader</span></span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#ClfLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.ClfLoader" title="Link to this definition"></a></dt>
+<dd><p>Class to download and load time series classification datasets.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.ClfLoader.available_datasets">
+<span class="sig-name descname"><span class="pre">available_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#ClfLoader.available_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.ClfLoader.available_datasets" title="Link to this definition"></a></dt>
+<dd><p>Print the available datasets.</p>
+<section id="parameters">
+<h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>details<span class="classifier">bool</span></dt><dd><p>If True, print a description of the datasets.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.ClfLoader.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alias</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#ClfLoader.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.ClfLoader.get_data" title="Link to this definition"></a></dt>
+<dd><p>Download and load the dataset.</p>
+<section id="id1">
+<h4>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>alias<span class="classifier">str</span></dt><dd><p>The alias of the dataset to be downloaded.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h4>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xtr<span class="classifier">np.ndarray</span></dt><dd><p>Training data</p>
+</dd>
+<dt>Ytr<span class="classifier">np.ndarray</span></dt><dd><p>Training labels</p>
+</dd>
+<dt>Xte<span class="classifier">np.ndarray</span></dt><dd><p>Test data</p>
+</dd>
+<dt>Yte<span class="classifier">np.ndarray</span></dt><dd><p>Test labels</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.PredLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reservoir_computing.datasets.</span></span><span class="sig-name descname"><span class="pre">PredLoader</span></span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#PredLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.PredLoader" title="Link to this definition"></a></dt>
+<dd><p>Class to download and load time series forecasting datasets.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.PredLoader.available_datasets">
+<span class="sig-name descname"><span class="pre">available_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#PredLoader.available_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.PredLoader.available_datasets" title="Link to this definition"></a></dt>
+<dd><p>Print the available datasets.</p>
+<section id="id3">
+<h4>Parameters:<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>details<span class="classifier">bool</span></dt><dd><p>If True, print a description of the datasets.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h4>Returns:<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.PredLoader.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alias</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#PredLoader.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.PredLoader.get_data" title="Link to this definition"></a></dt>
+<dd><p>Download and load the dataset.</p>
+<section id="id5">
+<h4>Parameters:<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>alias<span class="classifier">str</span></dt><dd><p>The alias of the dataset to be downloaded.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h4>Returns:<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">np.ndarray</span></dt><dd><p>Time series data</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.mackey_glass">
+<span class="sig-prename descclassname"><span class="pre">reservoir_computing.datasets.</span></span><span class="sig-name descname"><span class="pre">mackey_glass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">17</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#mackey_glass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.mackey_glass" title="Link to this definition"></a></dt>
+<dd><p>Generate the Mackey Glass time-series.</p>
+<section id="id7">
+<h4>Parameters:<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<dl>
+<dt>sample_len<span class="classifier">int (default <code class="docutils literal notranslate"><span class="pre">1000</span></code>)</span></dt><dd><p>Length of the time-series in timesteps.</p>
+</dd>
+<dt>tau<span class="classifier">int (default <code class="docutils literal notranslate"><span class="pre">17</span></code>)</span></dt><dd><p>Delay of the MG system. Commonly used values are tau=17 (mild
+chaos) and tau=30 (moderate chaos).</p>
+</dd>
+<dt>delta_t<span class="classifier">int (default <code class="docutils literal notranslate"><span class="pre">1</span></code>)</span></dt><dd><p>Time step of the simulation.</p>
+</dd>
+<dt>seed<span class="classifier">int or None (default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</span></dt><dd><p>Seed of the random generator. Can be used to generate the same
+timeseries each time.</p>
+</dd>
+<dt>n_samples<span class="classifier">int (default <code class="docutils literal notranslate"><span class="pre">1</span></code>)</span></dt><dd><p>Number of samples to generate.</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h4>Returns:<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>np.ndarray | list</dt><dd><p>Generated Mackey-Glass time-series.
+If n_samples is 1, a single array is returned. Otherwise, a list.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.mso">
+<span class="sig-prename descclassname"><span class="pre">reservoir_computing.datasets.</span></span><span class="sig-name descname"><span class="pre">mso</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#mso"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.mso" title="Link to this definition"></a></dt>
+<dd><p>Generates the Multiple Sinewave Oscillator (MSO) time-series
+by combining inusoids with incommensurable periods.
+The sinusoids to be combined are selected randomly.</p>
+<section id="id9">
+<h4>Parameters:<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<dl>
+<dt>T<span class="classifier">int (default <code class="docutils literal notranslate"><span class="pre">1000</span></code>)</span></dt><dd><p>Number of time steps.</p>
+</dd>
+<dt>N<span class="classifier">int (default <code class="docutils literal notranslate"><span class="pre">10</span></code>)</span></dt><dd><p>Maximum number of sinusoids to combine.</p>
+</dd>
+<dt>seed<span class="classifier">int or None (default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</span></dt><dd><p>Seed for the random generator.</p>
+</dd>
+<dt>freq<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.5</span></code>)</span></dt><dd><p>Frequency of the sinusoids.</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h4>Returns:<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>MSO time-series.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.lorenz">
+<span class="sig-prename descclassname"><span class="pre">reservoir_computing.datasets.</span></span><span class="sig-name descname"><span class="pre">lorenz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">28</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span> <span class="pre">/</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">-0.01,</span> <span class="pre">9.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_span</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">100]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#lorenz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.lorenz" title="Link to this definition"></a></dt>
+<dd><p>Generate the Lorenz attractor time-series.</p>
+<section id="id11">
+<h4>Parameters:<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<dl>
+<dt>sigma<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">10</span></code>)</span></dt><dd><p>1st parameter of the Lorenz system.</p>
+</dd>
+<dt>rho<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">28</span></code>)</span></dt><dd><p>2nd parameter of the Lorenz system.</p>
+</dd>
+<dt>beta<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">8/3</span></code>)</span></dt><dd><p>3rd parameter of the Lorenz system.</p>
+</dd>
+<dt>y0<span class="classifier">list (default <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">-0.01,</span> <span class="pre">9.0]</span></code>)</span></dt><dd><p>Initial conditions of the Lorenz system.</p>
+</dd>
+<dt>t_span<span class="classifier">list (default <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">100]</span></code>)</span></dt><dd><p>Time span of the simulation.</p>
+</dd>
+<dt>dt<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">1e-3</span></code>)</span></dt><dd><p>Time step of the simulation.</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h4>Returns:<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>Lorenz time-series.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.rossler">
+<span class="sig-prename descclassname"><span class="pre">reservoir_computing.datasets.</span></span><span class="sig-name descname"><span class="pre">rossler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_span</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">200]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#rossler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.rossler" title="Link to this definition"></a></dt>
+<dd><p>Generate the Rossler attractor time-series.</p>
+<section id="id13">
+<h4>Parameters:<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<dl>
+<dt>a<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.2</span></code>)</span></dt><dd><p>1st parameter of the Rossler system.</p>
+</dd>
+<dt>b<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">0.2</span></code>)</span></dt><dd><p>2nd parameter of the Rossler system.</p>
+</dd>
+<dt>c<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">5.7</span></code>)</span></dt><dd><p>3rd parameter of the Rossler system.</p>
+</dd>
+<dt>y0<span class="classifier">list (default <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0.1,</span> <span class="pre">0]</span></code>)</span></dt><dd><p>Initial conditions of the Rossler system.</p>
+</dd>
+<dt>t_span<span class="classifier">list (default <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">100]</span></code>)</span></dt><dd><p>Time span of the simulation.</p>
+</dd>
+<dt>dt<span class="classifier">float (default <code class="docutils literal notranslate"><span class="pre">1e-3</span></code>)</span></dt><dd><p>Time step of the simulation.</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h4>Returns:<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>Rossler time-series.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.SynthLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reservoir_computing.datasets.</span></span><span class="sig-name descname"><span class="pre">SynthLoader</span></span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#SynthLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.SynthLoader" title="Link to this definition"></a></dt>
+<dd><p>Class to generate synthetic time series.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.SynthLoader.available_datasets">
+<span class="sig-name descname"><span class="pre">available_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#SynthLoader.available_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.SynthLoader.available_datasets" title="Link to this definition"></a></dt>
+<dd><p>Print the available synthetic datasets.</p>
+<section id="id15">
+<h4>Returns:<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.SynthLoader.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alias</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/datasets.html#SynthLoader.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.datasets.SynthLoader.get_data" title="Link to this definition"></a></dt>
+<dd><p>Generate the synthetic time series.</p>
+<section id="id16">
+<h4>Parameters:<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>alias<span class="classifier">str</span></dt><dd><p>The alias of the synthetic dataset to be generated.</p>
+</dd>
+<dt>kwargs<span class="classifier">dict</span></dt><dd><p>Additional parameters for the synthetic dataset.</p>
+</dd>
+</dl>
+</section>
+<section id="id17">
+<h4>Returns:<a class="headerlink" href="#id17" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>Synthetic time series.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="reservoir_computing.datasets.downloader">
+<span class="sig-prename descclassname"><span class="pre">reservoir_computing.datasets.</span></span><span class="sig-name descname"><span class="pre">downloader</span></span><a class="headerlink" href="#reservoir_computing.datasets.downloader" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="reservoir_computing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules/index.html" class="btn btn-neutral float-right" title="reservoir_computing.modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Filippo Maria Bianchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

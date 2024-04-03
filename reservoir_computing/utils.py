@@ -32,11 +32,11 @@ def compute_test_scores(pred_class, Yte):
     return accuracy, f1
 
 
-def forecasting_datasets(X, 
-                         horizon, 
-                         test_percent = 0.15, 
-                         val_percent = 0.0, 
-                         scaler = None):
+def make_forecasting_dataset(X,
+        horizon,
+        test_percent = 0.15, 
+        val_percent = 0.0, 
+        scaler = None):
     r"""
     This function does the following:
 

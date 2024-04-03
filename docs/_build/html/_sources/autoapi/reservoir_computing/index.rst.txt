@@ -10,6 +10,7 @@ Submodules
    :titlesonly:
    :maxdepth: 1
 
+   datasets/index.rst
    modules/index.rst
    reservoir/index.rst
    tensorPCA/index.rst

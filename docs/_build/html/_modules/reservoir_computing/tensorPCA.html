@@ -46,11 +46,17 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebooks/prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
 </ul>
 
         </div>
@@ -81,42 +87,46 @@
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">linalg</span>
 
+
 <div class="viewcode-block" id="tensorPCA">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/tensorPCA/index.html#reservoir_computing.tensorPCA.tensorPCA">[docs]</a>
 <span class="k">class</span> <span class="nc">tensorPCA</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute PCA on a dataset of multivariate time series represented as a 3-dimensional tensor</span>
+<span class="sd">    and reduce the size along the third dimension from ``[N, T, V]`` to ``[N, T, D]``, where ``D &lt;= V`` .</span>
+
+<span class="sd">    The input dataset must be a 3-dimensional tensor, where the first dimension ``N`` represents </span>
+<span class="sd">    the number of observations, the second dimension ``T`` represents the number of time steps </span>
+<span class="sd">    in the time series, and the third dimension ``V`` represents the number of variables in the time series.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_components : int</span>
+<span class="sd">        The number of principal components to keep after the dimensionality reduction. This</span>
+<span class="sd">        determines the size of the third dimension ``D`` in the output tensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_components</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute PCA on a dataset of multivariate time series represented as 3-dimensional tensor</span>
-<span class="sd">        and reduces the size along the third dimension:</span>
-<span class="sd">            [N, T, V] --&gt; [N, T, D]</span>
-<span class="sd">        with D &lt;= V.</span>
-<span class="sd">        The input dataset must be a 3-dimensional tensor with shapes</span>
-<span class="sd">            - N: number of observations</span>
-<span class="sd">            - T: number of time steps in the time series</span>
-<span class="sd">            - V: number of variables in the time series</span>
-
-<span class="sd">        Parameters:</span>
-<span class="sd">        ----------</span>
-<span class="sd">        n_components = int</span>
-<span class="sd">            Number of components to keep after the dimensionality reduction.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">first_eigs</span> <span class="o">=</span> <span class="kc">None</span>
         
 <div class="viewcode-block" id="tensorPCA.fit">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/tensorPCA/index.html#reservoir_computing.tensorPCA.tensorPCA.fit">[docs]</a>
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fit the tensorPCA model to the input dataset X.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the tensorPCA model to the input dataset ``X``.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
-<span class="sd">        ----------</span>
-<span class="sd">        X = array</span>
-<span class="sd">            Time series, 3D array of shape (N,T,V), where N is the number of time series,</span>
-<span class="sd">            T is the length of each time series, and V is the number of variables in each.</span>
+<span class="sd">        ------------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Time series, 3D array of shape ``[N,T,V]``, where ``N`` is the number of time series,</span>
+<span class="sd">            ``T`` is the length of each time series, and ``V`` is the number of variables in each.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        ------------</span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Input must be a 3d tensor&#39;</span><span class="p">)</span>
         
         <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># [N,T,V] --&gt; [N,V,T]</span>
@@ -125,7 +135,7 @@
         
         <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">X</span><span class="o">-</span><span class="n">Xm</span><span class="p">,</span><span class="n">Xt</span><span class="o">-</span><span class="n">Xmt</span><span class="p">,</span><span class="n">axes</span><span class="o">=</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span> <span class="o">/</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># covariance of 0-mode slices</span>
         
-        <span class="c1"># sort eigenvalues of covariance matrix</span>
+        <span class="c1"># Sort eigenvalues of covariance matrix</span>
         <span class="n">eigenValues</span><span class="p">,</span> <span class="n">eigenVectors</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">eigenValues</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>   
         <span class="n">eigenVectors</span> <span class="o">=</span> <span class="n">eigenVectors</span><span class="p">[:,</span><span class="n">idx</span><span class="p">]</span>
@@ -136,12 +146,42 @@
 <div class="viewcode-block" id="tensorPCA.transform">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/tensorPCA/index.html#reservoir_computing.tensorPCA.tensorPCA.transform">[docs]</a>
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform the input dataset X using the tensorPCA model.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ------------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Time series, 3D array of shape ``[N,T,V]``, where ``N`` is the number of time series,</span>
+<span class="sd">            ``T`` is the length of each time series, and ``V`` is the number of variables in each.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        ------------</span>
+<span class="sd">        Xpca : np.ndarray</span>
+<span class="sd">            Transformed time series, 3D array of shape ``[N,T,D]``, where ``N`` is the number of time series,</span>
+<span class="sd">            ``T`` is the length of each time series, and ``D`` is the number of principal components.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;klj,ji-&gt;kli&#39;</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">first_eigs</span><span class="p">)</span></div>
 
     
 <div class="viewcode-block" id="tensorPCA.fit_transform">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/tensorPCA/index.html#reservoir_computing.tensorPCA.tensorPCA.fit_transform">[docs]</a>
     <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the tensorPCA model to the input dataset ``X`` and transform it.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ------------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Time series, 3D array of shape ``[N,T,V]``, where ``N`` is the number of time series,</span>
+<span class="sd">            ``T`` is the length of each time series, and ``V`` is the number of variables in each.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        ------------</span>
+<span class="sd">        Xpca : np.ndarray</span>
+<span class="sd">            Transformed time series, 3D array of shape ``[N,T,D]``, where ``N`` is the number of time series,</span>
+<span class="sd">            ``T`` is the length of each time series, and ``D`` is the number of principal components.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 </div>

@@ -36,7 +36,7 @@ class tensorPCA:
         ------------
         None
         """
-        if len(X.shape) is not 3:
+        if len(X.shape) != 3:
             raise RuntimeError('Input must be a 3d tensor')
         
         Xt = np.swapaxes(X,1,2)  # [N,T,V] --> [N,V,T]
@@ -45,7 +45,7 @@ class tensorPCA:
         
         C = np.tensordot(X-Xm,Xt-Xmt,axes=([1,0],[2,0])) / (X.shape[0]-1) # covariance of 0-mode slices
         
-        # sort eigenvalues of covariance matrix
+        # Sort eigenvalues of covariance matrix
         eigenValues, eigenVectors = linalg.eig(C)
         idx = eigenValues.argsort()[::-1]   
         eigenVectors = eigenVectors[:,idx]

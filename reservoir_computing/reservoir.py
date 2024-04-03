@@ -11,6 +11,7 @@ class Reservoir(object):
             Processing units in the reservoir.
         spectral_radius : float (default ``0.99``)
             Largest eigenvalue of the reservoir matrix of connection weights.
+            To ensure the Echo State Property, set ``spectral_radius <= leak <= 1``)
         leak : float (default ``None``)
             Amount of leakage in the reservoir state update. 
             If ``None`` or ``1.0``, no leakage is used.
@@ -19,10 +20,12 @@ class Reservoir(object):
             Unused in circle reservoir.
         input_scaling : float (default ``0.2``)
             Scaling of the input connection weights.
+            Note that the input weights are randomly drawn from ``{-1,1}``.
         noise_level : float (default ``0.0``)
             Standard deviation of the Gaussian noise injected in the state update.
         circle : bool (default ``False``)
-            Generate determinisitc reservoir with circle topology.
+            Generate determinisitc reservoir with circle topology where each connection 
+            has the same weight.
         """
 
     def __init__(self, 
@@ -138,8 +141,7 @@ class Reservoir(object):
             ``T`` is the length of each time series, and ``V`` is the number of variables in each
             time point.
         n_drop : int (default is ``0``)
-            Washout period, i.e., number of initial samples to drop
-            due to the transient phase.
+            Washout period, i.e., number of initial samples to drop due to the transient phase.
         bidir : bool (default is ``True``)
             If ``True``, use bidirectional reservoir
         initial_state : np.ndarray (default is ``None``)

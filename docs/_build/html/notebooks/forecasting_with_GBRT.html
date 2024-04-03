@@ -50,7 +50,13 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clustering_visualization.html">Cluster analysis and visualization</a></li>
@@ -81,7 +87,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Probabilistic forecasting with GBRT</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/notebooks/prediction_with_GBRT.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/forecasting_with_GBRT.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -97,17 +103,15 @@
 <p>Let’s start by importing the necessary libraries.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
-<span class="kn">import</span> <span class="nn">scipy</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">HistGradientBoostingRegressor</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 
 <span class="kn">from</span> <span class="nn">reservoir_computing.reservoir</span> <span class="kn">import</span> <span class="n">Reservoir</span>
-<span class="kn">from</span> <span class="nn">reservoir_computing.utils</span> <span class="kn">import</span> <span class="n">forecasting_datasets</span>
+<span class="kn">from</span> <span class="nn">reservoir_computing.utils</span> <span class="kn">import</span> <span class="n">make_forecasting_dataset</span>
+<span class="kn">from</span> <span class="nn">reservoir_computing.datasets</span> <span class="kn">import</span> <span class="n">PredLoader</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># For reproducibility</span>
 </pre></div>
@@ -116,8 +120,35 @@
 </div>
 <section id="load-the-data">
 <h2>Load the data<a class="headerlink" href="#load-the-data" title="Link to this heading"></a></h2>
+<p>We will use the dataloader <code class="docutils literal notranslate"><span class="pre">PredLoader</span></code> to get a forecasting datatset.
+To see what datatsets are available, we can call the function <code class="docutils literal notranslate"><span class="pre">available_datasets</span></code>. By setting <code class="docutils literal notranslate"><span class="pre">details=True</span></code> we can get additional information.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">downloader</span> <span class="o">=</span> <span class="n">PredLoader</span><span class="p">()</span>
+<span class="n">downloader</span><span class="o">.</span><span class="n">available_datasets</span><span class="p">(</span><span class="n">details</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Describe available datasets</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Available datasets:
+
+ElecRome
+-----------
+Univariate time series forecasting.
+Length: 137376
+Features: 1
+
+CDR
+-----------
+Multivariate time series forecasting.
+Length: 3336
+Features: 8
+</pre></div>
+</div>
+</div>
+</div>
 <ul class="simple">
-<li><p>For this example, we will use data of electricity consumption coming from a backbone of the energy supply network in the city of Rome.</p></li>
+<li><p>For this example, we will use <code class="docutils literal notranslate"><span class="pre">ElecRome</span></code> that is the electricity consumption coming from a backbone of the energy supply network in the city of Rome.</p></li>
 <li><p>The original data is a time series sampled every 10 minutes.</p></li>
 <li><p>If we are not interested in such an high resolution, we can resample the data to hourly resolution by creating a new time series whose entries are the means of 6 consecutive time steps in the original series.</p></li>
 <li><p>We also take only the first <code class="docutils literal notranslate"><span class="pre">3000</span></code> time steps to be faster in fitting the model.</p></li>
@@ -125,12 +156,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data</span>
-<span class="n">data_url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/FilippoMB/lecture_RNN_phase_space/master/TS_Acea.mat&#39;</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
-<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
-<span class="n">ts_full</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Full: &quot;</span><span class="p">,</span> <span class="n">ts_full</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">ts_full</span> <span class="o">=</span> <span class="n">downloader</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;ElecRome&quot;</span><span class="p">)</span>
 
 <span class="c1"># Resample the time series to hourly frequency</span>
 <span class="n">ts_hourly</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ts_full</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
@@ -143,7 +169,9 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Full:  (137376, 1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded ElecRome dataset.
+Data shape:
+  X: (137376, 1)
 Resampled:  (22896, 1)
 Resampled small:  (3000, 1)
 </pre></div>
@@ -155,7 +183,7 @@ Resampled small:  (3000, 1)
 <h2>Prepare the datasets<a class="headerlink" href="#prepare-the-datasets" title="Link to this heading"></a></h2>
 <p>To train our regression model we need input and target data <code class="docutils literal notranslate"><span class="pre">Xtr</span></code> and <code class="docutils literal notranslate"><span class="pre">Ytr</span></code>.
 We also need test data <code class="docutils literal notranslate"><span class="pre">Xte</span></code> and <code class="docutils literal notranslate"><span class="pre">Yte</span></code> to test our model and validation data <code class="docutils literal notranslate"><span class="pre">Xval</span></code> and <code class="docutils literal notranslate"><span class="pre">Yval</span></code> if we need to do hyperparameters tuning.
-We will use the function <code class="docutils literal notranslate"><span class="pre">forecasting_datasets</span></code> that given a time series <code class="docutils literal notranslate"><span class="pre">X</span></code> does the following computations:</p>
+We will use the function <code class="docutils literal notranslate"><span class="pre">make_forecasting_dataset</span></code> that given a time series <code class="docutils literal notranslate"><span class="pre">X</span></code> does the following computations:</p>
 <ol class="arabic simple">
 <li><p>Splits the dataset in consecutive chunks: <code class="docutils literal notranslate"><span class="pre">train</span></code>, <code class="docutils literal notranslate"><span class="pre">val</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code>. The size of the chunks is given by the values <code class="docutils literal notranslate"><span class="pre">val_percent</span></code> and <code class="docutils literal notranslate"><span class="pre">test_percent</span></code>. If we do not need validation data, set <code class="docutils literal notranslate"><span class="pre">val_percent=0</span></code> (default) and the validation data will not be created.</p></li>
 <li><p>Create input data <code class="docutils literal notranslate"><span class="pre">X</span></code> and target data <code class="docutils literal notranslate"><span class="pre">Y</span></code> by shifting the data <code class="docutils literal notranslate"><span class="pre">horizon</span></code> time steps, where <code class="docutils literal notranslate"><span class="pre">horizon</span></code> is how far we want to predict. For example:</p>
@@ -171,9 +199,9 @@ We will use the function <code class="docutils literal notranslate"><span class=
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">36</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 
-<span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">Yte</span><span class="p">,</span> <span class="n">Xval</span><span class="p">,</span> <span class="n">Yval</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">forecasting_datasets</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">horizon</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> 
-                                                              <span class="n">test_percent</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> 
-                                                              <span class="n">val_percent</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">Yte</span><span class="p">,</span> <span class="n">Xval</span><span class="p">,</span> <span class="n">Yval</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">make_forecasting_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">horizon</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                                                                  <span class="n">test_percent</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                                                                  <span class="n">val_percent</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Xtr: &quot;</span><span class="p">,</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Xtr</span><span class="o">.</span><span class="n">T</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ytr: &quot;</span><span class="p">,</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Ytr</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Xval: &quot;</span><span class="p">,</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Xval</span><span class="o">.</span><span class="n">T</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
@@ -201,9 +229,9 @@ Yte:  [[33 34 35]]
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate training and test datasets</span>
-<span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">Yte</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">forecasting_datasets</span><span class="p">(</span><span class="n">ts_small</span><span class="p">,</span> 
-                                                  <span class="n">horizon</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="c1"># forecast horizon of 24h ahead</span>
-                                                  <span class="n">test_percent</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">Yte</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">make_forecasting_dataset</span><span class="p">(</span><span class="n">ts_small</span><span class="p">,</span>
+                                                      <span class="n">horizon</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="c1"># forecast horizon of 24h ahead</span>
+                                                      <span class="n">test_percent</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

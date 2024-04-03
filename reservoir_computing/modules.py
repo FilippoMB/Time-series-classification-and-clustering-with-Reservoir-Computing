@@ -27,6 +27,7 @@ class RC_model(object):
         Processing units in the reservoir.
     :param spectral_radius: float (default ``0.99``) 
         Largest eigenvalue of the reservoir matrix of connection weights.
+        To ensure the Echo State Property, set ``spectral_radius <= leak <= 1``)
     :param leak: float (default ``None``) 
         Amount of leakage in the reservoir state update.
         If ``None`` or ``1.0``, no leakage is used.
@@ -35,6 +36,7 @@ class RC_model(object):
         Unused in circle reservoir.
     :param input_scaling: float (default ``0.2``)
         Scaling of the input connection weights.
+        Note that the input weights are randomly drawn from ``{-1,1}``.
     :param noise_level: float (default ``0.0``) 
         Standard deviation of the Gaussian noise injected in the state update.
     :param n_drop: int (default ``0``)
@@ -42,13 +44,15 @@ class RC_model(object):
     :param bidir: bool (default ``False``)
         Use a bidirectional reservoir (``True``) or a standard one (``False``).
     :param circle: bool (default ``False``)
-        Generate determinisitc reservoir with circle topology.
+        Generate determinisitc reservoir with circle topology where each connection 
+        has the same weight.
     
     **Dimensionality reduction parameters:**
     
     :param dimred_method: str (default ``None``)
         Procedure for reducing the number of features in the sequence of reservoir states. 
-        Possible options are: ``None`` (no dimensionality reduction), ``'pca'``, or ``'tenpca'`` (TensorPCA).
+        Possible options are: ``None`` (no dimensionality reduction), ``'pca'`` (standard PCA), 
+        or ``'tenpca'`` (tensorial PCA for multivariate time series data).
     :param n_dim: int (default ``None``) 
         Number of resulting dimensions after the dimensionality reduction procedure.
     
@@ -56,7 +60,7 @@ class RC_model(object):
     
     :param mts_rep: str (default ``None``) 
         Type of MTS representation. 
-        It can be ``'last'`` (last state), ``'mean'`` (mean of the states),
+        It can be ``'last'`` (last state), ``'mean'`` (mean of all the states),
         ``'output'`` (output model space), or ``'reservoir'`` (reservoir model space).
     :param w_ridge_embedding: float (default ``1.0``) 
         Regularization parameter of the ridge regression in the output model space 
@@ -65,21 +69,32 @@ class RC_model(object):
     **Readout parameters:**
     
     :param readout_type: str (default ``'lin'``) 
-        Type of readout used for classification. It can be ``'lin'`` (ridge regression), ``'mlp'`` (multiplayer perceptron), ``'svm'`` (support vector machine), or ``None``. If ``None``, the input representations will be saved instead: this is useful for clustering and visualization.
+        Type of readout used for classification. It can be ``'lin'`` (ridge regression), 
+        ``'mlp'`` (multiplayer perceptron), ``'svm'`` (support vector machine), 
+        or ``None``. 
+        If ``None``, the input representations will be saved in the ``.input_repr`` attribute: 
+        this is useful for clustering and visualization.
+        Also, if ````None````, the other Readout hyperparameters can be left unspecified.
     :param w_ridge: float (default ``1.0``) 
         Regularization parameter of the ridge regression readout (only for ``readout_type=='lin'``).
     :param mlp_layout: tuple (default ``None``) 
-        Tuple with the sizes of MLP layers, e.g., ``(20, 10)`` defines a MLP with 2 layers of 20 and 10 units respectively (only for ``readout_type=='mlp'``).
+        Tuple with the sizes of MLP layers, e.g., ``(20, 10)`` defines a MLP with 2 layers of 20 and 10 units respectively.
+        Used only when ``readout_type=='mlp'``.
     :param num_epochs: int (default ``None``) 
-        Number of iterations during the optimization (only for ``readout_type=='mlp'``).
+        Number of iterations during the optimization.
+        Used only when ``readout_type=='mlp'``.
     :param w_l2: float (default ``None``) 
-        Weight of the L2 regularization (only for ``readout_type=='mlp'``).
+        Weight of the L2 regularization.
+        Used only when ``readout_type=='mlp'``.
     :param nonlinearity: str (default ``None``) 
-        Type of activation function ``{'relu', 'tanh', 'logistic', 'identity'}`` (only for ``readout_type=='mlp'``).
+        Type of activation function ``{'relu', 'tanh', 'logistic', 'identity'}``.
+        Used only when ``readout_type=='mlp'``.
     :param svm_gamma: float (default ``1.0``) 
-        Bandwidth of the RBF kernel (only for ``readout_type=='svm'``).
+        Bandwidth of the RBF kernel.
+        Used only when ``readout_type=='svm'``.
     :param svm_C: float (default ``1.0``) 
-        Regularization for SVM hyperplane (only for ``readout_type=='svm'``).
+        Regularization for SVM hyperplane.
+        Used only when ``readout_type=='svm'``.
     """
     
     def __init__(self,
@@ -367,24 +382,28 @@ class RC_forecaster(object):
         Processing units in the reservoir.
     :param spectral_radius: float (default ``0.99``) 
         Largest eigenvalue of the reservoir matrix of connection weights.
+        To ensure the Echo State Property, set ``spectral_radius <= leak <= 1``)
     :param leak: float (default ``None``) 
         Amount of leakage in the reservoir state update.
     :param connectivity: float (default ``0.3``)
         Percentage of nonzero connection weights.
     :param input_scaling: float (default ``0.2``) 
         Scaling of the input connection weights.
+        Note that the input weights are randomly drawn from ``{-1,1}``.
     :param noise_level: float (default ``0.0``)
         Standard deviation of the Gaussian noise injected in the state update.
     :param n_drop: int (default ``0``)
         Number of transient states to drop.
     :param circle: bool (default ``False``)
-        Generate determinisitc reservoir with circle topology.
+        Generate determinisitc reservoir with circle topology where each connection 
+        has the same weight.
 
     **Dimensionality reduction parameters:**
 
     :param dimred_method: str (default ``None``)
         Procedure for reducing the number of features in the sequence of reservoir states. 
-        Possible options are: ``None`` (no dimensionality reduction), ``'pca'``, or ``'tenpca'`` (TensorPCA).
+        Possible options are: ``None`` (no dimensionality reduction), ``'pca'`` (standard PCA), 
+        or ``'tenpca'`` (tensorial PCA for multivariate time series data).
     :param n_dim: int (default ``None``) 
         Number of resulting dimensions after the dimensionality reduction procedure.
 

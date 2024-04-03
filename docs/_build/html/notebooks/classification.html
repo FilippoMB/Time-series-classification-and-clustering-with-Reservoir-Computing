@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time series classification &mdash; reservoir_computing  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Time series clustering" href="clustering.html" />
+    <link rel="prev" title="reservoir_computing.utils" href="../autoapi/reservoir_computing/utils/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            reservoir_computing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Time series classification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configure-the-rc-model">Configure the RC model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-the-data">Prepare the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initialize-train-and-evaluate-the-rc-model">Initialize, train and evaluate the RC model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="advanced_classifiers.html">Advanced classification models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering_visualization.html">Cluster analysis and visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">reservoir_computing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Time series classification</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/classification.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="time-series-classification">
+<h1>Time series classification<a class="headerlink" href="#time-series-classification" title="Link to this heading"></a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+<span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_model</span>
+<span class="kn">from</span> <span class="nn">reservoir_computing.utils</span> <span class="kn">import</span> <span class="n">compute_test_scores</span>
+<span class="kn">from</span> <span class="nn">reservoir_computing.datasets</span> <span class="kn">import</span> <span class="n">ClfLoader</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># For reproducibility</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="configure-the-rc-model">
+<h2>Configure the RC model<a class="headerlink" href="#configure-the-rc-model" title="Link to this heading"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># Hyperarameters of the reservoir</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_internal_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">500</span>        <span class="c1"># size of the reservoir</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;spectral_radius&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.59</span>        <span class="c1"># largest eigenvalue of the reservoir</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;leak&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>                    <span class="c1"># amount of leakage in the reservoir state update (None or 1.0 --&gt; no leakage)</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;connectivity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span>           <span class="c1"># percentage of nonzero connections in the reservoir</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;input_scaling&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>           <span class="c1"># scaling of the input weights</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;noise_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span>            <span class="c1"># noise in the reservoir state update</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_drop&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>                    <span class="c1"># transient states to be dropped</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;bidir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>                  <span class="c1"># if True, use bidirectional reservoir</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;circle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>                <span class="c1"># use reservoir with circle topology</span>
+
+<span class="c1"># Dimensionality reduction hyperparameters</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;dimred_method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;tenpca&#39;</span>      <span class="c1"># options: {None (no dimensionality reduction), &#39;pca&#39;, &#39;tenpca&#39;}</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_dim&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">75</span>                    <span class="c1"># number of resulting dimensions after the dimensionality reduction procedure</span>
+
+<span class="c1"># Type of MTS representation</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;mts_rep&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;reservoir&#39;</span>         <span class="c1"># MTS representation:  {&#39;last&#39;, &#39;mean&#39;, &#39;output&#39;, &#39;reservoir&#39;}</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;w_ridge_embedding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.0</span>      <span class="c1"># regularization parameter of the ridge regression</span>
+
+<span class="c1"># Type of readout</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;readout_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lin&#39;</span>          <span class="c1"># readout used for classification: {&#39;lin&#39;, &#39;mlp&#39;, &#39;svm&#39;}</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;w_ridge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>                 <span class="c1"># regularization of the ridge regression readout</span>
+
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;bidir&#39;: True,
+ &#39;circle&#39;: False,
+ &#39;connectivity&#39;: 0.25,
+ &#39;dimred_method&#39;: &#39;tenpca&#39;,
+ &#39;input_scaling&#39;: 0.1,
+ &#39;leak&#39;: 0.6,
+ &#39;mts_rep&#39;: &#39;reservoir&#39;,
+ &#39;n_dim&#39;: 75,
+ &#39;n_drop&#39;: 5,
+ &#39;n_internal_units&#39;: 500,
+ &#39;noise_level&#39;: 0.01,
+ &#39;readout_type&#39;: &#39;lin&#39;,
+ &#39;spectral_radius&#39;: 0.59,
+ &#39;w_ridge&#39;: 5.0,
+ &#39;w_ridge_embedding&#39;: 10.0}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="prepare-the-data">
+<h2>Prepare the data<a class="headerlink" href="#prepare-the-data" title="Link to this heading"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">Yte</span> <span class="o">=</span> <span class="n">ClfLoader</span><span class="p">()</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;Japanese_Vowels&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded Japanese_Vowels dataset.
+Number of classes: 9
+Data shapes:
+  Xtr: (270, 29, 12)
+  Ytr: (270, 1)
+  Xte: (370, 29, 12)
+  Yte: (370, 1)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># One-hot encoding for labels</span>
+<span class="n">onehot_encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">Ytr</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Ytr</span><span class="p">)</span>
+<span class="n">Yte</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Yte</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="initialize-train-and-evaluate-the-rc-model">
+<h2>Initialize, train and evaluate the RC model<a class="headerlink" href="#initialize-train-and-evaluate-the-rc-model" title="Link to this heading"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span>  <span class="n">RC_model</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train the model</span>
+<span class="n">tr_time</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training completed in 0.01 min
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute predictions on test data</span>
+<span class="n">pred_class</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xte</span><span class="p">)</span> 
+<span class="n">accuracy</span><span class="p">,</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">compute_test_scores</span><span class="p">(</span><span class="n">pred_class</span><span class="p">,</span> <span class="n">Yte</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy = </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, F1 = </span><span class="si">{</span><span class="n">f1</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy = 0.981, F1 = 0.981
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../autoapi/reservoir_computing/utils/index.html" class="btn btn-neutral float-left" title="reservoir_computing.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="clustering.html" class="btn btn-neutral float-right" title="Time series clustering" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Filippo Maria Bianchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

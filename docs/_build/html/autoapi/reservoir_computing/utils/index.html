@@ -23,7 +23,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Advanced classification models" href="../../../notebooks/advanced_classifiers.html" />
+    <link rel="next" title="Time series classification" href="../../../notebooks/classification.html" />
     <link rel="prev" title="reservoir_computing.tensorPCA" href="../tensorPCA/index.html" /> 
 </head>
 
@@ -50,6 +50,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.datasets</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../modules/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.modules</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../reservoir/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.reservoir</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tensorPCA/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.tensorPCA</span></code></a></li>
@@ -61,11 +62,17 @@
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
 </ul>
 
         </div>
@@ -105,7 +112,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.utils.compute_test_scores" title="reservoir_computing.utils.compute_test_scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_test_scores</span></code></a>(pred_class, Yte)</p></td>
 <td><p>Wrapper to compute classification accuracy and F1 score</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#reservoir_computing.utils.forecasting_datasets" title="reservoir_computing.utils.forecasting_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forecasting_datasets</span></code></a>(X, horizon[, test_percent, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#reservoir_computing.utils.make_forecasting_dataset" title="reservoir_computing.utils.make_forecasting_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_forecasting_dataset</span></code></a>(X, horizon[, test_percent, ...])</p></td>
 <td><p>This function does the following:</p></td>
 </tr>
 </tbody>
@@ -135,8 +142,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="reservoir_computing.utils.forecasting_datasets">
-<span class="sig-prename descclassname"><span class="pre">reservoir_computing.utils.</span></span><span class="sig-name descname"><span class="pre">forecasting_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/utils.html#forecasting_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.utils.forecasting_datasets" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="reservoir_computing.utils.make_forecasting_dataset">
+<span class="sig-prename descclassname"><span class="pre">reservoir_computing.utils.</span></span><span class="sig-name descname"><span class="pre">make_forecasting_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/utils.html#make_forecasting_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.utils.make_forecasting_dataset" title="Link to this definition"></a></dt>
 <dd><p>This function does the following:</p>
 <ol class="arabic simple">
 <li><p>Splits the dataset in training, validation and test sets</p></li>
@@ -190,7 +197,7 @@ If None, a StandardScaler is created</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../tensorPCA/index.html" class="btn btn-neutral float-left" title="reservoir_computing.tensorPCA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../../notebooks/advanced_classifiers.html" class="btn btn-neutral float-right" title="Advanced classification models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../../../notebooks/classification.html" class="btn btn-neutral float-right" title="Time series classification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

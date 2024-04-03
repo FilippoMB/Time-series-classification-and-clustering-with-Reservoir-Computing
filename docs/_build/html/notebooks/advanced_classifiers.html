@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Cluster analysis and visualization" href="clustering_visualization.html" />
-    <link rel="prev" title="reservoir_computing.utils" href="../autoapi/reservoir_computing/utils/index.html" /> 
+    <link rel="prev" title="Time series forecasting" href="forecasting.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,16 +49,23 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced classification models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-the-data">Prepare the data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linear-readout">Linear readout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#support-vector-classifier-readout">Support Vector Classifier readout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#multi-layer-perceptron-readout">Multi Layer Perceptron readout</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="clustering_visualization.html">Cluster analysis and visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
 </ul>
 
         </div>
@@ -90,22 +97,82 @@
 <p>This example shows how to use more advanced classifiers instead of the linear classifier that is used by default.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.io</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
 
 <span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_model</span>
 <span class="kn">from</span> <span class="nn">reservoir_computing.utils</span> <span class="kn">import</span> <span class="n">compute_test_scores</span>
+<span class="kn">from</span> <span class="nn">reservoir_computing.datasets</span> <span class="kn">import</span> <span class="n">ClfLoader</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># Fix the seed for reproducibility</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s start by defining the configuration for the Reservoir, the dimensionality reduction module, and the type of Multivariate Time Series (MTS) representation.</p>
+<section id="prepare-the-data">
+<h2>Prepare the data<a class="headerlink" href="#prepare-the-data" title="Link to this heading"></a></h2>
+<p>We will use the dataloader <code class="docutils literal notranslate"><span class="pre">ClfLoader</span></code> to get a forecasting datatset.
+To see what datatsets are available, we can call the function <code class="docutils literal notranslate"><span class="pre">available_datasets</span></code>. By setting <code class="docutils literal notranslate"><span class="pre">details=True</span></code> we can get additional information.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">downloader</span> <span class="o">=</span> <span class="n">ClfLoader</span><span class="p">()</span>
+<span class="n">downloader</span><span class="o">.</span><span class="n">available_datasets</span><span class="p">(</span><span class="n">details</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Describe available datasets</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Available datasets:
+
+AtrialFibrillation
+ArabicDigits
+Auslan
+CharacterTrajectories
+CMUsubject16
+ECG2D
+Japanese_Vowels
+KickvsPunch
+Libras
+NetFlow
+RobotArm
+UWAVE
+Wafer
+Chlorine
+Phalanx
+SwedishLeaf
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we load the dataset of MTS representing the sound of different Japanese vowels pronounced by nine different speakers. The goal is to classify the speaker correctly. Note that we need to transform the labels to one-hot encoded vectors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">Yte</span> <span class="o">=</span> <span class="n">downloader</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;Japanese_Vowels&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded Japanese_Vowels dataset.
+Number of classes: 9
+Data shapes:
+  Xtr: (270, 29, 12)
+  Ytr: (270, 1)
+  Xte: (370, 29, 12)
+  Yte: (370, 1)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># One-hot encoding for labels</span>
+<span class="n">onehot_encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">Ytr</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Ytr</span><span class="p">)</span>
+<span class="n">Yte</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Yte</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then, we define the configuration of the Reservoir, the dimensionality reduction module, and the type of Multivariate Time Series (MTS) representation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
@@ -119,7 +186,7 @@
 <span class="n">config</span><span class="p">[</span><span class="s1">&#39;noise_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span>            <span class="c1"># noise in the reservoir state update</span>
 <span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_drop&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>                    <span class="c1"># transient states to be dropped</span>
 <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bidir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>                  <span class="c1"># if True, use bidirectional reservoir</span>
-<span class="n">config</span><span class="p">[</span><span class="s1">&#39;circ&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>                  <span class="c1"># use reservoir with circle topology</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;circle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>                <span class="c1"># use reservoir with circle topology</span>
 
 <span class="c1"># Dimensionality reduction hyperparameters</span>
 <span class="n">config</span><span class="p">[</span><span class="s1">&#39;dimred_method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;tenpca&#39;</span>      <span class="c1"># options: {None (no dimensionality reduction), &#39;pca&#39;, &#39;tenpca&#39;}</span>
@@ -132,6 +199,7 @@
 </div>
 </div>
 </div>
+</section>
 <section id="linear-readout">
 <h2>Linear readout<a class="headerlink" href="#linear-readout" title="Link to this heading"></a></h2>
 <p>We will start using a simple linear classifier as the readout. In particular, we will use the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeClassifier.html">RidgeClassifier</a> from sklearn. The classifier requires to define a regularization parameter that we call <code class="docutils literal notranslate"><span class="pre">w_ridge</span></code> (but in sklearn is called <code class="docutils literal notranslate"><span class="pre">alpha</span></code>).</p>
@@ -144,60 +212,10 @@
 </div>
 </div>
 </div>
-<p>Next, we loead and pre-process a dataset of MTS representing the stroke for drawing different Japanese vowels. Note that we need to transform the labels to one-hot encoded vectors.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/master/dataset/JpVow.mat&#39;</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
-<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
-
-<span class="n">Xtr</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>  <span class="c1"># shape is [N,T,V]</span>
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xtr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-    <span class="n">Xtr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_3d</span><span class="p">(</span><span class="n">Xtr</span><span class="p">)</span>
-<span class="n">Ytr</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]</span>  <span class="c1"># shape is [N,1]</span>
-<span class="n">Xte</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Xte&#39;</span><span class="p">]</span>
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xte</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-    <span class="n">Xte</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_3d</span><span class="p">(</span><span class="n">Xte</span><span class="p">)</span>
-<span class="n">Yte</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Yte&#39;</span><span class="p">]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded data from </span><span class="si">{</span><span class="n">data_url</span><span class="si">}</span><span class="se">\n</span><span class="s2">Data shapes:</span><span class="se">\n</span><span class="s2"> Tr: </span><span class="si">{</span><span class="n">Xtr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="se">\n</span><span class="s2"> Te: </span><span class="si">{</span><span class="n">Xte</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># One-hot encoding for labels</span>
-<span class="n">onehot_encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">Ytr</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Ytr</span><span class="p">)</span>
-<span class="n">Yte</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Yte</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded data from https://raw.githubusercontent.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/master/dataset/JpVow.mat
-Data shapes:
- Tr: (270, 29, 12)
- Te: (370, 29, 12)
-</pre></div>
-</div>
-</div>
-</div>
 <p>At this point we initialize the RC classifier by passing the configuration we specified before and then we fit it on the training data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span>  <span class="n">RC_model</span><span class="p">(</span><span class="n">reservoir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>     
-                       <span class="n">n_internal_units</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_internal_units&#39;</span><span class="p">],</span>
-                       <span class="n">spectral_radius</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;spectral_radius&#39;</span><span class="p">],</span>
-                       <span class="n">leak</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;leak&#39;</span><span class="p">],</span>
-                       <span class="n">connectivity</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;connectivity&#39;</span><span class="p">],</span>
-                       <span class="n">input_scaling</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;input_scaling&#39;</span><span class="p">],</span>
-                       <span class="n">noise_level</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;noise_level&#39;</span><span class="p">],</span>
-                       <span class="n">circle</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;circ&#39;</span><span class="p">],</span>
-                       <span class="n">n_drop</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_drop&#39;</span><span class="p">],</span>
-                       <span class="n">bidir</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;bidir&#39;</span><span class="p">],</span>
-                       <span class="n">dimred_method</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;dimred_method&#39;</span><span class="p">],</span> 
-                       <span class="n">n_dim</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_dim&#39;</span><span class="p">],</span>
-                       <span class="n">mts_rep</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mts_rep&#39;</span><span class="p">],</span>
-                       <span class="n">w_ridge_embedding</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;w_ridge_embedding&#39;</span><span class="p">],</span>
-                       <span class="n">readout_type</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;readout_type&#39;</span><span class="p">],</span>            
-                       <span class="n">w_ridge</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;w_ridge&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span>  <span class="n">RC_model</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
 
 <span class="c1"># Train the model</span>
 <span class="n">tr_time</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span> 
@@ -246,23 +264,7 @@ Data shapes:
 <p>Next, we re-create the RC model, we train, and then we test it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span>  <span class="n">RC_model</span><span class="p">(</span><span class="n">reservoir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>     
-                       <span class="n">n_internal_units</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_internal_units&#39;</span><span class="p">],</span>
-                       <span class="n">spectral_radius</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;spectral_radius&#39;</span><span class="p">],</span>
-                       <span class="n">leak</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;leak&#39;</span><span class="p">],</span>
-                       <span class="n">connectivity</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;connectivity&#39;</span><span class="p">],</span>
-                       <span class="n">input_scaling</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;input_scaling&#39;</span><span class="p">],</span>
-                       <span class="n">noise_level</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;noise_level&#39;</span><span class="p">],</span>
-                       <span class="n">circle</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;circ&#39;</span><span class="p">],</span>
-                       <span class="n">n_drop</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_drop&#39;</span><span class="p">],</span>
-                       <span class="n">bidir</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;bidir&#39;</span><span class="p">],</span>
-                       <span class="n">dimred_method</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;dimred_method&#39;</span><span class="p">],</span> 
-                       <span class="n">n_dim</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_dim&#39;</span><span class="p">],</span>
-                       <span class="n">mts_rep</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mts_rep&#39;</span><span class="p">],</span>
-                       <span class="n">w_ridge_embedding</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;w_ridge_embedding&#39;</span><span class="p">],</span>
-                       <span class="n">readout_type</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;readout_type&#39;</span><span class="p">],</span>            
-                       <span class="n">svm_gamma</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;svm_gamma&#39;</span><span class="p">],</span>
-                       <span class="n">svm_C</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;svm_C&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span>  <span class="n">RC_model</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
 
 <span class="c1"># Train the model</span>
 <span class="n">tr_time</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span> 
@@ -302,25 +304,7 @@ Accuracy = 0.954, F1 = 0.955
 <p>As before, we create our RC classifier, we train it and test on unseen data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span>  <span class="n">RC_model</span><span class="p">(</span><span class="n">reservoir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>     
-                       <span class="n">n_internal_units</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_internal_units&#39;</span><span class="p">],</span>
-                       <span class="n">spectral_radius</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;spectral_radius&#39;</span><span class="p">],</span>
-                       <span class="n">leak</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;leak&#39;</span><span class="p">],</span>
-                       <span class="n">connectivity</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;connectivity&#39;</span><span class="p">],</span>
-                       <span class="n">input_scaling</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;input_scaling&#39;</span><span class="p">],</span>
-                       <span class="n">noise_level</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;noise_level&#39;</span><span class="p">],</span>
-                       <span class="n">circle</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;circ&#39;</span><span class="p">],</span>
-                       <span class="n">n_drop</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_drop&#39;</span><span class="p">],</span>
-                       <span class="n">bidir</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;bidir&#39;</span><span class="p">],</span>
-                       <span class="n">dimred_method</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;dimred_method&#39;</span><span class="p">],</span> 
-                       <span class="n">n_dim</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;n_dim&#39;</span><span class="p">],</span>
-                       <span class="n">mts_rep</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mts_rep&#39;</span><span class="p">],</span>
-                       <span class="n">w_ridge_embedding</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;w_ridge_embedding&#39;</span><span class="p">],</span>
-                       <span class="n">readout_type</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;readout_type&#39;</span><span class="p">],</span>            
-                       <span class="n">mlp_layout</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mlp_layout&#39;</span><span class="p">],</span>
-                       <span class="n">num_epochs</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;num_epochs&#39;</span><span class="p">],</span>
-                       <span class="n">w_l2</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;w_l2&#39;</span><span class="p">],</span>
-                       <span class="n">nonlinearity</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;nonlinearity&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span>  <span class="n">RC_model</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
 
 <span class="c1"># Train the model</span>
 <span class="n">tr_time</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span> 
@@ -333,7 +317,7 @@ Accuracy = 0.954, F1 = 0.955
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training completed in 0.12 min
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training completed in 0.11 min
 Accuracy = 0.959, F1 = 0.961
 </pre></div>
 </div>
@@ -348,7 +332,7 @@ Accuracy = 0.959, F1 = 0.961
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../autoapi/reservoir_computing/utils/index.html" class="btn btn-neutral float-left" title="reservoir_computing.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="forecasting.html" class="btn btn-neutral float-left" title="Time series forecasting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="clustering_visualization.html" class="btn btn-neutral float-right" title="Cluster analysis and visualization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

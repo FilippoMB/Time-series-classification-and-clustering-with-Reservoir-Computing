@@ -1,0 +1,251 @@
+:py:mod:`reservoir_computing.datasets`
+======================================
+
+.. py:module:: reservoir_computing.datasets
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   reservoir_computing.datasets.ClfLoader
+   reservoir_computing.datasets.PredLoader
+   reservoir_computing.datasets.SynthLoader
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   reservoir_computing.datasets.mackey_glass
+   reservoir_computing.datasets.mso
+   reservoir_computing.datasets.lorenz
+   reservoir_computing.datasets.rossler
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   reservoir_computing.datasets.downloader
+
+
+.. py:class:: ClfLoader
+
+
+   Class to download and load time series classification datasets.
+
+   .. py:method:: available_datasets(details=False)
+
+      Print the available datasets.
+
+      Parameters:
+      -----------
+      details : bool
+          If True, print a description of the datasets.
+
+      Returns:
+      --------
+      None
+
+
+   .. py:method:: get_data(alias)
+
+      Download and load the dataset.
+
+      Parameters:
+      -----------
+      alias : str
+          The alias of the dataset to be downloaded.
+
+      Returns:
+      --------
+      Xtr : np.ndarray
+          Training data
+      Ytr : np.ndarray
+          Training labels
+      Xte : np.ndarray
+          Test data
+      Yte : np.ndarray
+          Test labels
+
+
+
+.. py:class:: PredLoader
+
+
+   Class to download and load time series forecasting datasets.
+
+   .. py:method:: available_datasets(details=False)
+
+      Print the available datasets.
+
+      Parameters:
+      -----------
+      details : bool
+          If True, print a description of the datasets.
+
+      Returns:
+      --------
+      None
+
+
+   .. py:method:: get_data(alias) -> numpy.ndarray
+
+      Download and load the dataset.
+
+      Parameters:
+      -----------
+      alias : str
+          The alias of the dataset to be downloaded.
+
+      Returns:
+      --------
+      X : np.ndarray
+          Time series data
+
+
+
+.. py:function:: mackey_glass(sample_len=1000, tau=17, delta_t=1, seed=None, n_samples=1)
+
+   Generate the Mackey Glass time-series.
+
+   Parameters:
+   -----------
+   sample_len : int (default ``1000``)
+       Length of the time-series in timesteps.
+   tau : int (default ``17``)
+       Delay of the MG system. Commonly used values are tau=17 (mild
+       chaos) and tau=30 (moderate chaos).
+   delta_t : int (default ``1``)
+       Time step of the simulation.
+   seed : int or None (default ``None``)
+       Seed of the random generator. Can be used to generate the same
+       timeseries each time.
+   n_samples : int (default ``1``)
+       Number of samples to generate.
+
+   Returns:
+   --------
+   np.ndarray | list
+       Generated Mackey-Glass time-series.
+       If n_samples is 1, a single array is returned. Otherwise, a list.
+
+
+.. py:function:: mso(T=1000, N=10, seed=None, freq=0.5)
+
+   Generates the Multiple Sinewave Oscillator (MSO) time-series
+   by combining inusoids with incommensurable periods.
+   The sinusoids to be combined are selected randomly.
+
+   Parameters:
+   -----------
+   T : int (default ``1000``)
+       Number of time steps.
+   N : int (default ``10``)
+       Maximum number of sinusoids to combine.
+   seed : int or None (default ``None``)
+       Seed for the random generator.
+   freq : float (default ``0.5``)
+       Frequency of the sinusoids.
+
+   Returns:
+   --------
+   np.ndarray
+       MSO time-series.
+
+
+.. py:function:: lorenz(sigma=10, rho=28, beta=8 / 3, y0=[0, -0.01, 9.0], t_span=[0, 100], dt=0.001)
+
+   Generate the Lorenz attractor time-series.
+
+   Parameters:
+   -----------
+   sigma : float (default ``10``)
+       1st parameter of the Lorenz system.
+   rho : float (default ``28``)
+       2nd parameter of the Lorenz system.
+   beta : float (default ``8/3``)
+       3rd parameter of the Lorenz system.
+   y0 : list (default ``[0, -0.01, 9.0]``)
+       Initial conditions of the Lorenz system.
+   t_span : list (default ``[0, 100]``)
+       Time span of the simulation.
+   dt : float (default ``1e-3``)
+       Time step of the simulation.
+
+   Returns:
+   --------
+   np.ndarray
+       Lorenz time-series.
+
+
+.. py:function:: rossler(a=0.2, b=0.2, c=5.7, y0=[0.5, 0.5, 0.5], t_span=[0, 200], dt=0.001)
+
+   Generate the Rossler attractor time-series.
+
+   Parameters:
+   -----------
+   a : float (default ``0.2``)
+       1st parameter of the Rossler system.
+   b : float (default ``0.2``)
+       2nd parameter of the Rossler system.
+   c : float (default ``5.7``)
+       3rd parameter of the Rossler system.
+   y0 : list (default ``[0, 0.1, 0]``)
+       Initial conditions of the Rossler system.
+   t_span : list (default ``[0, 100]``)
+       Time span of the simulation.
+   dt : float (default ``1e-3``)
+       Time step of the simulation.
+
+   Returns:
+   --------
+   np.ndarray
+       Rossler time-series.
+
+
+.. py:class:: SynthLoader
+
+
+   Class to generate synthetic time series.
+
+   .. py:method:: available_datasets(details=False)
+
+      Print the available synthetic datasets.
+
+      Returns:
+      --------
+      None
+
+
+   .. py:method:: get_data(alias, **kwargs)
+
+      Generate the synthetic time series.
+
+      Parameters:
+      -----------
+      alias : str
+          The alias of the synthetic dataset to be generated.
+      kwargs : dict
+          Additional parameters for the synthetic dataset.
+
+      Returns:
+      --------
+      np.ndarray
+          Synthetic time series.
+
+
+
+.. py:data:: downloader
+
+   
+

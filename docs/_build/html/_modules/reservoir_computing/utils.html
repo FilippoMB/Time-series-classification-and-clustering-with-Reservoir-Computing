@@ -46,11 +46,17 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebooks/prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
 </ul>
 
         </div>
@@ -88,15 +94,15 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper to compute classification accuracy and F1 score</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    pred_class : array</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    pred_class : np.ndarray</span>
 <span class="sd">        Predicted class labels</span>
-<span class="sd">    Yte : array</span>
+<span class="sd">    Yte : np.ndarray</span>
 <span class="sd">        True class labels</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
 <span class="sd">    accuracy : float</span>
 <span class="sd">        Classification accuracy</span>
 <span class="sd">    f1 : float</span>
@@ -115,22 +121,23 @@
 
 
 
-<div class="viewcode-block" id="forecasting_datasets">
-<a class="viewcode-back" href="../../autoapi/reservoir_computing/utils/index.html#reservoir_computing.utils.forecasting_datasets">[docs]</a>
-<span class="k">def</span> <span class="nf">forecasting_datasets</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> 
-                         <span class="n">horizon</span><span class="p">,</span> 
-                         <span class="n">test_percent</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> 
-                         <span class="n">val_percent</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> 
-                         <span class="n">scaler</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="make_forecasting_dataset">
+<a class="viewcode-back" href="../../autoapi/reservoir_computing/utils/index.html#reservoir_computing.utils.make_forecasting_dataset">[docs]</a>
+<span class="k">def</span> <span class="nf">make_forecasting_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span>
+        <span class="n">horizon</span><span class="p">,</span>
+        <span class="n">test_percent</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> 
+        <span class="n">val_percent</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> 
+        <span class="n">scaler</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function does the following:</span>
+
 <span class="sd">    1. Splits the dataset in training, validation and test sets</span>
 <span class="sd">    2. Shift the target data by &#39;horizon&#39; to create the forecasting problem</span>
 <span class="sd">    3. Normalizes the data</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    X : array</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    X : np.ndarray</span>
 <span class="sd">        Input data</span>
 <span class="sd">    horizon : int</span>
 <span class="sd">        Forecasting horizon</span>
@@ -143,21 +150,21 @@
 <span class="sd">        Scaler object to normalize the data</span>
 <span class="sd">        If None, a StandardScaler is created</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Xtr : array</span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    Xtr : np.ndarray</span>
 <span class="sd">        Training input data</span>
-<span class="sd">    Ytr : array</span>
+<span class="sd">    Ytr : np.ndarray</span>
 <span class="sd">        Training target data</span>
-<span class="sd">    Xte : array </span>
+<span class="sd">    Xte : np.ndarray </span>
 <span class="sd">        Test input data</span>
-<span class="sd">    Yte : array</span>
+<span class="sd">    Yte : np.ndarray</span>
 <span class="sd">        Test target data</span>
 <span class="sd">    scaler : a scaler object from sklearn.preprocessing</span>
 <span class="sd">        Scaler object used to normalize the data</span>
-<span class="sd">    Xval : array (optional)</span>
+<span class="sd">    Xval : np.ndarray (optional)</span>
 <span class="sd">        Validation input data</span>
-<span class="sd">    Yval : array (optional)</span>
+<span class="sd">    Yval : np.ndarray (optional)</span>
 <span class="sd">        Validation target data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>

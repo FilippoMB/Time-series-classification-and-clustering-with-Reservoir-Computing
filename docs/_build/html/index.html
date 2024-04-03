@@ -50,11 +50,17 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/prediction_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
 </ul>
 
         </div>
@@ -85,30 +91,16 @@
 <h1>Time series classification and clustering with Reservoir Computing<a class="headerlink" href="#time-series-classification-and-clustering-with-reservoir-computing" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://arxiv.org/abs/1803.07870"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-1803.07870-b31b1b.svg" /></a>
 <a class="reference external" href="https://pepy.tech/project/reservoir-computing"><img alt="Downloads" src="https://static.pepy.tech/badge/reservoir-computing" /></a></p>
-<p align="center">
+<div align="center" id="fig:RCClassifier">
 <img src="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/raw/master/docs/RC_classifier.png" style="width: 22cm">
+<p>
+Figure 1: Overview of the RC classifier.
+</div>
 <p>This library allows to quickly implement different architectures for time series data based on <em>Reservoir Computing (RC)</em>, the family of approaches popularized in machine learning by Echo State Networks.
 This library is primarly design to perform <strong>classification</strong> and <strong>clustering</strong> of both univariate and multivariate time series. However, it can also be used to perform time series <strong>forecasting</strong>.</p>
-<section id="classification">
-<h2>Classification<a class="headerlink" href="#classification" title="Link to this heading"></a></h2>
-<p>Several options are available to customize the RC model, by selecting different configurations for each module.</p>
-<ol class="arabic simple">
-<li><p>The <strong>reservoir</strong> module specifies the reservoir configuration (<em>e.g.</em>, bidirectional, leaky neurons, circle topology). Given a multivariate time series <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> it generates a sequence of the same length of Reservoir states <span class="math notranslate nohighlight">\(\mathbf{H}\)</span>.</p></li>
-<li><p>The <strong>dimensionality reduction</strong> module (optionally) applies a dimensionality reduction on the  sequence of the reservoir’s states <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> generating a new sequence <span class="math notranslate nohighlight">\(\mathbf{\bar H}\)</span>.</p></li>
-<li><p>The <strong>representation</strong> generates a vector <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> from the sequence of reservoir’s states, which represents in vector form the original time series <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p></li>
-<li><p>The <strong>readout</strong> module is a classifier that maps the representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> into the class label <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, associated with the time series <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p></li>
-</ol>
-<p>This library implements the <em>reservoir model space</em> a very powerful representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> for the time series.
-Details about the methodology are found in the <a class="reference external" href="https://arxiv.org/abs/1803.07870">original paper</a>.</p>
-</section>
-<section id="clustering">
-<h2>Clustering<a class="headerlink" href="#clustering" title="Link to this heading"></a></h2>
-<p>The representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> obtained at step 3 can be used to perform time series clustering.</p>
-</section>
-<section id="forecasting">
-<h2>Forecasting<a class="headerlink" href="#forecasting" title="Link to this heading"></a></h2>
-<p>The sequences <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{\bar H}\)</span> obtained at steps 1 and 2 can be directly used to forecast the future values of the time series.</p>
-</section>
+<div align="center">
+🚀 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#quick-start">Getting Started</a> - 📚 <a href="https://reservoir-computing.readthedocs.io/en/latest">Documentation</a> - 📊 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#advanced-examples">Advanced examples</a>
+</div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
@@ -143,6 +135,68 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>examples/forecasting_example.py
 </pre></div>
 </div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="overview-of-the-framework">
+<h1>Overview of the framework<a class="headerlink" href="#overview-of-the-framework" title="Link to this heading"></a></h1>
+<p>In the following, we present the three main functionalities of this library.</p>
+<section id="classification">
+<h2>Classification<a class="headerlink" href="#classification" title="Link to this heading"></a></h2>
+<p>Referring to <a class="reference internal" href="#fig:RCClassifier"><span class="xref myst">Figure 1</span></a>, the RC classifier consists of four different modules.</p>
+<ol class="arabic simple">
+<li><p>The <strong>reservoir</strong> module specifies the reservoir configuration (<em>e.g.</em>, bidirectional, leaky neurons, circle topology). Given a multivariate time series <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> it generates a sequence of the same length of Reservoir states <span class="math notranslate nohighlight">\(\mathbf{H}\)</span>.</p></li>
+<li><p>The <strong>dimensionality reduction</strong> module (optionally) applies a dimensionality reduction on the  sequence of the reservoir’s states <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> generating a new sequence <span class="math notranslate nohighlight">\(\mathbf{\bar H}\)</span>.</p></li>
+<li><p>The <strong>representation</strong> generates a vector <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> from the sequence of reservoir’s states, which represents in vector form the original time series <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p></li>
+<li><p>The <strong>readout</strong> module is a classifier that maps the representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> into the class label <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, associated with the time series <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p></li>
+</ol>
+<p>This library implements also the <em>reservoir model space</em>, a very powerful representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> for the time series.
+Details about the methodology are found in the <a class="reference external" href="https://arxiv.org/abs/1803.07870">original paper</a>.</p>
+<p>The class <code class="docutils literal notranslate"><span class="pre">RC_model</span></code> contained in <a class="reference external" href="https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/modules.py">modules.py</a> permits to specify, train and test an RC-model.
+Several options are available to customize the RC model, by selecting different configurations for each module.</p>
+<p>The training and test function requires in input training and test data, which must be provided as multidimensional numpy arrays of shape <em>[N,T,V]</em>, with:</p>
+<ul class="simple">
+<li><p><em>N</em> = number of samples</p></li>
+<li><p><em>T</em> = number of time steps in each sample</p></li>
+<li><p><em>V</em> = number of variables in each sample</p></li>
+</ul>
+<p>Training and test labels (<code class="docutils literal notranslate"><span class="pre">Ytr</span></code> and <code class="docutils literal notranslate"><span class="pre">Yte</span></code>) must be provided in one-hot encoding format, i.e. a matrix <em>[N,C]</em>, where <em>C</em> is the number of classes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_model</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RC_model</span><span class="p">()</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span> <span class="c1"># Training</span>
+<span class="n">Yhat</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xte</span><span class="p">)</span> <span class="c1"># Prediction</span>
+</pre></div>
+</div>
+</section>
+<section id="clustering">
+<h2>Clustering<a class="headerlink" href="#clustering" title="Link to this heading"></a></h2>
+<p>The representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> obtained from the <strong>representation</strong> module (step 3) can be used to perform time series clustering.
+The same class <code class="docutils literal notranslate"><span class="pre">RC_model</span></code> used for classification can be configured to directly return the time series representations, which can be used in unsupervised tasks such as clustering and dimensionality reduction.</p>
+<p>As in the case of classification, the data must be provided as multidimensional NumPy arrays of shape <em>[N,T,V]</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_model</span>
+
+<span class="n">clst</span> <span class="o">=</span> <span class="n">RC_model</span><span class="p">(</span><span class="n">readout_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">clst</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">rX</span> <span class="o">=</span> <span class="n">clst</span><span class="o">.</span><span class="n">input_repr</span> <span class="c1"># representations of the input data</span>
+</pre></div>
+</div>
+<p>The representations <code class="docutils literal notranslate"><span class="pre">rX</span></code> can be used to perfrom clustering using traditional clustering algorithms for vectorial data, such as those <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html">here</a>.</p>
+</section>
+<section id="forecasting">
+<h2>Forecasting<a class="headerlink" href="#forecasting" title="Link to this heading"></a></h2>
+<p>The sequences <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{\bar H}\)</span> obtained at steps 1 and 2 can be directly used to forecast the future values of the time series.</p>
+<p>The class <code class="docutils literal notranslate"><span class="pre">RC_forecaster</span></code> contained in <a class="reference external" href="https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/modules.py">modules.py</a> permits to specify, train and test an RC-model for time series forecasting.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_forecaster</span>
+
+<span class="n">fcst</span> <span class="o">=</span> <span class="n">RC_forecaster</span><span class="p">()</span>
+<span class="n">fcst</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span> <span class="c1"># Training</span>
+<span class="n">Yhat</span> <span class="o">=</span> <span class="n">fcst</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xte</span><span class="p">)</span> <span class="c1"># Predictions</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">Xtr</span></code>, <code class="docutils literal notranslate"><span class="pre">Ytr</span></code> are current and future values, respectively, used for training.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="advanced-examples">
+<h1>Advanced examples<a class="headerlink" href="#advanced-examples" title="Link to this heading"></a></h1>
 <p>The following notebooks illustrate more advanced use-cases.</p>
 <ul class="simple">
 <li><p>Perform dimensionality reduction, cluster analysis, and visualize the results: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering_visualization.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1_BahDTpTB8dEHARJtCLNe0JxVT8WAXuD?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
@@ -150,143 +204,34 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <li><p>Use advanced classifiers as readout: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/advanced_classifiers.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1PnH_lffbE1nfghYwPa2j0H2_4mgtRwQo?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
 </ul>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="configure-the-rc-model">
-<h1>Configure the RC-model<a class="headerlink" href="#configure-the-rc-model" title="Link to this heading"></a></h1>
-<p>The main class <code class="docutils literal notranslate"><span class="pre">RC_model</span></code> contained in <a class="reference external" href="https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/modules.py">modules.py</a> permits to specify, train and test an RC-model.
-The RC-model is configured by passing to the constructor of the class <code class="docutils literal notranslate"><span class="pre">RC_model</span></code> a set of parameters. To get an idea, you can check <code class="docutils literal notranslate"><span class="pre">classification_example.py</span></code> or <code class="docutils literal notranslate"><span class="pre">clustering_example.py</span></code> where the parameters are specified through a dictionary (<code class="docutils literal notranslate"><span class="pre">config</span></code>).</p>
-<p>The available configuration hyperparameters are listed in the following and, for the sake of clarity, are grouped according to which module of the architecture they refer to.</p>
-<p><strong>1. Reservoir:</strong></p>
-<ul class="simple">
-<li><p>n_drop - number of transient states to drop</p></li>
-<li><p>bidir - use a bidirectional reservoir (True or False)</p></li>
-<li><p>reservoir - precomputed reservoir (object of class <code class="docutils literal notranslate"><span class="pre">Reservoir</span></code> in <a class="reference external" href="https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/reservoir.py">reservoir.py</a>; if <code class="docutils literal notranslate"><span class="pre">None</span></code>, the following hyperparameters must be specified:</p>
-<ul>
-<li><p>n_internal_units = number of processing units in the reservoir</p></li>
-<li><p>spectral_radius = largest eigenvalue of the reservoir matrix of connection weights (to guarantee the Echo State Property, set spectral_radius &lt;= leak &lt;= 1)</p></li>
-<li><p>leak = amount of leakage in the reservoir state update (optional, <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">1.0</span></code> –&gt; no leakage)</p></li>
-<li><p>circ = if True, generate a determinisitc reservoir with circle topology where each connection has the same weight</p></li>
-<li><p>connectivity = percentage of nonzero connection weights (ignored if circ = <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
-<li><p>input_scaling = scaling of the input connection weights (note that weights are randomly drawn from {-1,1})</p></li>
-<li><p>noise_level = deviation of the Gaussian noise injected in the state update</p></li>
-</ul>
-</li>
-</ul>
-<p><strong>2. Dimensionality reduction:</strong></p>
-<ul class="simple">
-<li><p>dimred_method - procedure for reducing the number of features in the sequence of reservoir states; possible options are: <code class="docutils literal notranslate"><span class="pre">None</span></code> (no dimensionality reduction), <code class="docutils literal notranslate"><span class="pre">'pca'</span></code> (standard PCA) or <code class="docutils literal notranslate"><span class="pre">'tenpca'</span></code> (tensorial PCA for multivariate time series data)</p></li>
-<li><p>n_dim - number of resulting dimensions after the dimensionality reduction procedure</p></li>
-</ul>
-<p><strong>3. Representation:</strong></p>
-<ul class="simple">
-<li><p>mts_rep - type of multivariate time series representation. It can be <code class="docutils literal notranslate"><span class="pre">'last'</span></code> (last state), <code class="docutils literal notranslate"><span class="pre">'mean'</span></code> (mean of all states), <code class="docutils literal notranslate"><span class="pre">'output'</span></code> (output model space), or <code class="docutils literal notranslate"><span class="pre">'reservoir'</span></code> (reservoir model space)</p></li>
-<li><p>w_ridge_embedding - regularization parameter of the ridge regression in the output model space and reservoir model space representation; ignored if mts_rep is <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
-</ul>
-<p><strong>4. Readout:</strong></p>
-<ul class="simple">
-<li><p>readout_type - type of readout used for classification. It can be <code class="docutils literal notranslate"><span class="pre">'lin'</span></code> (ridge regression), <code class="docutils literal notranslate"><span class="pre">'mlp'</span></code> (multilayer perceptron), <code class="docutils literal notranslate"><span class="pre">'svm'</span></code> (support vector machine), or <code class="docutils literal notranslate"><span class="pre">None</span></code>. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the input representations will be stored in the <code class="docutils literal notranslate"><span class="pre">.input_repr</span></code> attribute: this is useful for clustering and visualization. Also, if <code class="docutils literal notranslate"><span class="pre">None</span></code>, the other Readout hyperparameters can be left unspecified.</p></li>
-<li><p>w_ridge - regularization parameter of the ridge regression readout (only when readout_type is <code class="docutils literal notranslate"><span class="pre">'lin'</span></code>)</p></li>
-<li><p>mlp_layout - list with the sizes of MLP layers, e.g. <code class="docutils literal notranslate"><span class="pre">[20,20,10]</span></code> defines a MLP with 3 layers of 20, 20 and 10 units respectively (only when readout_type is <code class="docutils literal notranslate"><span class="pre">'mlp'</span></code>)</p></li>
-<li><p>batch_size - size of the mini batches used during training (only when readout_type is <code class="docutils literal notranslate"><span class="pre">'mlp'</span></code>)</p></li>
-<li><p>num_epochs - number of iterations during the optimization (only when readout_type is <code class="docutils literal notranslate"><span class="pre">'mlp'</span></code>)</p></li>
-<li><p>w_l2 = weight of the L2 regularization (only when readout_type is <code class="docutils literal notranslate"><span class="pre">'mlp'</span></code>)</p></li>
-<li><p>learning_rate = learning rate in the gradient descent optimization (only when readout_type is <code class="docutils literal notranslate"><span class="pre">'mlp'</span></code>)</p></li>
-<li><p>nonlinearity = type of activation function; it can be <code class="docutils literal notranslate"><span class="pre">{'relu',</span> <span class="pre">'tanh',</span> <span class="pre">'logistic',</span> <span class="pre">'identity'}</span></code> (only when readout_type is <code class="docutils literal notranslate"><span class="pre">'mlp'</span></code>)</p></li>
-<li><p>svm_gamma = bandwith of the RBF kernel (only when readout_type is <code class="docutils literal notranslate"><span class="pre">'svm'</span></code>)</p></li>
-<li><p>svm_C = regularization for the SVM hyperplane (only when readout_type is <code class="docutils literal notranslate"><span class="pre">'svm'</span></code>)</p></li>
-</ul>
-<section id="rc-model-for-classification">
-<h2>RC-model for classification<a class="headerlink" href="#rc-model-for-classification" title="Link to this heading"></a></h2>
-<p>The training and test function requires in input training and test data, which must be provided as multidimensional NumPy arrays of shape <em>[N,T,V]</em>, with:</p>
-<ul class="simple">
-<li><p><em>N</em> = number of samples</p></li>
-<li><p><em>T</em> = number of time steps in each sample</p></li>
-<li><p><em>V</em> = number of variables in each sample</p></li>
-</ul>
-<p>Training and test labels (Y and Yte) must be provided in one-hot encoding format, i.e. a matrix <em>[N,C]</em>, where <em>C</em> is the number of classes.</p>
-<p><strong>Training</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_model</span>
-<span class="n">clf</span> <span class="o">=</span> <span class="n">RC_model</span><span class="p">()</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span>
+<section class="tex2jax_ignore mathjax_ignore" id="datasets">
+<h1>Datasets<a class="headerlink" href="#datasets" title="Link to this heading"></a></h1>
+<p>There are several datasets available to perform time series classification/clustering and forecasting.</p>
+<p><strong>Classification and clustering</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.datasets</span> <span class="kn">import</span> <span class="n">ClfLoader</span>
+
+<span class="n">downloader</span> <span class="o">=</span> <span class="n">ClfLoader</span><span class="p">()</span>
+<span class="n">downloader</span><span class="o">.</span><span class="n">available_datasets</span><span class="p">(</span><span class="n">details</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Print available datasets</span>
+<span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">Yte</span> <span class="o">=</span> <span class="n">downloader</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;Libras&#39;</span><span class="p">)</span>  <span class="c1"># Download dataset and return data</span>
 </pre></div>
 </div>
-<p>Inputs:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Xtr</span></code>, <code class="docutils literal notranslate"><span class="pre">Ytr</span></code>: training data and labels.</p></li>
-</ul>
-<p>Outputs:</p>
-<ul class="simple">
-<li><p>None</p></li>
-</ul>
-<p><strong>Prediction of new samples</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Yhat</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xte</span><span class="p">)</span>
+<p><strong>Forecasting</strong></p>
+<p>Real-world time series</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.datasets</span> <span class="kn">import</span> <span class="n">PredLoader</span>
+
+<span class="n">downloader</span> <span class="o">=</span> <span class="n">PredLoader</span><span class="p">()</span>
+<span class="n">downloader</span><span class="o">.</span><span class="n">available_datasets</span><span class="p">(</span><span class="n">details</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Print available datasets</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">downloader</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;CDR&#39;</span><span class="p">)</span>  <span class="c1"># Download dataset and return data</span>
 </pre></div>
 </div>
-<p>Inputs:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Xte</span></code>: test data.</p></li>
-</ul>
-<p>Outputs:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Yhat</span></code>: prediction of the labels for the test data.</p></li>
-</ul>
-</section>
-<section id="rc-model-for-clustering">
-<h2>RC-model for clustering<a class="headerlink" href="#rc-model-for-clustering" title="Link to this heading"></a></h2>
-<p>As in the case of classification, the data must be provided as multidimensional NumPy arrays of shape <em>[N,T,V]</em></p>
-<p><strong>Training</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_model</span>
-<span class="n">clst</span> <span class="o">=</span> <span class="n">RC_model</span><span class="p">(</span><span class="n">readout_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="n">clst</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="n">rX</span> <span class="o">=</span> <span class="n">clst</span><span class="o">.</span><span class="n">input_repr</span> <span class="c1"># representations of the input data</span>
+<p>Synthetic time series</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.datasets</span> <span class="kn">import</span> <span class="n">SynthLoader</span>
+
+<span class="n">synth</span> <span class="o">=</span> <span class="n">SynthLoader</span><span class="p">()</span>
+<span class="n">synth</span><span class="o">.</span><span class="n">available_datasets</span><span class="p">()</span>  <span class="c1"># Print available datasets</span>
+<span class="n">Xs</span> <span class="o">=</span> <span class="n">synth</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;Lorenz&#39;</span><span class="p">)</span>  <span class="c1"># Generate synthetic time series</span>
 </pre></div>
 </div>
-<p>Inputs:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">X</span></code>: time series data</p></li>
-</ul>
-<p>Outputs:</p>
-<ul class="simple">
-<li><p>None</p></li>
-</ul>
-<p>The representations <code class="docutils literal notranslate"><span class="pre">rX</span></code> can be used to perfrom clustering using traditional clustering algorithms for vectorial data, such as those <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html">here</a>.</p>
-</section>
-<section id="rc-model-for-forecasting">
-<h2>RC-model for forecasting<a class="headerlink" href="#rc-model-for-forecasting" title="Link to this heading"></a></h2>
-<p><strong>Training</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_forecaster</span>
-<span class="n">fcst</span> <span class="o">=</span> <span class="n">RC_forecaster</span><span class="p">()</span>
-<span class="n">fcst</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Inputs:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Xtr</span></code>, <code class="docutils literal notranslate"><span class="pre">Ytr</span></code>: current and future values used for training.</p></li>
-</ul>
-<p>Outputs:</p>
-<ul class="simple">
-<li><p>None</p></li>
-</ul>
-<p><strong>Predicting new data</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Yhat</span> <span class="o">=</span> <span class="n">fcst</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xte</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Inputs:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Xte</span></code>: test data.</p></li>
-</ul>
-<p>Outputs:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Yhat</span></code>: forecast of the test data.</p></li>
-</ul>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="time-series-datasets-for-classification-and-clustering">
-<h1>Time series datasets for classification and clustering<a class="headerlink" href="#time-series-datasets-for-classification-and-clustering" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p>A collection of univariate and multivariate time series dataset is available for download <a class="reference external" href="https://mega.nz/#!aZkBwYDa!JZb99GQoUn4EoJYceCK3Ihe04hhYZYuIWn018gcQM8k">here</a>.</p></li>
-<li><p>The dataset are provided both in MATLAB and Python (Numpy) format.</p></li>
-<li><p>The original raw data come from <a class="reference external" href="https://archive.ics.uci.edu/ml/index.php">UCI</a>, <a class="reference external" href="https://www.groundai.com/project/the-uea-multivariate-time-series-classification-archive-2018/">UEA</a>, and <a class="reference external" href="https://www.cs.ucr.edu/~eamonn/time_series_data/">UCR</a> public repositories.</p></li>
-</ul>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="citation">
 <h1>Citation<a class="headerlink" href="#citation" title="Link to this heading"></a></h1>
@@ -304,6 +249,8 @@ The RC-model is configured by passing to the constructor of the class <code clas
 <section class="tex2jax_ignore mathjax_ignore" id="license">
 <h1>License<a class="headerlink" href="#license" title="Link to this heading"></a></h1>
 <p>The code is released under the MIT License. See the attached LICENSE file.</p>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">

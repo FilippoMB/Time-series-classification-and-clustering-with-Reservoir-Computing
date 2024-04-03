@@ -10,10 +10,20 @@ autoapi/index
 
 ```{toctree}
 :maxdepth: 2
-:caption: Examples
+:caption: Quick start
+:hidden:
+
+notebooks/classification.ipynb
+notebooks/clustering.ipynb
+notebooks/forecasting.ipynb
+```
+
+```{toctree}
+:maxdepth: 2
+:caption: Advanced examples
 :hidden:
 
 notebooks/advanced_classifiers.ipynb
 notebooks/clustering_visualization.ipynb
-notebooks/prediction_with_GBRT.ipynb
+notebooks/forecasting_with_GBRT.ipynb
 ```
