@@ -49,17 +49,22 @@ cd Time-series-classification-and-clustering-with-Reservoir-Computing
 python examples/classification_example.py
 ````
 
+You can also [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/classification.ipynb) the notebook or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xk7ZiT3yGrpFrsmL4CR0Q31REr6K_soA?usp=sharing)
+
 **Clustering**
 
 ````bash
 python examples/clustering_example.py
 ````
 
+You can also [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering.ipynb) the notebook or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Ycpnifi6yCRZC8_N15CiltwzSRzJTnVN?usp=sharing)
+
 **Forecasting**
 
 ````bash
 python examples/forecasting_example.py
 ````
+You can also [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting.ipynb) the notebook or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Fnt3IMmlehD9-P7hNVuiVDH_saeIOayk?usp=sharing)
 
 # Overview of the framework
 
@@ -131,9 +136,9 @@ Here, `Xtr`, `Ytr` are current and future values, respectively, used for trainin
 # Advanced examples
 The following notebooks illustrate more advanced use-cases.
 
-- Perform dimensionality reduction, cluster analysis, and visualize the results: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering_visualization.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1_BahDTpTB8dEHARJtCLNe0JxVT8WAXuD?usp=sharing)
-- Probabilistic forecasting with advanced regression models as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting_with_GBRT.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1wxIRcX_y7572x6WeezfWfJiTurVsc2aW?usp=sharing)
-- Use advanced classifiers as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/advanced_classifiers.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1PnH_lffbE1nfghYwPa2j0H2_4mgtRwQo?usp=sharing)
+- Perform dimensionality reduction, cluster analysis, and visualize the results: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering_visualization.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1N19l9hH7cxFdWxeAuL7WFbxZFdSIkl-D?usp=sharing)
+- Probabilistic forecasting with advanced regression models as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting_with_GBRT.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1HAD2IlaOggaRGIuIPCabUje2IClqzpyn?usp=sharing)
+- Use advanced classifiers as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/advanced_classifiers.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1RCpDpAxuYFuFuoRWSM7iMA1sRx8exlhH?usp=sharing)
 
 # Datasets
 
