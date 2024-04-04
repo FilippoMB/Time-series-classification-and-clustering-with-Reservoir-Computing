@@ -20,7 +20,7 @@ extensions = [
     "autoapi.extension",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
-    # "sphinx.ext.githubpages",
+    "sphinx.ext.githubpages",
 #    "sphinx.ext.mathjax",
 ]
 
@@ -29,22 +29,6 @@ extensions = [
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-# html_context = {
-#     "display_github": True,  # Integrate GitHub
-#     "github_user": "FilippoMB",  # Username
-#     "github_repo": "Time-series-classification-and-clustering-with-Reservoir-Computing",  # Repo name
-#     "github_version": "master",  # Branch
-#     "conf_py_path": "/docs/",  # Path in the repository to conf.py
-#     "source_suffix": ".md", # File extension for your documentation source files
-#     "edit_uri": "gg", # Custom edit URI
-#     "github_url": "https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing",
-# }
-# html_context["edit_uri"] = ""
-# html_context = {
-#     'source_url_prefix': "https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing",
-# }
-# html_show_sourcelink = True
-github_url = "https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing"
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -52,6 +36,23 @@ github_url = "https://github.com/FilippoMB/Time-series-classification-and-cluste
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+# html_theme = "sphinx_book_theme"
+
+html_context = {
+    "display_github": True,  # Integrate GitHub
+    "github_user": "FilippoMB",  # Username
+    "github_repo": "Time-series-classification-and-clustering-with-Reservoir-Computing",  # Repo name
+    "github_version": "master",  # Branch
+    "conf_py_path": "/docs/",  # Path in the repository to conf.py
+    "source_suffix": ".md", # File extension for your documentation source files
+    "edit_uri": "", # Custom edit URI
+    # "github_url": "https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing",
+    # "source_url_prefix": "https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing",
+}
+
+# html_show_sourcelink = True
+# github_url = "https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing"
+
 
 
 # -- Options for myst-nb ------------------------------------------------------
