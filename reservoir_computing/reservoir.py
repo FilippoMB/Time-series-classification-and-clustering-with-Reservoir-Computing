@@ -106,7 +106,11 @@ class Reservoir(object):
             previous_state = np.zeros((N, self._n_internal_units), dtype=float)
 
         # Storage
-        state_matrix = np.empty((N, T - n_drop, self._n_internal_units), dtype=float)
+        if T - n_drop > 0:
+            window_size = T - n_drop
+        else:
+            window_size = T
+        state_matrix = np.empty((N, window_size, self._n_internal_units), dtype=float)
 
         for t in range(T):
             current_input = X[:, t, :]
@@ -124,8 +128,10 @@ class Reservoir(object):
                 previous_state = (1.0 - self._leak)*previous_state + np.tanh(state_before_tanh).T
 
             # Store everything after the dropout period
-            if (t > n_drop - 1):
+            if T - n_drop > 0 and t > n_drop - 1:
                 state_matrix[:, t - n_drop, :] = previous_state
+            elif T - n_drop <= 0:
+                state_matrix[:, t, :] = previous_state
 
         return state_matrix
 
