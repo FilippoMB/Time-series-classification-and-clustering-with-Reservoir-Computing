@@ -9,7 +9,8 @@ setup(
         'numpy>1.19.5',
         'scikit_learn>=1.4',
         'scipy',
-        'requests'
+        'requests',
+        'matplotlib',
     ],
     author="Filippo Maria Bianchi",
     author_email="filippombianchi@gmail.com",
