@@ -471,7 +471,8 @@ class RC_forecaster(object):
 
         Returns:
         --------
-        None
+        red_states : np.ndarray
+            Array of shape ``[T, n_dim]`` representing the reservoir states of the time steps used for training.
         """
         
         time_start = time.time()
@@ -486,25 +487,35 @@ class RC_forecaster(object):
         else: # Skip dimensionality reduction
             red_states = res_states[0]
 
+        self._fitted_states = red_states
+
         # ============ Train readout ============
         self.readout.fit(red_states, Y[self.n_drop:,:])          
             
         if verbose:
             tot_time = (time.time()-time_start)/60
             print(f"Training completed in {tot_time:.2f} min")
-    
-    def predict(self, Xte):
+
+        return red_states
+
+    def predict(self, Xte, return_states=False):
         r"""Computes predictions for out-of-sample (test) data.
 
         Parameters:
         -----------
         Xte : np.ndarray
             Array of shape ``[T, V]`` representing the test data.
+        
+        return_states : bool
+            If ``True``, return the predicted states.
 
         Returns:
         --------
         Yhat : np.ndarray
             Array of shape ``[T, V]`` representing the predicted values.
+        
+        red_states_te : np.ndarray
+            Array of shape ``[T, n_dim]`` representing the reservoir states of the new time steps.
         """
 
         # ============ Compute reservoir states ============
@@ -516,8 +527,32 @@ class RC_forecaster(object):
                 red_states_te = self._dim_red.transform(res_states_te[0])                          
         else: # Skip dimensionality reduction
             red_states_te = res_states_te[0]        
-                    
+
+        self._predicted_states = red_states_te
+
         # ============ Apply readout ============
         Yhat = self.readout.predict(red_states_te)
-            
+
+        if return_states:
+            return Yhat, red_states_te
         return Yhat
+
+    def get_fitted_states(self):
+        r"""Return the fitted reservoir states.
+
+        Returns:
+        --------
+        fitted_states : np.ndarray
+            Array of shape ``[T, n_dim]`` representing the fitted reservoir states.
+        """
+        return self._fitted_states
+
+    def get_predicted_states(self):
+        r"""Return the predicted reservoir states.
+
+        Returns:
+        --------
+        predicted_states : np.ndarray
+            Array of shape ``[T, n_dim]`` representing the predicted reservoir states.
+        """
+        return self._predicted_states
