@@ -572,7 +572,8 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
-<span class="sd">        None</span>
+<span class="sd">        red_states : np.ndarray</span>
+<span class="sd">            Array of shape ``[T, n_dim]`` representing the reservoir states of the time steps used for training.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -587,28 +588,38 @@
         <span class="k">else</span><span class="p">:</span> <span class="c1"># Skip dimensionality reduction</span>
             <span class="n">red_states</span> <span class="o">=</span> <span class="n">res_states</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fitted_states</span> <span class="o">=</span> <span class="n">red_states</span>
+
         <span class="c1"># ============ Train readout ============</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">red_states</span><span class="p">,</span> <span class="n">Y</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n_drop</span><span class="p">:,:])</span>          
             
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="n">tot_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">time_start</span><span class="p">)</span><span class="o">/</span><span class="mi">60</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training completed in </span><span class="si">{</span><span class="n">tot_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> min&quot;</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training completed in </span><span class="si">{</span><span class="n">tot_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> min&quot;</span><span class="p">)</span>
 
-    
+        <span class="k">return</span> <span class="n">red_states</span></div>
+
+
 <div class="viewcode-block" id="RC_forecaster.predict">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.predict">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xte</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">return_states</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes predictions for out-of-sample (test) data.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
 <span class="sd">        Xte : np.ndarray</span>
 <span class="sd">            Array of shape ``[T, V]`` representing the test data.</span>
+<span class="sd">        </span>
+<span class="sd">        return_states : bool</span>
+<span class="sd">            If ``True``, return the predicted states.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        Yhat : np.ndarray</span>
 <span class="sd">            Array of shape ``[T, V]`` representing the predicted values.</span>
+<span class="sd">        </span>
+<span class="sd">        red_states_te : np.ndarray</span>
+<span class="sd">            Array of shape ``[T, n_dim]`` representing the reservoir states of the new time steps.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># ============ Compute reservoir states ============</span>
@@ -620,11 +631,41 @@
                 <span class="n">red_states_te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_red</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">res_states_te</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>                          
         <span class="k">else</span><span class="p">:</span> <span class="c1"># Skip dimensionality reduction</span>
             <span class="n">red_states_te</span> <span class="o">=</span> <span class="n">res_states_te</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        
-                    
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicted_states</span> <span class="o">=</span> <span class="n">red_states_te</span>
+
         <span class="c1"># ============ Apply readout ============</span>
         <span class="n">Yhat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">red_states_te</span><span class="p">)</span>
-            
+
+        <span class="k">if</span> <span class="n">return_states</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Yhat</span><span class="p">,</span> <span class="n">red_states_te</span>
         <span class="k">return</span> <span class="n">Yhat</span></div>
+
+
+<div class="viewcode-block" id="RC_forecaster.get_fitted_states">
+<a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.get_fitted_states">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_fitted_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return the fitted reservoir states.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        fitted_states : np.ndarray</span>
+<span class="sd">            Array of shape ``[T, n_dim]`` representing the fitted reservoir states.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fitted_states</span></div>
+
+
+<div class="viewcode-block" id="RC_forecaster.get_predicted_states">
+<a class="viewcode-back" href="../../autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.get_predicted_states">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_predicted_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return the predicted reservoir states.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        predicted_states : np.ndarray</span>
+<span class="sd">            Array of shape ``[T, n_dim]`` representing the predicted reservoir states.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicted_states</span></div>
 </div>
 
 </pre></div>

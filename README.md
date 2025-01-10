@@ -14,7 +14,7 @@ This library allows to quickly implement different architectures for time series
 This library is primarly design to perform **classification** and **clustering** of both univariate and multivariate time series. However, it can also be used to perform time series **forecasting**. 
 
 <div align="center">
-🚀 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#quick-start">Getting Started</a> - 📚 <a href="https://reservoir-computing.readthedocs.io/en/latest">Documentation</a> - 📊 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#advanced-examples">Advanced examples</a>
+📚 <a href="https://reservoir-computing.readthedocs.io/en/latest">Documentation</a> - 🚀 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#quick-start">Getting Started</a> - 🧩 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#advanced-examples">Advanced examples</a>
 </div>
 
 # 🛠️ Setup
@@ -32,7 +32,7 @@ cd Time-series-classification-and-clustering-with-Reservoir-Computing
 pip install -e .
 ````
 
-# ⏱ Quick start
+# 🚀 Getting Started
 
 The following scripts provide minimalistic examples that illustrate how to use the library for different tasks.
 
