@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>reservoir_computing.utils &mdash; reservoir_computing  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
 
   
   <!--[if lt IE 9]>
@@ -17,7 +17,7 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -57,6 +57,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/missing_data_imputation.html">Missing Data Imputation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/state_space_reconstruction.html">State Space Reconstruction</a></li>
 </ul>
 
         </div>
@@ -84,13 +86,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for reservoir_computing.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">f1_score</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">f1_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
 
 <div class="viewcode-block" id="compute_test_scores">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/utils/index.html#reservoir_computing.utils.compute_test_scores">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_test_scores</span><span class="p">(</span><span class="n">pred_class</span><span class="p">,</span> <span class="n">Yte</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_test_scores</span><span class="p">(</span><span class="n">pred_class</span><span class="p">,</span> <span class="n">Yte</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper to compute classification accuracy and F1 score</span>
 
@@ -123,7 +125,7 @@
 
 <div class="viewcode-block" id="make_forecasting_dataset">
 <a class="viewcode-back" href="../../autoapi/reservoir_computing/utils/index.html#reservoir_computing.utils.make_forecasting_dataset">[docs]</a>
-<span class="k">def</span> <span class="nf">make_forecasting_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_forecasting_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span>
         <span class="n">horizon</span><span class="p">,</span>
         <span class="n">test_percent</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> 
         <span class="n">val_percent</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> 

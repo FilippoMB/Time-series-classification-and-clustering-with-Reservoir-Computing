@@ -26,4 +26,6 @@ notebooks/forecasting.ipynb
 notebooks/advanced_classifiers.ipynb
 notebooks/clustering_visualization.ipynb
 notebooks/forecasting_with_GBRT.ipynb
+notebooks/missing_data_imputation.ipynb
+notebooks/state_space_reconstruction.ipynb
 ```

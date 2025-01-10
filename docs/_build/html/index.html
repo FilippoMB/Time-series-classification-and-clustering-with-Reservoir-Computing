@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Time series classification and clustering with Reservoir Computing &mdash; reservoir_computing  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
 
   
   <!--[if lt IE 9]>
@@ -18,7 +18,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -61,6 +61,8 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/missing_data_imputation.html">Missing Data Imputation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/state_space_reconstruction.html">State Space Reconstruction</a></li>
 </ul>
 
         </div>
@@ -79,7 +81,7 @@
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Time series classification and clustering with Reservoir Computing</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/docs/index.md" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -102,8 +104,8 @@ This library is primarly design to perform <strong>classification</strong> and <
 🚀 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#quick-start">Getting Started</a> - 📚 <a href="https://reservoir-computing.readthedocs.io/en/latest">Documentation</a> - 📊 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#advanced-examples">Advanced examples</a>
 </div>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="setup">
+<h1>🛠️ Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h1>
 <p>The recommended installation is with pip:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>reservoir-computing
 </pre></div>
@@ -116,7 +118,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="quick-start">
-<h1>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h1>
+<h1>⏱ Quick start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h1>
 <p>The following scripts provide minimalistic examples that illustrate how to use the library for different tasks.</p>
 <p>To run them, download the project and cd to the root folder:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing.git
@@ -127,17 +129,21 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>examples/classification_example.py
 </pre></div>
 </div>
+<p><a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/classification.ipynb"><img alt="nbviewer" src="https://img.shields.io/badge/-View-blue?logo=jupyter&amp;style=flat&amp;labelColor=gray" /></a>
+or <a class="reference external" href="https://colab.research.google.com/drive/1xk7ZiT3yGrpFrsmL4CR0Q31REr6K_soA?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <p><strong>Clustering</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>examples/clustering_example.py
 </pre></div>
 </div>
+<p><a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering.ipynb"><img alt="nbviewer" src="https://img.shields.io/badge/-View-blue?logo=jupyter&amp;style=flat&amp;labelColor=gray" /></a> or <a class="reference external" href="https://colab.research.google.com/drive/1Ycpnifi6yCRZC8_N15CiltwzSRzJTnVN?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <p><strong>Forecasting</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>examples/forecasting_example.py
 </pre></div>
 </div>
+<p><a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting.ipynb"><img alt="nbviewer" src="https://img.shields.io/badge/-View-blue?logo=jupyter&amp;style=flat&amp;labelColor=gray" /></a> or <a class="reference external" href="https://colab.research.google.com/drive/1Fnt3IMmlehD9-P7hNVuiVDH_saeIOayk?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="overview-of-the-framework">
-<h1>Overview of the framework<a class="headerlink" href="#overview-of-the-framework" title="Link to this heading"></a></h1>
+<h1>👀 Overview of the framework<a class="headerlink" href="#overview-of-the-framework" title="Link to this heading"></a></h1>
 <p>In the following, we present the three main functionalities of this library.</p>
 <section id="classification">
 <h2>Classification<a class="headerlink" href="#classification" title="Link to this heading"></a></h2>
@@ -148,8 +154,10 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <li><p>The <strong>representation</strong> generates a vector <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> from the sequence of reservoir’s states, which represents in vector form the original time series <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p></li>
 <li><p>The <strong>readout</strong> module is a classifier that maps the representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> into the class label <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, associated with the time series <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p></li>
 </ol>
-<p>This library implements also the <em>reservoir model space</em>, a very powerful representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> for the time series.
-Details about the methodology are found in the <a class="reference external" href="https://arxiv.org/abs/1803.07870">original paper</a>.</p>
+<blockquote>
+<div><p>[!Note]
+This library implements also the <em>reservoir model space</em>, a very powerful representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> for the time series. Details about the methodology are found in the <a class="reference external" href="https://arxiv.org/abs/1803.07870">original paper</a>.</p>
+</div></blockquote>
 <p>The class <code class="docutils literal notranslate"><span class="pre">RC_model</span></code> contained in <a class="reference external" href="https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/modules.py">modules.py</a> permits to specify, train and test an RC-model.
 Several options are available to customize the RC model, by selecting different configurations for each module.</p>
 <p>The training and test function requires in input training and test data, which must be provided as multidimensional numpy arrays of shape <em>[N,T,V]</em>, with:</p>
@@ -159,7 +167,7 @@ Several options are available to customize the RC model, by selecting different 
 <li><p><em>V</em> = number of variables in each sample</p></li>
 </ul>
 <p>Training and test labels (<code class="docutils literal notranslate"><span class="pre">Ytr</span></code> and <code class="docutils literal notranslate"><span class="pre">Yte</span></code>) must be provided in one-hot encoding format, i.e. a matrix <em>[N,C]</em>, where <em>C</em> is the number of classes.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_model</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">reservoir_computing.modules</span><span class="w"> </span><span class="kn">import</span> <span class="n">RC_model</span>
 
 <span class="n">clf</span> <span class="o">=</span> <span class="n">RC_model</span><span class="p">()</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span> <span class="c1"># Training</span>
@@ -172,20 +180,20 @@ Several options are available to customize the RC model, by selecting different 
 <p>The representation <span class="math notranslate nohighlight">\(\mathbf{r}_\mathbf{X}\)</span> obtained from the <strong>representation</strong> module (step 3) can be used to perform time series clustering.
 The same class <code class="docutils literal notranslate"><span class="pre">RC_model</span></code> used for classification can be configured to directly return the time series representations, which can be used in unsupervised tasks such as clustering and dimensionality reduction.</p>
 <p>As in the case of classification, the data must be provided as multidimensional NumPy arrays of shape <em>[N,T,V]</em></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_model</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">reservoir_computing.modules</span><span class="w"> </span><span class="kn">import</span> <span class="n">RC_model</span>
 
 <span class="n">clst</span> <span class="o">=</span> <span class="n">RC_model</span><span class="p">(</span><span class="n">readout_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="n">clst</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="n">rX</span> <span class="o">=</span> <span class="n">clst</span><span class="o">.</span><span class="n">input_repr</span> <span class="c1"># representations of the input data</span>
 </pre></div>
 </div>
-<p>The representations <code class="docutils literal notranslate"><span class="pre">rX</span></code> can be used to perfrom clustering using traditional clustering algorithms for vectorial data, such as those <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html">here</a>.</p>
+<p>The representations <code class="docutils literal notranslate"><span class="pre">rX</span></code> can be used to perfrom clustering using traditional clustering algorithms for vectorial data, such as those from <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html">sk-learn</a>.</p>
 </section>
 <section id="forecasting">
 <h2>Forecasting<a class="headerlink" href="#forecasting" title="Link to this heading"></a></h2>
 <p>The sequences <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{\bar H}\)</span> obtained at steps 1 and 2 can be directly used to forecast the future values of the time series.</p>
 <p>The class <code class="docutils literal notranslate"><span class="pre">RC_forecaster</span></code> contained in <a class="reference external" href="https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/modules.py">modules.py</a> permits to specify, train and test an RC-model for time series forecasting.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.modules</span> <span class="kn">import</span> <span class="n">RC_forecaster</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">reservoir_computing.modules</span><span class="w"> </span><span class="kn">import</span> <span class="n">RC_forecaster</span>
 
 <span class="n">fcst</span> <span class="o">=</span> <span class="n">RC_forecaster</span><span class="p">()</span>
 <span class="n">fcst</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Ytr</span><span class="p">)</span> <span class="c1"># Training</span>
@@ -196,19 +204,21 @@ The same class <code class="docutils literal notranslate"><span class="pre">RC_m
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="advanced-examples">
-<h1>Advanced examples<a class="headerlink" href="#advanced-examples" title="Link to this heading"></a></h1>
+<h1>🧩 Advanced examples<a class="headerlink" href="#advanced-examples" title="Link to this heading"></a></h1>
 <p>The following notebooks illustrate more advanced use-cases.</p>
 <ul class="simple">
-<li><p>Perform dimensionality reduction, cluster analysis, and visualize the results: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering_visualization.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1_BahDTpTB8dEHARJtCLNe0JxVT8WAXuD?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
-<li><p>Probabilistic forecasting with advanced regression models as readout: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting_with_GBRT.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1wxIRcX_y7572x6WeezfWfJiTurVsc2aW?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
-<li><p>Use advanced classifiers as readout: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/advanced_classifiers.ipynb">view</a> or <a class="reference external" href="https://colab.research.google.com/drive/1PnH_lffbE1nfghYwPa2j0H2_4mgtRwQo?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
+<li><p>Perform dimensionality reduction, cluster analysis, and visualize the results: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering_visualization.ipynb"><img alt="nbviewer" src="https://img.shields.io/badge/-View-blue?logo=jupyter&amp;style=flat&amp;labelColor=gray" /></a> or <a class="reference external" href="https://colab.research.google.com/drive/1N19l9hH7cxFdWxeAuL7WFbxZFdSIkl-D?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
+<li><p>Probabilistic forecasting with advanced regression models as readout: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting_with_GBRT.ipynb"><img alt="nbviewer" src="https://img.shields.io/badge/-View-blue?logo=jupyter&amp;style=flat&amp;labelColor=gray" /></a> or <a class="reference external" href="https://colab.research.google.com/drive/1HAD2IlaOggaRGIuIPCabUje2IClqzpyn?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
+<li><p>Use advanced classifiers as readout: <a class="reference external" href="https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/advanced_classifiers.ipynb"><img alt="nbviewer" src="https://img.shields.io/badge/-View-blue?logo=jupyter&amp;style=flat&amp;labelColor=gray" /></a> or <a class="reference external" href="https://colab.research.google.com/drive/1RCpDpAxuYFuFuoRWSM7iMA1sRx8exlhH?usp=sharing"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
+<li><p>Impute missing data in time series <a class="reference external" href="https://nbviewer.jupyter.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/missing_data_imputation.ipynb"><img alt="nbviewer" src="https://img.shields.io/badge/-View-blue?logo=jupyter&amp;style=flat&amp;labelColor=gray" /></a> or <a class="reference external" href="https://colab.research.google.com/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/missing_data_imputation.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
+<li><p>Reconstruct the attractor of a dynamical system in the phase space <a class="reference external" href="https://nbviewer.jupyter.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/state_space_reconstruction.ipynb"><img alt="nbviewer" src="https://img.shields.io/badge/-View-blue?logo=jupyter&amp;style=flat&amp;labelColor=gray" /></a> or <a class="reference external" href="https://colab.research.google.com/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/state_space_reconstruction.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></li>
 </ul>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="datasets">
-<h1>Datasets<a class="headerlink" href="#datasets" title="Link to this heading"></a></h1>
+<h1>📦 Datasets<a class="headerlink" href="#datasets" title="Link to this heading"></a></h1>
 <p>There are several datasets available to perform time series classification/clustering and forecasting.</p>
 <p><strong>Classification and clustering</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.datasets</span> <span class="kn">import</span> <span class="n">ClfLoader</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">reservoir_computing.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClfLoader</span>
 
 <span class="n">downloader</span> <span class="o">=</span> <span class="n">ClfLoader</span><span class="p">()</span>
 <span class="n">downloader</span><span class="o">.</span><span class="n">available_datasets</span><span class="p">(</span><span class="n">details</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Print available datasets</span>
@@ -217,7 +227,7 @@ The same class <code class="docutils literal notranslate"><span class="pre">RC_m
 </div>
 <p><strong>Forecasting</strong></p>
 <p>Real-world time series</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.datasets</span> <span class="kn">import</span> <span class="n">PredLoader</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">reservoir_computing.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PredLoader</span>
 
 <span class="n">downloader</span> <span class="o">=</span> <span class="n">PredLoader</span><span class="p">()</span>
 <span class="n">downloader</span><span class="o">.</span><span class="n">available_datasets</span><span class="p">(</span><span class="n">details</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Print available datasets</span>
@@ -225,7 +235,7 @@ The same class <code class="docutils literal notranslate"><span class="pre">RC_m
 </pre></div>
 </div>
 <p>Synthetic time series</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reservoir_computing.datasets</span> <span class="kn">import</span> <span class="n">SynthLoader</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">reservoir_computing.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">SynthLoader</span>
 
 <span class="n">synth</span> <span class="o">=</span> <span class="n">SynthLoader</span><span class="p">()</span>
 <span class="n">synth</span><span class="o">.</span><span class="n">available_datasets</span><span class="p">()</span>  <span class="c1"># Print available datasets</span>
@@ -234,7 +244,7 @@ The same class <code class="docutils literal notranslate"><span class="pre">RC_m
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="citation">
-<h1>Citation<a class="headerlink" href="#citation" title="Link to this heading"></a></h1>
+<h1>📝 Citation<a class="headerlink" href="#citation" title="Link to this heading"></a></h1>
 <p>Please, consider citing the original paper if you are using this library in your reasearch</p>
 <div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@article</span><span class="p">{</span><span class="nl">bianchi2020reservoir</span><span class="p">,</span>
 <span class="w">  </span><span class="na">title</span><span class="p">=</span><span class="s">{Reservoir computing approaches for representation and classification of multivariate time series}</span><span class="p">,</span>
@@ -247,7 +257,7 @@ The same class <code class="docutils literal notranslate"><span class="pre">RC_m
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="license">
-<h1>License<a class="headerlink" href="#license" title="Link to this heading"></a></h1>
+<h1>🌐 License<a class="headerlink" href="#license" title="Link to this heading"></a></h1>
 <p>The code is released under the MIT License. See the attached LICENSE file.</p>
 <div class="toctree-wrapper compound">
 </div>

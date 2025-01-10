@@ -1,26 +1,24 @@
-:py:mod:`reservoir_computing.reservoir`
-=======================================
+reservoir_computing.reservoir
+=============================
 
 .. py:module:: reservoir_computing.reservoir
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    reservoir_computing.reservoir.Reservoir
 
 
-
+Module Contents
+---------------
 
 .. py:class:: Reservoir(n_internal_units=100, spectral_radius=0.99, leak=None, connectivity=0.3, input_scaling=0.2, noise_level=0.0, circle=False)
 
-
    Bases: :py:obj:`object`
+
 
    Build a reservoir and compute the sequence of the internal states.
 
@@ -45,6 +43,7 @@ Classes
    circle : bool (default ``False``)
        Generate determinisitc reservoir with circle topology where each connection
        has the same weight.
+
 
    .. py:method:: get_states(X, n_drop=0, bidir=True, initial_state=None)
 

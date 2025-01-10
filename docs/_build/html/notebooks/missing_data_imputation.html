@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Missing Data Imputation &mdash; reservoir_computing  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="State Space Reconstruction" href="state_space_reconstruction.html" />
+    <link rel="prev" title="Probabilistic forecasting with GBRT" href="forecasting_with_GBRT.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            reservoir_computing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Time series classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Time series clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forecasting.html">Time series forecasting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="advanced_classifiers.html">Advanced classification models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering_visualization.html">Cluster analysis and visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Missing Data Imputation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#all-features-missing">All features missing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generate-missing-values">Generate missing values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compute-reservoir-states">Compute Reservoir states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#train-the-readout">Train the readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#impute-missing-values-and-evaluate-performances">Impute missing values and evaluate performances</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#partial-missing-features">Partial missing features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Generate missing values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="state_space_reconstruction.html">State Space Reconstruction</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">reservoir_computing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Missing Data Imputation</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/docs/notebooks/missing_data_imputation.ipynb" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="missing-data-imputation">
+<h1>Missing Data Imputation<a class="headerlink" href="#missing-data-imputation" title="Link to this heading"></a></h1>
+<p>Missing data imputation implies filling the missing entries in our data, which can be tabular data, images, time series, with “reasonable” values. Ideally, the imputed values should be a good guess of the values that are missing, but that we cannot observe.</p>
+<p>Very simple techniques for imputing missing values are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zero</span> <span class="pre">imputation</span></code>: replace the missing values with a <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean</span> <span class="pre">imputation</span></code>: replace with the mean value of a given feature in the dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">last</span> <span class="pre">value</span> <span class="pre">carried-forward</span></code>, also called <code class="docutils literal notranslate"><span class="pre">forward-filling</span></code>, replaces the missing value with the last observed one.</p></li>
+</ul>
+<p>In this notebook we see how to perform imputation of missing data using a Reservoir. Hopefully, we will manage to impute missing values more precisely than the simple baseline approaches.</p>
+<p>We start by defining some utility functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ridge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.impute</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleImputer</span>
+
+<span class="c1"># Local imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">reservoir_computing.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClfLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">reservoir_computing.reservoir</span><span class="w"> </span><span class="kn">import</span> <span class="n">Reservoir</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># for reproducibility</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_missing_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots the missing data mask.</span>
+<span class="sd">    Red = missing.</span>
+<span class="sd">    Green = data available.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">missing_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">missing_mask</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlGn&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Missing Data Visualization&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time Steps&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Features&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">forward_fill_timewise</span><span class="p">(</span><span class="n">data_3d</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replace the missing values with the last observed value</span>
+<span class="sd">    along the time dimension.</span>
+<span class="sd">    The input `data_3d` is a 3-dimensional array of shape [N, T, V].</span>
+<span class="sd">    If the missing value is at the first time step, replace it with zero.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">data_3d</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data_3d</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">data_3d</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">data_3d</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_3d</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">data_3d</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="all-features-missing">
+<h2>All features missing<a class="headerlink" href="#all-features-missing" title="Link to this heading"></a></h2>
+<p>We will consider two settings. In the first, all the features are missing from the time series at the same time.</p>
+<p>In a second setting, that we will see later, only a subset of the features might be missing in the time series at a given time.</p>
+<section id="generate-missing-values">
+<h3>Generate missing values<a class="headerlink" href="#generate-missing-values" title="Link to this heading"></a></h3>
+<p>Next we load the data and add the missing values.</p>
+<p>We will use a set of multivariate time series, which we store in an array of size <span class="math notranslate nohighlight">\([N, T, V]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> denotes the number of samples, <span class="math notranslate nohighlight">\(T\)</span> the length of the time series, and <span class="math notranslate nohighlight">\(V\)</span> the number of variables.</p>
+<p>We also normalize the data with a standard scaler, so that the values are centered around <span class="math notranslate nohighlight">\(0\)</span> with standard deviation <span class="math notranslate nohighlight">\(1\)</span>. This is important because if we pass high values to the Reservoir its activations saturate.</p>
+<p>We will add missing values using two different patterns.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">point</span></code>: with a probability <span class="math notranslate nohighlight">\(p_\text{point}\)</span> (<code class="docutils literal notranslate"><span class="pre">p_missing_point</span></code>), the value <span class="math notranslate nohighlight">\(X[n,t,v]\)</span> is missing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block</span></code>: with a probability <span class="math notranslate nohighlight">\(p_\text{block}\)</span> (<code class="docutils literal notranslate"><span class="pre">p_missing_block</span></code>) and a window of length <span class="math notranslate nohighlight">\(w\)</span> (<code class="docutils literal notranslate"><span class="pre">duration_block</span></code>), the values <span class="math notranslate nohighlight">\(X[n,t:t+w,v]\)</span> are missing.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data</span>
+<span class="n">Xtr</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ClfLoader</span><span class="p">()</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;Japanese_Vowels&#39;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  
+<span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+<span class="c1"># Normalize data</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># Parameters for missingness</span>
+<span class="n">p_missing_point</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">p_missing_block</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">duration_block</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Add missing values</span>
+<span class="n">X_missing</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="c1"># Random point missing</span>
+    <span class="n">point_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">p_missing_point</span>
+    <span class="n">X_missing</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">point_mask</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Random block missing</span>
+    <span class="n">block_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">p_missing_block</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">block_mask</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+            <span class="n">end_idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">duration_block</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+            <span class="n">X_missing</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span><span class="n">end_idx</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of missing values: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_missing</span><span class="p">))</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_missing</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">X_missing</span><span class="o">.</span><span class="n">size</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%).&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded Japanese_Vowels dataset.
+Number of classes: 9
+Data shapes:
+  Xtr: (270, 29, 12)
+  Ytr: (270, 1)
+  Xte: (370, 29, 12)
+  Yte: (370, 1)
+Number of missing values: 116688 (0.52%).
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use the utility function we defined before to visualize the pattern of missing data that we generated in a given data sample.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_missing_data</span><span class="p">(</span><span class="n">X_missing</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/48cb42efa2e5c2da068ac8591f8353ceb58f072e7ba02cb8aa180d900088f770.png" src="../_images/48cb42efa2e5c2da068ac8591f8353ceb58f072e7ba02cb8aa180d900088f770.png" />
+</div>
+</div>
+<p>Next, we will fill the missing values using forward-filling imputation. This is usually a good baseline for time series because, especially if the window of missing values is short, we can assume that the missing values will not be so different from the last observed value.</p>
+<p>Note that we do this imputation variable-wise, i.e., we carry forward the last observed value at each variable.</p>
+<p>This imputation is also necessary to get meaningful states out of the Reservoir and to prevent having <code class="docutils literal notranslate"><span class="pre">nan</span></code> in the sequence of Reservoir states.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Forward-fill the missing entries </span>
+<span class="n">X_missing_filled</span> <span class="o">=</span> <span class="n">forward_fill_timewise</span><span class="p">(</span><span class="n">X_missing</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Missing values after forward fill:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_missing_filled</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="c1"># should be 0</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Missing values after forward fill: 0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-reservoir-states">
+<h3>Compute Reservoir states<a class="headerlink" href="#compute-reservoir-states" title="Link to this heading"></a></h3>
+<p>We are now ready to build our Reservoir and feed it with the time series to get the states.</p>
+<p>Importantly, we will use the Reservoir states to perform forecasting, so do <strong>not</strong> want to use a bidirectional readout that also processes the time series backward.
+Thus, we must set <code class="docutils literal notranslate"><span class="pre">bidir=False</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the Reservoir</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">(</span>
+    <span class="n">n_internal_units</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">spectral_radius</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">leak</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">connectivity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">input_scaling</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="c1"># Compute the Reservoir states</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">get_states</span><span class="p">(</span><span class="n">X_missing_filled</span><span class="p">,</span> <span class="n">bidir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># shape: [N, T, H]</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">shape</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;states.shape:&quot;</span><span class="p">,</span> <span class="n">states</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Missing values in states:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">states</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="c1"># should be 0</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>states.shape: (640, 29, 700)
+Missing values in states: 0
+</pre></div>
+</div>
+</div>
+</div>
+<p>To perform imputation, we will train a readout to do a forecasting task, i.e., given the Readout state <span class="math notranslate nohighlight">\(h(t)\)</span> the readout should predict <span class="math notranslate nohighlight">\(x(t+h)\)</span> where <span class="math notranslate nohighlight">\(h\)</span> is the forecast <code class="docutils literal notranslate"><span class="pre">horizon</span></code>.</p>
+<p>The reason why we do forecasting, rather than just mapping <span class="math notranslate nohighlight">\(h(t)\)</span> into <span class="math notranslate nohighlight">\(x(t)\)</span> is that in this way the readout just learns to copy in output the input values and does not know what to do when the input value (at inference time) will be missing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">horizon</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># forecast horizon</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">states</span><span class="p">[:,</span> <span class="p">:</span><span class="n">T</span> <span class="o">-</span> <span class="n">horizon</span><span class="p">,</span> <span class="p">:]</span> <span class="c1"># drop the last &#39;horizon&#39; steps</span>
+<span class="n">X_missing_future</span> <span class="o">=</span> <span class="n">X_missing</span><span class="p">[:,</span> <span class="n">horizon</span><span class="p">:,</span> <span class="p">:]</span> <span class="c1"># drop the first &#39;horizon&#39; steps</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">T_new</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X_missing_future</span><span class="o">.</span><span class="n">shape</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After shifting:</span><span class="se">\n</span><span class="s2"> states =&gt; </span><span class="si">{</span><span class="n">states</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">,</span><span class="se">\n</span><span class="s2"> X_missing_future =&gt; </span><span class="si">{</span><span class="n">X_missing_future</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After shifting:
+ states =&gt; (640, 28, 700),
+ X_missing_future =&gt; (640, 28, 12)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Before training the readout we have to flatten the states and the inputs into 2-dimensional arrays, because we have to map a single <span class="math notranslate nohighlight">\(H\)</span>-dimensional vector into a <span class="math notranslate nohighlight">\(V\)</span>-dimensional one.</p>
+<p>To flatten the data, we concatenate the sample and the time dimensions. This is OK, because the Reservoir should have embedded the historical information into its states, which can then be treated independently.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Flatten the states and the input values</span>
+<span class="n">states_2d</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">T_new</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
+<span class="n">X_missing_future_2d</span> <span class="o">=</span> <span class="n">X_missing_future</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">T_new</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train-the-readout">
+<h3>Train the readout<a class="headerlink" href="#train-the-readout" title="Link to this heading"></a></h3>
+<p>Clearly, we can train the readout only on the instances <span class="math notranslate nohighlight">\(\{h(t), x(t+h)\}\)</span> where the target <span class="math notranslate nohighlight">\(x(t+h)\)</span> is not missing. So, we have to first filter out all the time steps where the target is missing.</p>
+<p>Then, we will define the readout and fit it to the training data that we defined. We will use a simple Ridge Regressor but, of course, more sophisticated regressors can be used.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Keep only rows with no missing target</span>
+<span class="n">not_missing_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_missing_future_2d</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">states_2d</span><span class="p">[</span><span class="n">not_missing_mask</span><span class="p">]</span>
+<span class="n">Y_train</span> <span class="o">=</span> <span class="n">X_missing_future_2d</span><span class="p">[</span><span class="n">not_missing_mask</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train samples (rows) with no missing output:&quot;</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Create and train the readout</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train samples (rows) with no missing output: 8387
+</pre></div>
+</div>
+<div class="output text_html"><style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: black;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 1ex;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Ridge(alpha=1)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;&nbsp;Ridge<a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.5/modules/generated/sklearn.linear_model.Ridge.html">?<span>Documentation for Ridge</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>Ridge(alpha=1)</pre></div> </div></div></div></div></div></div>
+</div>
+</section>
+<section id="impute-missing-values-and-evaluate-performances">
+<h3>Impute missing values and evaluate performances<a class="headerlink" href="#impute-missing-values-and-evaluate-performances" title="Link to this heading"></a></h3>
+<p>Once the readout is trained, we can use it to predict <strong>all</strong> the target values, including those with missing values that we excluded from the training.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions_2d</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">states_2d</span><span class="p">)</span>  <span class="c1"># shape: [N*T_new, V]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>At this point, we will replace all the missing values in <code class="docutils literal notranslate"><span class="pre">X_missing_future</span></code> with the predicted values, which represent the imputed ones.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fill with the missing values</span>
+<span class="n">X_imputed_future_2d</span> <span class="o">=</span> <span class="n">X_missing_future_2d</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">missing_mask_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_imputed_future_2d</span><span class="p">)</span>
+<span class="n">X_imputed_future_2d</span><span class="p">[</span><span class="n">missing_mask_2d</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions_2d</span><span class="p">[</span><span class="n">missing_mask_2d</span><span class="p">]</span>
+
+<span class="c1"># Reshape back to the original shape</span>
+<span class="n">X_imputed_future</span> <span class="o">=</span> <span class="n">X_imputed_future_2d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T_new</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sine our imputation is based on prediction, we do not have imputed values for the first <code class="docutils literal notranslate"><span class="pre">horizon</span></code> steps. So, we will take those steps from <code class="docutils literal notranslate"><span class="pre">X_missing_filled</span></code>, while the rest from <code class="docutils literal notranslate"><span class="pre">X_imputed_future</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_imputed</span> <span class="o">=</span> <span class="n">X_missing_filled</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># start with forward-filled</span>
+<span class="n">X_imputed</span><span class="p">[:,</span> <span class="n">horizon</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">X_imputed_future</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Done! At this point, we can check the performance of our imputation method by computing the MSE between the time seris with imputed values and the original one where the values are not missing.</p>
+<p>We can also compare against the imputation obtained with the other simple baselines.</p>
+<p>Note that in this case zero- and mean-imputations give the same result because the data are normalized with a standard scaler.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute zero-imputed values</span>
+<span class="n">X_zero_imputed</span> <span class="o">=</span> <span class="n">X_missing</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">X_zero_imputed</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_zero_imputed</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="c1"># Compute mean-imputation with SimpleImputer</span>
+<span class="n">imp</span> <span class="o">=</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="n">X_mean_imputed</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_missing</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">T</span><span class="p">,</span> <span class="n">V</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+
+<span class="c1"># Print the MSE between the true and the imputed values</span>
+<span class="n">mse_imputed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_imputed</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE (Reservoir imp): </span><span class="si">{</span><span class="n">mse_imputed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">mse_filled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_missing_filled</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE (f-fill imp): </span><span class="si">{</span><span class="n">mse_filled</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">mse_zero_imputed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_zero_imputed</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE (zero imp): </span><span class="si">{</span><span class="n">mse_zero_imputed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">mse_mean_imputed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mean_imputed</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE (mean imp): </span><span class="si">{</span><span class="n">mse_mean_imputed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MSE (Reservoir imp): 0.2500
+MSE (f-fill imp): 0.3843
+MSE (zero imp): 0.4452
+MSE (mean imp): 0.4454
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also make a visualization of the true and imputed values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_idx</span><span class="p">,</span> <span class="n">feature_idx</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span><span class="mi">9</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">feature_idx</span><span class="p">],</span> <span class="s1">&#39;o-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_missing_filled</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">feature_idx</span><span class="p">],</span> <span class="s1">&#39;x--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ffill imputed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_zero_imputed</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">feature_idx</span><span class="p">],</span> <span class="s1">&#39;x--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;zero imputed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_imputed</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">feature_idx</span><span class="p">],</span> <span class="s1">&#39;s--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Reservoir imputed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0bbe1fc590309a1c18a3a6a2ccea54356f7aaf51ed126d2d644cefb0519c51a5.png" src="../_images/0bbe1fc590309a1c18a3a6a2ccea54356f7aaf51ed126d2d644cefb0519c51a5.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="partial-missing-features">
+<h2>Partial missing features<a class="headerlink" href="#partial-missing-features" title="Link to this heading"></a></h2>
+<p>In this setting, we allow only a subset of the features to be missing at each time step. This can happen, for example, when we have <span class="math notranslate nohighlight">\(V\)</span> independet sensors and only a few of them are not collecting the measuremements.</p>
+<section id="id1">
+<h3>Generate missing values<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Here, we modify the procedure for generating missing values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_missing_point</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">p_missing_block</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">duration_block</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">X_missing</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="c1"># Random point missing -- each feature gets its own mask</span>
+    <span class="n">pmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">p_missing_point</span>
+    <span class="n">X_missing</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">pmask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Random block missing -- each feature gets its own blocks</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
+        <span class="n">block_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">p_missing_block</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">block_mask</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                <span class="n">end_idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">duration_block</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+                <span class="n">X_missing</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span><span class="n">end_idx</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="n">plot_missing_data</span><span class="p">(</span><span class="n">X_missing</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of missing values: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_missing</span><span class="p">))</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_missing</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">X_missing</span><span class="o">.</span><span class="n">size</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%).&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/03f521d83c1b1fd291fcee9922f65887b332883d9c372bfa72951ba326998bfc.png" src="../_images/03f521d83c1b1fd291fcee9922f65887b332883d9c372bfa72951ba326998bfc.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of missing values: 112700 (0.51%).
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we repeat the same steps as before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Forward-fill the missing entries before computing the reservoir states</span>
+<span class="n">X_missing_filled</span> <span class="o">=</span> <span class="n">forward_fill_timewise</span><span class="p">(</span><span class="n">X_missing</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+<span class="c1"># Create the Reservoir</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Reservoir</span><span class="p">(</span>
+    <span class="n">n_internal_units</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">spectral_radius</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">leak</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">connectivity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">input_scaling</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="c1"># Compute the Reservoir states</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">get_states</span><span class="p">(</span><span class="n">X_missing_filled</span><span class="p">,</span> <span class="n">bidir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">shape</span>
+
+<span class="c1"># Sift the states and the input values by horizon</span>
+<span class="n">horizon</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">states</span><span class="p">[:,</span> <span class="p">:</span><span class="n">T</span> <span class="o">-</span> <span class="n">horizon</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">X_missing_future</span> <span class="o">=</span> <span class="n">X_missing</span><span class="p">[:,</span> <span class="n">horizon</span><span class="p">:,</span> <span class="p">:]</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">T_new</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X_missing_future</span><span class="o">.</span><span class="n">shape</span>
+
+<span class="c1"># Flatten the states and the input values</span>
+<span class="n">states_2d</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">T_new</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span> 
+<span class="n">X_missing_future_2d</span> <span class="o">=</span> <span class="n">X_missing_future</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">T_new</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Before, we were mapping the Reservoir state <span class="math notranslate nohighlight">\(h(t) \in \mathbb{R}^H\)</span> into the future input <span class="math notranslate nohighlight">\(x(t+h) \in \mathbb{R}^V\)</span>, which was either completely missing or completely available.</p>
+<p>This time, some variables can be missing and other be present, meaning that we need to predict a variable <span class="math notranslate nohighlight">\(i\)</span> and a variable <span class="math notranslate nohighlight">\(j\)</span> independently.
+In other words, we need to train <span class="math notranslate nohighlight">\(V\)</span> independent readouts, each one mapping the state <span class="math notranslate nohighlight">\(h(t)\)</span> into the <span class="math notranslate nohighlight">\(v\)</span>-th variable <span class="math notranslate nohighlight">\(x_v(t+h)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X_missing_future_2d</span><span class="p">)</span> 
+
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
+    <span class="c1"># For feature v, identify rows where the target is not missing</span>
+    <span class="n">not_missing_mask_v</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_missing_future_2d</span><span class="p">[:,</span> <span class="n">v</span><span class="p">])</span>
+    
+    <span class="c1"># Training data: states + single feature&#39;s target</span>
+    <span class="n">X_train_v</span> <span class="o">=</span> <span class="n">states_2d</span><span class="p">[</span><span class="n">not_missing_mask_v</span><span class="p">]</span>
+    <span class="n">y_train_v</span> <span class="o">=</span> <span class="n">X_missing_future_2d</span><span class="p">[</span><span class="n">not_missing_mask_v</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Feature </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">: #train samples = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train_v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Fit a ridge model (or any regressor) for this feature</span>
+    <span class="n">model_v</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">model_v</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_v</span><span class="p">,</span> <span class="n">y_train_v</span><span class="p">)</span>
+    
+    <span class="c1"># Predict for ALL time steps (including missing) in states_2d</span>
+    <span class="n">predictions_2d</span><span class="p">[:,</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_v</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">states_2d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature 0: #train samples = 8815
+Feature 1: #train samples = 8741
+Feature 2: #train samples = 8488
+Feature 3: #train samples = 8854
+Feature 4: #train samples = 8823
+Feature 5: #train samples = 8856
+Feature 6: #train samples = 8643
+Feature 7: #train samples = 8908
+Feature 8: #train samples = 8752
+Feature 9: #train samples = 8518
+Feature 10: #train samples = 8610
+Feature 11: #train samples = 8510
+</pre></div>
+</div>
+</div>
+</div>
+<p>The next steps are similar to those taken before: we take the predictions as imputed values and put them in the correct place where the data are missing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_imputed_future_2d</span> <span class="o">=</span> <span class="n">X_missing_future_2d</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">missing_mask_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_imputed_future_2d</span><span class="p">)</span>  
+
+<span class="c1"># Fill with feature-specific predictions</span>
+<span class="n">X_imputed_future_2d</span><span class="p">[</span><span class="n">missing_mask_2d</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions_2d</span><span class="p">[</span><span class="n">missing_mask_2d</span><span class="p">]</span>
+
+<span class="c1"># Reshape back to [N, T_new, V]</span>
+<span class="n">X_imputed_future</span> <span class="o">=</span> <span class="n">X_imputed_future_2d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T_new</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+
+<span class="c1">#  Use the forward-filled data for the first &#39;horizon&#39; steps</span>
+<span class="n">X_imputed</span> <span class="o">=</span> <span class="n">X_missing_filled</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  
+<span class="n">X_imputed</span><span class="p">[:,</span> <span class="n">horizon</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">X_imputed_future</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To conclude, we compare the results obtained with the other imputation methods. Also in this case, we see that we obtain better performance with the Reservoir-based imputation compared to other imputation techniques.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute zero-imputed values</span>
+<span class="n">X_zero_imputed</span> <span class="o">=</span> <span class="n">X_missing</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">X_zero_imputed</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_zero_imputed</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="c1"># Print the MSE between the true and the imputed values</span>
+<span class="n">mse_imputed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_imputed</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE (Reservoir imp): </span><span class="si">{</span><span class="n">mse_imputed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">mse_filled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_missing_filled</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE (f-fill imp): </span><span class="si">{</span><span class="n">mse_filled</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">mse_zero_imputed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_zero_imputed</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE (zero imp): </span><span class="si">{</span><span class="n">mse_zero_imputed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MSE (Reservoir imp): 0.3154
+MSE (f-fill imp): 0.4565
+MSE (zero imp): 0.5047
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="forecasting_with_GBRT.html" class="btn btn-neutral float-left" title="Probabilistic forecasting with GBRT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="state_space_reconstruction.html" class="btn btn-neutral float-right" title="State Space Reconstruction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Filippo Maria Bianchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

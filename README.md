@@ -17,7 +17,7 @@ This library is primarly design to perform **classification** and **clustering**
 🚀 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#quick-start">Getting Started</a> - 📚 <a href="https://reservoir-computing.readthedocs.io/en/latest">Documentation</a> - 📊 <a href="https://reservoir-computing.readthedocs.io/en/latest/index.html#advanced-examples">Advanced examples</a>
 </div>
 
-# Installation
+# 🛠️ Setup
 
 The recommended installation is with pip:
 
@@ -32,7 +32,7 @@ cd Time-series-classification-and-clustering-with-Reservoir-Computing
 pip install -e .
 ````
 
-# Quick start
+# ⏱ Quick start
 
 The following scripts provide minimalistic examples that illustrate how to use the library for different tasks.
 
@@ -49,7 +49,8 @@ cd Time-series-classification-and-clustering-with-Reservoir-Computing
 python examples/classification_example.py
 ````
 
-You can also [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/classification.ipynb) the notebook or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xk7ZiT3yGrpFrsmL4CR0Q31REr6K_soA?usp=sharing)
+[![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/classification.ipynb) 
+or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xk7ZiT3yGrpFrsmL4CR0Q31REr6K_soA?usp=sharing)
 
 **Clustering**
 
@@ -57,16 +58,16 @@ You can also [view](https://nbviewer.org/github/FilippoMB/Time-series-classifica
 python examples/clustering_example.py
 ````
 
-You can also [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering.ipynb) the notebook or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Ycpnifi6yCRZC8_N15CiltwzSRzJTnVN?usp=sharing)
+[![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Ycpnifi6yCRZC8_N15CiltwzSRzJTnVN?usp=sharing)
 
 **Forecasting**
 
 ````bash
 python examples/forecasting_example.py
 ````
-You can also [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting.ipynb) the notebook or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Fnt3IMmlehD9-P7hNVuiVDH_saeIOayk?usp=sharing)
+[![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Fnt3IMmlehD9-P7hNVuiVDH_saeIOayk?usp=sharing)
 
-# Overview of the framework
+# 👀 Overview of the framework
 
 In the following, we present the three main functionalities of this library.
 
@@ -79,8 +80,8 @@ Referring to [Figure 1](#fig:RCClassifier), the RC classifier consists of four d
 3. The **representation** generates a vector $\mathbf{r}_\mathbf{X}$ from the sequence of reservoir's states, which represents in vector form the original time series $\mathbf{X}$.
 4. The **readout** module is a classifier that maps the representation $\mathbf{r}_\mathbf{X}$ into the class label $\mathbf{y}$, associated with the time series $\mathbf{X}$. 
 
-This library implements also the *reservoir model space*, a very powerful representation $\mathbf{r}_\mathbf{X}$ for the time series.
-Details about the methodology are found in the [original paper](https://arxiv.org/abs/1803.07870).
+> [!Note] 
+> This library implements also the *reservoir model space*, a very powerful representation $\mathbf{r}_\mathbf{X}$ for the time series. Details about the methodology are found in the [original paper](https://arxiv.org/abs/1803.07870).
 
 The class `RC_model` contained in [modules.py](https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/modules.py) permits to specify, train and test an RC-model.
 Several options are available to customize the RC model, by selecting different configurations for each module.
@@ -115,7 +116,7 @@ clst.fit(X)
 rX = clst.input_repr # representations of the input data
 ````
 
-The representations `rX` can be used to perfrom clustering using traditional clustering algorithms for vectorial data, such as those [here](https://scikit-learn.org/stable/modules/clustering.html).
+The representations `rX` can be used to perfrom clustering using traditional clustering algorithms for vectorial data, such as those from [sk-learn](https://scikit-learn.org/stable/modules/clustering.html).
 
 ## Forecasting
 The sequences $\mathbf{H}$ and $\mathbf{\bar H}$ obtained at steps 1 and 2 can be directly used to forecast the future values of the time series.
@@ -133,14 +134,16 @@ Yhat = fcst.predict(Xte) # Predictions
 
 Here, `Xtr`, `Ytr` are current and future values, respectively, used for training.
 
-# Advanced examples
+# 🧩 Advanced examples
 The following notebooks illustrate more advanced use-cases.
 
-- Perform dimensionality reduction, cluster analysis, and visualize the results: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering_visualization.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1N19l9hH7cxFdWxeAuL7WFbxZFdSIkl-D?usp=sharing)
-- Probabilistic forecasting with advanced regression models as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting_with_GBRT.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1HAD2IlaOggaRGIuIPCabUje2IClqzpyn?usp=sharing)
-- Use advanced classifiers as readout: [view](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/advanced_classifiers.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1RCpDpAxuYFuFuoRWSM7iMA1sRx8exlhH?usp=sharing)
+- Perform dimensionality reduction, cluster analysis, and visualize the results: [![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering_visualization.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1N19l9hH7cxFdWxeAuL7WFbxZFdSIkl-D?usp=sharing)
+- Probabilistic forecasting with advanced regression models as readout: [![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting_with_GBRT.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1HAD2IlaOggaRGIuIPCabUje2IClqzpyn?usp=sharing)
+- Use advanced classifiers as readout: [![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/advanced_classifiers.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1RCpDpAxuYFuFuoRWSM7iMA1sRx8exlhH?usp=sharing)
+- Impute missing data in time series [![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.jupyter.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/missing_data_imputation.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/missing_data_imputation.ipynb)
+- Reconstruct the attractor of a dynamical system in the phase space [![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.jupyter.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/state_space_reconstruction.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/state_space_reconstruction.ipynb)
 
-# Datasets
+# 📦 Datasets
 
 There are several datasets available to perform time series classification/clustering and forecasting.
 
@@ -176,7 +179,7 @@ synth.available_datasets()  # Print available datasets
 Xs = synth.get_data('Lorenz')  # Generate synthetic time series
 ````
 
-# Citation
+# 📝 Citation
 
 Please, consider citing the original paper if you are using this library in your reasearch
 
@@ -189,6 +192,6 @@ Please, consider citing the original paper if you are using this library in your
   publisher={IEEE}
 }
 ````
-    
-# License
+
+# 🌐 License
 The code is released under the MIT License. See the attached LICENSE file.

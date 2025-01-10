@@ -1,15 +1,11 @@
-:py:mod:`reservoir_computing.utils`
-===================================
+reservoir_computing.utils
+=========================
 
 .. py:module:: reservoir_computing.utils
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -17,6 +13,8 @@ Functions
    reservoir_computing.utils.make_forecasting_dataset
 
 
+Module Contents
+---------------
 
 .. py:function:: compute_test_scores(pred_class, Yte)
 

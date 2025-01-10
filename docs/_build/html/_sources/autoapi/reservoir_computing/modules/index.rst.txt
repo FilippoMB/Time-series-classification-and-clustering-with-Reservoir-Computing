@@ -1,14 +1,11 @@
-:py:mod:`reservoir_computing.modules`
-=====================================
+reservoir_computing.modules
+===========================
 
 .. py:module:: reservoir_computing.modules
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -16,12 +13,13 @@ Classes
    reservoir_computing.modules.RC_forecaster
 
 
-
+Module Contents
+---------------
 
 .. py:class:: RC_model(reservoir=None, n_internal_units=100, spectral_radius=0.99, leak=None, connectivity=0.3, input_scaling=0.2, noise_level=0.0, n_drop=0, bidir=False, circle=False, dimred_method=None, n_dim=None, mts_rep='mean', w_ridge_embedding=1.0, readout_type='lin', w_ridge=1.0, mlp_layout=None, num_epochs=None, w_l2=None, nonlinearity=None, svm_gamma=1.0, svm_C=1.0)
 
-
    Bases: :py:obj:`object`
+
 
    Build and evaluate a RC-based model for time series classification or clustering.
 
@@ -108,6 +106,37 @@ Classes
        Regularization for SVM hyperplane.
        Used only when ``readout_type=='svm'``.
 
+
+   .. py:attribute:: n_drop
+      :value: 0
+
+
+
+   .. py:attribute:: bidir
+      :value: False
+
+
+
+   .. py:attribute:: dimred_method
+      :value: None
+
+
+
+   .. py:attribute:: mts_rep
+      :value: 'mean'
+
+
+
+   .. py:attribute:: readout_type
+      :value: 'lin'
+
+
+
+   .. py:attribute:: svm_gamma
+      :value: 1.0
+
+
+
    .. py:method:: fit(X, Y=None, verbose=True)
 
       Train the RC model.
@@ -128,6 +157,7 @@ Classes
       None
 
 
+
    .. py:method:: predict(Xte)
 
       Computes predictions for out-of-sample (test) data.
@@ -146,8 +176,8 @@ Classes
 
 .. py:class:: RC_forecaster(reservoir=None, n_internal_units=100, spectral_radius=0.99, leak=None, connectivity=0.3, input_scaling=0.2, noise_level=0.0, n_drop=0, circle=False, dimred_method=None, n_dim=None, w_ridge=1.0)
 
-
    Bases: :py:obj:`object`
+
 
    Class to perform time series forecasting with RC.
 
@@ -202,6 +232,20 @@ Classes
    :param w_ridge: float (default ``1.0``)
        Regularization parameter of the ridge regression readout.
 
+
+   .. py:attribute:: n_drop
+      :value: 0
+
+
+
+   .. py:attribute:: dimred_method
+      :value: None
+
+
+
+   .. py:attribute:: readout
+
+
    .. py:method:: fit(X, Y, verbose=True)
 
       Train the RC model for forecasting.
@@ -219,10 +263,12 @@ Classes
 
       Returns:
       --------
-      None
+      red_states : np.ndarray
+          Array of shape ``[T, n_dim]`` representing the reservoir states of the time steps used for training.
 
 
-   .. py:method:: predict(Xte)
+
+   .. py:method:: predict(Xte, return_states=False)
 
       Computes predictions for out-of-sample (test) data.
 
@@ -231,10 +277,38 @@ Classes
       Xte : np.ndarray
           Array of shape ``[T, V]`` representing the test data.
 
+      return_states : bool
+          If ``True``, return the predicted states.
+
       Returns:
       --------
       Yhat : np.ndarray
           Array of shape ``[T, V]`` representing the predicted values.
+
+      red_states_te : np.ndarray
+          Array of shape ``[T, n_dim]`` representing the reservoir states of the new time steps.
+
+
+
+   .. py:method:: get_fitted_states()
+
+      Return the fitted reservoir states.
+
+      Returns:
+      --------
+      fitted_states : np.ndarray
+          Array of shape ``[T, n_dim]`` representing the fitted reservoir states.
+
+
+
+   .. py:method:: get_predicted_states()
+
+      Return the predicted reservoir states.
+
+      Returns:
+      --------
+      predicted_states : np.ndarray
+          Array of shape ``[T, n_dim]`` representing the predicted reservoir states.
 
 
 

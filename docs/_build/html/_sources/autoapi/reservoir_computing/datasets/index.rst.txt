@@ -1,14 +1,19 @@
-:py:mod:`reservoir_computing.datasets`
-======================================
+reservoir_computing.datasets
+============================
 
 .. py:module:: reservoir_computing.datasets
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   reservoir_computing.datasets.downloader
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -17,9 +22,8 @@ Classes
    reservoir_computing.datasets.SynthLoader
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -29,19 +33,16 @@ Functions
    reservoir_computing.datasets.rossler
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   reservoir_computing.datasets.downloader
-
+Module Contents
+---------------
 
 .. py:class:: ClfLoader
 
-
    Class to download and load time series classification datasets.
+
+
+   .. py:attribute:: datasets
+
 
    .. py:method:: available_datasets(details=False)
 
@@ -55,6 +56,7 @@ Attributes
       Returns:
       --------
       None
+
 
 
    .. py:method:: get_data(alias)
@@ -81,8 +83,11 @@ Attributes
 
 .. py:class:: PredLoader
 
-
    Class to download and load time series forecasting datasets.
+
+
+   .. py:attribute:: datasets
+
 
    .. py:method:: available_datasets(details=False)
 
@@ -96,6 +101,7 @@ Attributes
       Returns:
       --------
       None
+
 
 
    .. py:method:: get_data(alias) -> numpy.ndarray
@@ -215,8 +221,11 @@ Attributes
 
 .. py:class:: SynthLoader
 
-
    Class to generate synthetic time series.
+
+
+   .. py:attribute:: datasets
+
 
    .. py:method:: available_datasets(details=False)
 
@@ -225,6 +234,7 @@ Attributes
       Returns:
       --------
       None
+
 
 
    .. py:method:: get_data(alias, **kwargs)
@@ -246,6 +256,4 @@ Attributes
 
 
 .. py:data:: downloader
-
-   
 

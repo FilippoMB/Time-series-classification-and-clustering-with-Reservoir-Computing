@@ -1,24 +1,21 @@
-:py:mod:`reservoir_computing.tensorPCA`
-=======================================
+reservoir_computing.tensorPCA
+=============================
 
 .. py:module:: reservoir_computing.tensorPCA
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    reservoir_computing.tensorPCA.tensorPCA
 
 
-
+Module Contents
+---------------
 
 .. py:class:: tensorPCA(n_components)
-
 
    Compute PCA on a dataset of multivariate time series represented as a 3-dimensional tensor
    and reduce the size along the third dimension from ``[N, T, V]`` to ``[N, T, D]``, where ``D <= V`` .
@@ -30,6 +27,15 @@ Classes
    :param n_components: The number of principal components to keep after the dimensionality reduction. This
                         determines the size of the third dimension ``D`` in the output tensor.
    :type n_components: int
+
+
+   .. py:attribute:: n_components
+
+
+   .. py:attribute:: first_eigs
+      :value: None
+
+
 
    .. py:method:: fit(X)
 
@@ -44,6 +50,7 @@ Classes
       Returns:
       ------------
       None
+
 
 
    .. py:method:: transform(X)
@@ -61,6 +68,7 @@ Classes
       Xpca : np.ndarray
           Transformed time series, 3D array of shape ``[N,T,D]``, where ``N`` is the number of time series,
           ``T`` is the length of each time series, and ``D`` is the number of principal components.
+
 
 
    .. py:method:: fit_transform(X)

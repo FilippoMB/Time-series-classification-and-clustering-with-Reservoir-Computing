@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Index &mdash; reservoir_computing  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
 
   
   <!--[if lt IE 9]>
@@ -17,7 +17,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
@@ -57,6 +57,8 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/missing_data_imputation.html">Missing Data Imputation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/state_space_reconstruction.html">State Space Reconstruction</a></li>
 </ul>
 
         </div>
@@ -88,12 +90,14 @@
 
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -114,6 +118,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.bidir">bidir (reservoir_computing.modules.RC_model attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -129,6 +141,22 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/reservoir_computing/datasets/index.html#reservoir_computing.datasets.ClfLoader.datasets">datasets (reservoir_computing.datasets.ClfLoader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/reservoir_computing/datasets/index.html#reservoir_computing.datasets.PredLoader.datasets">(reservoir_computing.datasets.PredLoader attribute)</a>
+</li>
+        <li><a href="autoapi/reservoir_computing/datasets/index.html#reservoir_computing.datasets.SynthLoader.datasets">(reservoir_computing.datasets.SynthLoader attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.dimred_method">dimred_method (reservoir_computing.modules.RC_forecaster attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.dimred_method">(reservoir_computing.modules.RC_model attribute)</a>
+</li>
+      </ul></li>
       <li><a href="autoapi/reservoir_computing/datasets/index.html#reservoir_computing.datasets.downloader">downloader (in module reservoir_computing.datasets)</a>
 </li>
   </ul></td>
@@ -137,6 +165,8 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/reservoir_computing/tensorPCA/index.html#reservoir_computing.tensorPCA.tensorPCA.first_eigs">first_eigs (reservoir_computing.tensorPCA.tensorPCA attribute)</a>
+</li>
       <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.fit">fit() (reservoir_computing.modules.RC_forecaster method)</a>
 
       <ul>
@@ -165,6 +195,10 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.get_fitted_states">get_fitted_states() (reservoir_computing.modules.RC_forecaster method)</a>
+</li>
+      <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.get_predicted_states">get_predicted_states() (reservoir_computing.modules.RC_forecaster method)</a>
+</li>
       <li><a href="autoapi/reservoir_computing/reservoir/index.html#reservoir_computing.reservoir.Reservoir.get_states">get_states() (reservoir_computing.reservoir.Reservoir method)</a>
 </li>
   </ul></td>
@@ -206,6 +240,24 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/reservoir_computing/datasets/index.html#reservoir_computing.datasets.mso">mso() (in module reservoir_computing.datasets)</a>
 </li>
+      <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.mts_rep">mts_rep (reservoir_computing.modules.RC_model attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/reservoir_computing/tensorPCA/index.html#reservoir_computing.tensorPCA.tensorPCA.n_components">n_components (reservoir_computing.tensorPCA.tensorPCA attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.n_drop">n_drop (reservoir_computing.modules.RC_forecaster attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.n_drop">(reservoir_computing.modules.RC_model attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -232,6 +284,10 @@
 </li>
       <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model">RC_model (class in reservoir_computing.modules)</a>
 </li>
+      <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_forecaster.readout">readout (reservoir_computing.modules.RC_forecaster attribute)</a>
+</li>
+      <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.readout_type">readout_type (reservoir_computing.modules.RC_model attribute)</a>
+</li>
       <li><a href="autoapi/reservoir_computing/reservoir/index.html#reservoir_computing.reservoir.Reservoir">Reservoir (class in reservoir_computing.reservoir)</a>
 </li>
       <li>
@@ -248,6 +304,8 @@
         <li><a href="autoapi/reservoir_computing/datasets/index.html#module-reservoir_computing.datasets">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     reservoir_computing.modules
 
@@ -255,8 +313,6 @@
         <li><a href="autoapi/reservoir_computing/modules/index.html#module-reservoir_computing.modules">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     reservoir_computing.reservoir
 
@@ -285,6 +341,10 @@
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/reservoir_computing/modules/index.html#reservoir_computing.modules.RC_model.svm_gamma">svm_gamma (reservoir_computing.modules.RC_model attribute)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/reservoir_computing/datasets/index.html#reservoir_computing.datasets.SynthLoader">SynthLoader (class in reservoir_computing.datasets)</a>
 </li>

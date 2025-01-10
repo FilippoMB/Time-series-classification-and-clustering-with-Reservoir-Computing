@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>reservoir_computing.utils &mdash; reservoir_computing  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
 
   
   <!--[if lt IE 9]>
@@ -18,7 +18,7 @@
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -48,13 +48,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">reservoir_computing</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.datasets</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../modules/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.modules</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../reservoir/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.reservoir</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tensorPCA/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.tensorPCA</span></code></a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../datasets/index.html">reservoir_computing.datasets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../modules/index.html">reservoir_computing.modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reservoir/index.html">reservoir_computing.reservoir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tensorPCA/index.html">reservoir_computing.tensorPCA</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">reservoir_computing.utils</a></li>
 </ul>
 </li>
 </ul>
@@ -73,6 +73,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/advanced_classifiers.html">Advanced classification models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/clustering_visualization.html">Cluster analysis and visualization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/forecasting_with_GBRT.html">Probabilistic forecasting with GBRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/missing_data_imputation.html">Missing Data Imputation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/state_space_reconstruction.html">State Space Reconstruction</a></li>
 </ul>
 
         </div>
@@ -90,8 +92,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.utils</span></code></li>
+          <li class="breadcrumb-item"><a href="../index.html">reservoir_computing</a></li>
+      <li class="breadcrumb-item active">reservoir_computing.utils</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/docs/autoapi/reservoir_computing/utils/index.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -102,11 +104,9 @@
            <div itemprop="articleBody">
              
   <section id="module-reservoir_computing.utils">
-<span id="reservoir-computing-utils"></span><h1><a class="reference internal" href="#module-reservoir_computing.utils" title="reservoir_computing.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reservoir_computing.utils</span></code></a><a class="headerlink" href="#module-reservoir_computing.utils" title="Link to this heading"></a></h1>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<span id="reservoir-computing-utils"></span><h1>reservoir_computing.utils<a class="headerlink" href="#module-reservoir_computing.utils" title="Link to this heading"></a></h1>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#reservoir_computing.utils.compute_test_scores" title="reservoir_computing.utils.compute_test_scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_test_scores</span></code></a>(pred_class, Yte)</p></td>
@@ -117,12 +117,15 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="reservoir_computing.utils.compute_test_scores">
 <span class="sig-prename descclassname"><span class="pre">reservoir_computing.utils.</span></span><span class="sig-name descname"><span class="pre">compute_test_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Yte</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/reservoir_computing/utils.html#compute_test_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reservoir_computing.utils.compute_test_scores" title="Link to this definition"></a></dt>
 <dd><p>Wrapper to compute classification accuracy and F1 score</p>
 <section id="parameters">
-<h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>pred_class<span class="classifier">np.ndarray</span></dt><dd><p>Predicted class labels</p>
 </dd>
@@ -131,7 +134,7 @@
 </dl>
 </section>
 <section id="returns">
-<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<h3>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>accuracy<span class="classifier">float</span></dt><dd><p>Classification accuracy</p>
 </dd>
@@ -151,7 +154,7 @@
 <li><p>Normalizes the data</p></li>
 </ol>
 <section id="id1">
-<h4>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<h3>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>X<span class="classifier">np.ndarray</span></dt><dd><p>Input data</p>
 </dd>
@@ -168,7 +171,7 @@ If None, a StandardScaler is created</p>
 </dl>
 </section>
 <section id="id2">
-<h4>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<h3>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>Xtr<span class="classifier">np.ndarray</span></dt><dd><p>Training input data</p>
 </dd>
@@ -188,7 +191,6 @@ If None, a StandardScaler is created</p>
 </section>
 </dd></dl>
 
-</section>
 </section>
 </section>
 
