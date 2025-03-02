@@ -179,9 +179,17 @@ synth.available_datasets()  # Print available datasets
 Xs = synth.get_data('Lorenz')  # Generate synthetic time series
 ````
 
+# 🤝 Contributors
+
+The following users have contributed to the library.
+
+<a href="https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing" />
+</a>
+
 # 📝 Citation
 
-Please, consider citing the original paper if you are using this library in your reasearch
+Please, consider citing the original paper if you are using this library in your reasearch.
 
 ````bibtex
 @article{bianchi2020reservoir,

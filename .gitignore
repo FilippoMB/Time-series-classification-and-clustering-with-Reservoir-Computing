@@ -1,5 +1,6 @@
 *.pyc
 *checkpoint.ipynb
+.DS_Store
 
 build/*
 dist/*
