@@ -201,5 +201,5 @@ Please, consider citing the original paper if you are using this library in your
 }
 ````
 
-# 🌐 License
+# 🎗️ License
 The code is released under the MIT License. See the attached LICENSE file.
