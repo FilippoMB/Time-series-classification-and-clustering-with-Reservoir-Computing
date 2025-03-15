@@ -10,7 +10,7 @@
 Figure 1: Overview of the RC classifier.
 </div>
 
-This library allows to quickly implement different architectures for time series data based on *Reservoir Computing (RC)*, the family of approaches popularized in machine learning by Echo State Networks.
+This library allows for quick implementation of different architectures for time series data based on *Reservoir Computing (RC)*, the family of approaches popularized in machine learning by Echo State Networks.
 This library is primarly design to perform **classification** and **clustering** of both univariate and multivariate time series. However, it can also be used to perform time series **forecasting**. 
 
 <div align="center">
@@ -36,7 +36,7 @@ pip install -e .
 
 The following scripts provide minimalistic examples that illustrate how to use the library for different tasks.
 
-To run them, download the project and cd to the root folder:
+To run them, download the project and go into the root folder:
 
 ````bash
 git clone https://github.com/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing.git
@@ -86,7 +86,7 @@ Referring to [Figure 1](#fig:RCClassifier), the RC classifier consists of four d
 The class `RC_model` contained in [modules.py](https://github.com/FilippoMB/Reservoir-model-space-classifier/blob/master/code/modules.py) permits to specify, train and test an RC-model.
 Several options are available to customize the RC model, by selecting different configurations for each module.
 
-The training and test function requires in input training and test data, which must be provided as multidimensional numpy arrays of shape *[N,T,V]*, with:
+The training and test functions take as input training and test data, which must be provided as multidimensional numpy arrays of shape *[N,T,V]*, with:
 
 - *N* = number of samples
 - *T* = number of time steps in each sample
@@ -116,7 +116,7 @@ clst.fit(X)
 rX = clst.input_repr # representations of the input data
 ````
 
-The representations `rX` can be used to perfrom clustering using traditional clustering algorithms for vectorial data, such as those from [sk-learn](https://scikit-learn.org/stable/modules/clustering.html).
+The representation `rX` can be used to perform clustering using traditional clustering algorithms for vectorial data, such as those from [sk-learn](https://scikit-learn.org/stable/modules/clustering.html).
 
 ## Forecasting
 The sequences $\mathbf{H}$ and $\mathbf{\bar H}$ obtained at steps 1 and 2 can be directly used to forecast the future values of the time series.
@@ -135,7 +135,7 @@ Yhat = fcst.predict(Xte) # Predictions
 Here, `Xtr`, `Ytr` are current and future values, respectively, used for training.
 
 # 🧩 Advanced examples
-The following notebooks illustrate more advanced use-cases.
+The following notebooks illustrate more advanced use cases.
 
 - Perform dimensionality reduction, cluster analysis, and visualize the results: [![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/clustering_visualization.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1N19l9hH7cxFdWxeAuL7WFbxZFdSIkl-D?usp=sharing)
 - Probabilistic forecasting with advanced regression models as readout: [![nbviewer](https://img.shields.io/badge/-View-blue?logo=jupyter&style=flat&labelColor=gray)](https://nbviewer.org/github/FilippoMB/Time-series-classification-and-clustering-with-Reservoir-Computing/blob/master/examples/notebooks/forecasting_with_GBRT.ipynb) or [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1HAD2IlaOggaRGIuIPCabUje2IClqzpyn?usp=sharing)
@@ -145,7 +145,7 @@ The following notebooks illustrate more advanced use-cases.
 
 # 📦 Datasets
 
-There are several datasets available to perform time series classification/clustering and forecasting.
+This library provides several datasets to perform time series classification/clustering and forecasting.
 
 **Classification and clustering**
 
@@ -189,7 +189,7 @@ The following users have contributed to the library.
 
 # 📝 Citation
 
-Please, consider citing the original paper if you are using this library in your reasearch.
+Please, consider citing the original paper if you are using this library in your research.
 
 ````bibtex
 @article{bianchi2020reservoir,
